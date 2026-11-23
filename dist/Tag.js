@@ -5,7 +5,7 @@ export function Tag({ className, ...rest }) {
     return _jsx("span", { className: cx('bw-tag', className), ...rest });
 }
 /** Бейдж-статус: прямоугольный, 10px заглавными. */
-export function Badge({ tone = 'neutral', className, ...rest }) {
-    return _jsx("span", { className: cx('bw-badge', `bw-badge--${tone}`, className), ...rest });
+export function Badge({ tone = 'neutral', plain, className, ...rest }) {
+    return _jsx("span", { className: cx('bw-badge', `bw-badge--${tone}`, plain && 'bw-badge--plain', className), ...rest });
 }
 //# sourceMappingURL=Tag.js.map
