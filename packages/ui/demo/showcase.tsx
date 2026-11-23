@@ -2,8 +2,7 @@
 // Варианты для выбора владельцем добавляются сюда же отдельным разделом и убираются после решения.
 import { useState } from 'react'
 import { createRoot } from 'react-dom/client'
-import type { ReactNode } from 'react'
-import { Button, ConfirmDialog, Field, FormDialog, Hint, Nav, NavGroup, NavItem, Panel, PanelRow } from '../src'
+import { Button, ConfirmDialog, Field, FormDialog, Hint } from '../src'
 import { stories } from './stories'
 
 
@@ -49,50 +48,6 @@ function LiveFormDialog() {
   )
 }
 
-// ══ Варианты на выбор: некруглый переключатель. Классы alt-* — в <style> страницы ui.html; после решения раздел убирается. ══
-function AltSwitch({ v, size, on: initial = false, disabled }: { v: string; size?: 'xs' | 'md'; on?: boolean; disabled?: boolean }) {
-  const [on, setOn] = useState(initial)
-  return <button type="button" role="switch" aria-checked={on} aria-label="Переключатель" disabled={disabled} onClick={(e) => { e.stopPropagation(); setOn(!on) }} className={`alt-sw alt-sw-${v}${size ? ` alt-sw--${size}` : ''}`} />
-}
-const AltS = ({ cap, children }: { cap: string; children: ReactNode }) => <span className="alt-s"><span>{children}</span><small>{cap}</small></span>
-function SwitchVariant({ v, name }: { v: string; name: string }) {
-  return (
-    <div className="alt-v">
-      <div className="alt-name"><b>{v.toUpperCase()}</b>{name}</div>
-      <div className="alt-demo">
-        <AltS cap="28×16"><AltSwitch v={v} size="xs" on /><AltSwitch v={v} size="xs" /></AltS>
-        <AltS cap="36×20"><AltSwitch v={v} on /><AltSwitch v={v} /></AltS>
-        <AltS cap="44×24"><AltSwitch v={v} size="md" on /><AltSwitch v={v} size="md" /></AltS>
-        <AltS cap="недоступен"><AltSwitch v={v} on disabled /><AltSwitch v={v} disabled /></AltS>
-        <Panel style={{ width: 300 }}>
-          <PanelRow title="Запускать при входе" description="Стартовать автоматически."><AltSwitch v={v} on /></PanelRow>
-          <PanelRow title="Звук уведомлений"><AltSwitch v={v} /></PanelRow>
-        </Panel>
-        <Nav style={{ width: 190 }} aria-label="Пример навигации">
-          <NavGroup>Модули</NavGroup>
-          <NavItem current side={<AltSwitch v={v} size="xs" on />}>Окна</NavItem>
-          <NavItem side={<AltSwitch v={v} size="xs" />}>Клавиатура</NavItem>
-        </Nav>
-      </div>
-    </div>
-  )
-}
-function Variants() {
-  return (
-    <section id="variants">
-      <div className="sec-head"><span className="n">2</span><h2>Варианты на выбор: переключатель</h2></div>
-      <p className="muted small">Круглого переключателя больше не будет. Три некруглые формы во всех трёх размерах, в строке панели и в навигации; все живые — нажимайте. Посмотрите и в светлой теме. Ответьте буквой.</p>
-      <article className="card" style={{ marginTop: 20 }}>
-        <div className="card__body">
-          <SwitchVariant v="a" name="Срезы, как у пластины; у включённого кромка" />
-          <SwitchVariant v="b" name="Прямоугольный, углы 2px, как у поля" />
-          <SwitchVariant v="c" name="Скошенный, как плашка панели" />
-        </div>
-      </article>
-    </section>
-  )
-}
-
 function App() {
   return (
     <>
@@ -108,7 +63,6 @@ function App() {
           ))}
         </div>
       </section>
-      <Variants />
     </>
   )
 }

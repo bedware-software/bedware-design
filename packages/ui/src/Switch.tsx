@@ -11,7 +11,8 @@ export interface SwitchProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement
   ref?: Ref<HTMLButtonElement>
 }
 
-/** Переключатель «вкл / выкл», применяется сразу. Внутри <label> переключается и по нажатию на подпись. */
+/** Переключатель «вкл / выкл», применяется сразу. Некруглый: дорожка и бегунок со срезанными углами.
+ *  Внутри <label> переключается и по нажатию на подпись. */
 export function Switch({ checked, onChange, label, size = 'sm', className, onClick, ...rest }: SwitchProps) {
   return (
     <button

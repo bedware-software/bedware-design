@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="node_modules/@fontsource/jetbrains-mono/700.css">
 <link rel="stylesheet" href="tokens/tokens.css?v=4">
 <link rel="stylesheet" href="assets/page.css?v=5">
-<link rel="stylesheet" href="components/components.css?v=5">
+<link rel="stylesheet" href="components/components.css?v=6">
 <style>
   .topnav .pick { margin-left: auto; }
   /* всё, что ниже шапки страницы, живёт в выбранной теме */
@@ -42,45 +42,12 @@
   .frame { border: 1px solid var(--bw-border); border-radius: 8px; overflow: hidden; }
 
 
-  /* ══ ВАРИАНТЫ НА ВЫБОР: некруглый переключатель — классы alt-*, в пакет не входят; после решения убираются ══ */
-  .alt-v { display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 16px; align-items: center; padding: 16px 0; border-bottom: 1px dashed var(--bw-border); }
-  .alt-v:first-child { padding-top: 0; } .alt-v:last-child { border-bottom: 0; padding-bottom: 0; }
-  .alt-name { display: flex; align-items: center; gap: 10px; font: 500 12px/16px var(--bw-font-sans); color: var(--bw-text); }
-  .alt-name b { flex: none; width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; font: 700 12px var(--bw-font-mono); background: var(--bw-plate); color: var(--bw-on-plate); }
-  .alt-demo { display: flex; flex-wrap: wrap; gap: 14px 22px; align-items: flex-end; }
-  .alt-s { display: inline-flex; flex-direction: column; align-items: flex-start; gap: 6px; }
-  .alt-s > small { font: 10px var(--bw-font-mono); color: var(--bw-text-dim); white-space: nowrap; }
-  .alt-s > span { display: inline-flex; gap: 8px; align-items: center; }
-  .alt-sw { --w: 36px; --h: 20px; --k: 16px; --track: var(--bw-switch-off); --edge: 0 0 0 0 transparent; --knob: #fff;
-    position: relative; isolation: isolate; flex: none; width: var(--w); height: var(--h); padding: 0; border: 0; background: none; cursor: pointer; outline: none; }
-  .alt-sw--xs { --w: 28px; --h: 16px; --k: 12px; } .alt-sw--md { --w: 44px; --h: 24px; --k: 20px; }
-  .alt-sw::before { content: ''; position: absolute; inset: 0; z-index: -1; background: var(--track); box-shadow: var(--edge); transition: background-color var(--bw-duration-fast); }
-  .alt-sw::after { content: ''; position: absolute; top: 2px; left: 2px; width: var(--k); height: var(--k); background: var(--knob); transition: transform var(--bw-duration-base), background-color var(--bw-duration-fast); }
-  .alt-sw[aria-checked="true"] { --track: var(--bw-plate); --knob: var(--bw-on-plate); }
-  .alt-sw[aria-checked="true"]::after { transform: translateX(calc(var(--w) - var(--k) - 4px)); }
-  .alt-sw:focus-visible { outline: 2px solid var(--bw-focus); outline-offset: 3px; }
-  .alt-sw:disabled { cursor: not-allowed; --track: repeating-linear-gradient(135deg, var(--bw-hatch-a) 0 4px, var(--bw-hatch-b) 4px 8px); --knob: var(--bw-text-dim); --edge: 0 0 0 0 transparent; }
-  /* A — срезы, как у пластины: дорожка и бегунок со срезанными углами, у включённого кромка */
-  .alt-sw-a::before { clip-path: polygon(4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%, 0 4px); }
-  .alt-sw-a::after { clip-path: polygon(3px 0, 100% 0, 100% calc(100% - 3px), calc(100% - 3px) 100%, 0 100%, 0 3px); }
-  .alt-sw-a[aria-checked="true"] { --edge: inset 0 -3px 0 var(--bw-plate-edge); }
-  .alt-sw-a[aria-checked="true"]::after { top: 1px; }
-  /* B — прямоугольный: углы 2px, как у поля; бегунок — квадрат */
-  .alt-sw-b::before { border-radius: var(--bw-radius-plate); }
-  .alt-sw-b::after { border-radius: 1px; }
-  /* C — скошенный: дорожка и бегунок параллелограммом, как плашка панели и метка */
-  .alt-sw-c::before { clip-path: polygon(5px 0, 100% 0, calc(100% - 5px) 100%, 0 100%); }
-  .alt-sw-c::after { left: 4px; clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%); }
-  .alt-sw-c[aria-checked="true"] { --edge: inset 0 -3px 0 var(--bw-plate-edge); }
-  .alt-sw-c[aria-checked="true"]::after { transform: translateX(calc(var(--w) - var(--k) - 8px)); }
-
 </style>
 </head>
 <body>
 <nav class="topnav">
   <b>bedware</b>
   <a href="#components">Компоненты</a>
-  <a href="#variants">Варианты на выбор</a>
   <a href="system.html">← Итог: бренд</a>
   <span class="pick" id="theme-pick"><label><input type="radio" name="th" value="dark" checked>тёмная тема</label><label><input type="radio" name="th" value="light">светлая тема</label><label><input type="radio" name="th" value="dark-soft">тёмная мягкая</label><label><input type="radio" name="th" value="light-soft">светлая мягкая</label></span>
 </nav>
