@@ -19,6 +19,11 @@ const { motion, meta, ...tokens } = src;
 // У каждого начертания два файла (латиница и кириллица) — разводим их по диапазонам, иначе второй перекроет первый.
 const RANGE = { latin: 'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD', cyrillic: 'U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116' };
 tokens.type.fonts = tokens.type.fonts.map((f) => ({ ...f, style: 'normal', unicodeRange: RANGE[f.file.includes('cyrillic') ? 'cyrillic' : 'latin'] }));
+// Ступени яркости (тема с base) в tokens.json хранят только отличия от своей темы — здесь разворачиваем их в полные темы.
+const baseOf = Object.fromEntries(tokens.color.themes.filter((x) => x.base).map((x) => [x.id, x.base]));
+const fill = (tok) => (typeof tok.value === 'string' ? tok : { ...tok, value: { ...tok.value, ...Object.fromEntries(Object.entries(baseOf).map(([id, base]) => [id, tok.value[id] ?? tok.value[base]])) } });
+tokens.color = { ...tokens.color, themes: tokens.color.themes.map(({ base, ...x }) => x), tokens: tokens.color.tokens.map(fill) };
+tokens.shadow = { ...tokens.shadow, tokens: tokens.shadow.tokens.map(fill) };
 tokens.meta = { source: 'code', note: 'Собрано из tokens/tokens.json репозитория bedware-design. Правится в коде, затем пересобирается.' };
 put('tokens.json', JSON.stringify(tokens, null, 2) + '\n');
 

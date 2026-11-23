@@ -65,7 +65,7 @@
 <section id="components">
   <div class="sec-head"><span class="n">2</span><h2>Компоненты</h2></div>
   <p class="muted small">Живые: наводите, нажимайте, ходите Tab. Код — <code>components/components.css</code>. Все компоненты пакета во всех состояниях — на странице <a href="ui.html">ui.html</a>.</p>
-  <p><span class="pick" id="theme-pick"><label><input type="radio" name="th" value="dark" checked>тёмная тема</label><label><input type="radio" name="th" value="light">светлая тема</label></span>
+  <p><span class="pick" id="theme-pick"><label><input type="radio" name="th" value="dark" checked>тёмная тема</label><label><input type="radio" name="th" value="light">светлая тема</label><label><input type="radio" name="th" value="dark-soft">тёмная мягкая</label><label><input type="radio" name="th" value="light-soft">светлая мягкая</label></span>
     <span class="muted small" style="margin-left:8px">Тема включается атрибутом <code>data-theme</code> на любом предке.</span></p>
   <div class="themed" id="themed" data-theme="dark">
   <div class="demo">
@@ -104,9 +104,9 @@
 </section>
 </main>
 <script>
-document.querySelectorAll('#theme-pick input').forEach((i) => (i.onchange = () => (document.querySelector('#themed').dataset.theme = i.value)));
+document.querySelectorAll('#theme-pick input').forEach((i) => (i.onchange = () => { const el = document.querySelector('#themed'); el.dataset.theme = i.value.split('-')[0]; el.dataset.themeVariant = i.value; }));
 fetch('tokens/tokens.json').then((r) => r.json()).then((t) => {
-  const themes = t.color.themes.map((x) => x.id);
+  const themes = t.color.themes.filter((x) => !x.base).map((x) => x.id);
   const of = (c, th) => (typeof c.value === 'string' ? c.value : c.value[th] ?? c.value[themes[0]]);
   const res = (name, th) => { const v = of(t.color.tokens.find((c) => c.name === name), th); const m = /^\{(.+)\}$/.exec(v); return m ? res(m[1], th) : v; };
   document.querySelector('#t-color').innerHTML = t.color.tokens.map((c) => { const [d, l] = themes.map((th) => res(c.name, th)); return `<div title="${c.usage}"><i class="two" style="--a:${d};--b:${l}"></i><span><b>${c.name}</b>${d === l ? d.toUpperCase() : d.toUpperCase() + ' · ' + l.toUpperCase()}</span></div>`; }).join('');

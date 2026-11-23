@@ -8,11 +8,15 @@ import { fileURLToPath } from 'node:url';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const t = JSON.parse(readFileSync(join(root, 'tokens/tokens.json'), 'utf8'));
 const HEAD = `/* ${t.name} — сгенерировано из tokens/tokens.json командой «npm run tokens». Руками не править. */\n`;
-const themes = t.color.themes.map((x) => x.id);
+// Темы — те, что включаются атрибутом data-theme. Ступени яркости (у темы есть base) — отдельный атрибут
+// data-theme-variant на том же элементе: в них записано только то, чем ступень отличается от своей темы.
+const themes = t.color.themes.filter((x) => !x.base).map((x) => x.id);
+const variants = t.color.themes.filter((x) => x.base);
+const baseOf = Object.fromEntries(variants.map((x) => [x.id, x.base]));
 const first = themes[0];
 
 const themed = [...t.color.tokens, ...t.shadow.tokens];
-const raw = (tok, theme) => (typeof tok.value === 'string' ? tok.value : (tok.value[theme] ?? tok.value[first]));
+const raw = (tok, theme) => (typeof tok.value === 'string' ? tok.value : (tok.value[theme] ?? tok.value[baseOf[theme]] ?? tok.value[first]));
 const ref = (v) => v.replace(/^\{(.+)\}$/, (_, n) => `var(--bw-${n})`);
 const hex = (name, theme) => { const v = raw(t.color.tokens.find((c) => c.name === name), theme); const m = /^\{(.+)\}$/.exec(v); return m ? hex(m[1], theme) : v; };
 const block = (title, list) => `  /* ${title} */\n` + list.map(([n, v, u]) => `  --bw-${n}: ${v};${u ? ` /* ${u} */` : ''}`).join('\n');
@@ -30,6 +34,10 @@ for (const th of themes.slice(1)) {
   css += `\n[data-theme="${th}"] {\n${body}\n}\n`;
   // data-theme="system" — тема как в ОС: по умолчанию первая, эта — когда ОС просит её.
   css += `\n@media (prefers-color-scheme: ${th}) {\n  [data-theme="system"] {\n${body.replace(/^/gm, '  ')}\n  }\n}\n`;
+}
+for (const v of variants) {
+  const own = themed.filter((x) => typeof x.value !== 'string' && x.value[v.id] !== undefined);
+  css += `\n/* ${v.name}: ступень яркости темы ${v.base}. Ставится вместе с ней: data-theme="${v.base}" data-theme-variant="${v.id}";\n   при data-theme="system" приложение само ставит ступень той темы, что сейчас в ОС. */\n[data-theme-variant="${v.id}"] {\n${block(`цвета · ${v.id}`, own.map((c) => [c.name, ref(raw(c, v.id))]))}\n}\n`;
 }
 css += '\n:root {\n' + [
   block('шрифты', [['font-sans', t.type.families.sans], ['font-mono', t.type.families.mono], ['font-display', t.type.families.mono]]),
@@ -62,13 +70,14 @@ const MAP = {
 const lines = (theme) => Object.entries(MAP).map(([k, v]) => `  --color-${k}: ${hex(v, theme)};`).join('\n');
 const theme = HEAD + `/* Темы бренда под имена, которые уже есть в globals.css обоих приложений.
    Подключение в приложении: @import "@bedware/ui/tailwind-theme.css" сразу после @import "tailwindcss";
-   свои блоки цветов из globals.css убрать. data-theme: dark, light или system (как в ОС). */
+   свои блоки цветов из globals.css убрать. data-theme: dark, light или system (как в ОС).
+   data-theme-variant на том же элементе — ступень яркости темы (dark-soft, light-soft); без него тема обычная. */
 @theme {
 ${lines(first)}
   --radius: ${t.radius.tokens.find((r) => r.name === 'radius-md').value};
   --font-sans: ${t.type.families.sans};
   --font-mono: ${t.type.families.mono};
 }
-${themes.slice(1).map((th) => `\n[data-theme="${th}"] {\n${lines(th)}\n}\n\n@media (prefers-color-scheme: ${th}) {\n  [data-theme="system"] {\n${lines(th).replace(/^/gm, '  ')}\n  }\n}\n`).join('')}`;
+${themes.slice(1).map((th) => `\n[data-theme="${th}"] {\n${lines(th)}\n}\n\n@media (prefers-color-scheme: ${th}) {\n  [data-theme="system"] {\n${lines(th).replace(/^/gm, '  ')}\n  }\n}\n`).join('')}${variants.map((v) => `\n/* ${v.name}: ступень яркости темы ${v.base}, атрибут data-theme-variant рядом с data-theme. */\n[data-theme-variant="${v.id}"] {\n${lines(v.id).split('\n').filter((l, i) => l !== lines(v.base).split('\n')[i]).join('\n')}\n}\n`).join('')}`;
 writeFileSync(join(root, 'tokens/tailwind-theme.css'), theme);
-console.log(`tokens: ${t.color.tokens.length} colors × ${themes.length} themes → tokens/tokens.css, tokens/tailwind-theme.css`);
+console.log(`tokens: ${t.color.tokens.length} colors × ${themes.length} themes + ${variants.length} brightness steps → tokens/tokens.css, tokens/tailwind-theme.css`);

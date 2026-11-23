@@ -115,6 +115,45 @@
   }
 }
 
+/* Dark · Soft: ступень яркости темы dark. Ставится вместе с ней: data-theme="dark" data-theme-variant="dark-soft";
+   при data-theme="system" приложение само ставит ступень той темы, что сейчас в ОС. */
+[data-theme-variant="dark-soft"] {
+  /* цвета · dark-soft */
+  --bw-bg: #171513;
+  --bw-surface-1: #22201d;
+  --bw-surface-2: #2a2723;
+  --bw-surface-3: #33302b;
+  --bw-surface-4: #3f3b35;
+  --bw-field-bg: #0e0d0c;
+  --bw-border: #5a564f;
+  --bw-border-strong: #77736a;
+  --bw-border-hover: #918c81;
+  --bw-text-dim: #918c81;
+  --bw-hatch-a: #3a3732;
+  --bw-hatch-b: #2a2723;
+  --bw-disabled-bg: #2a2723;
+  --bw-disabled-text: #7d786f;
+  --bw-switch-off: #625e56;
+}
+
+/* Light · Soft: ступень яркости темы light. Ставится вместе с ней: data-theme="light" data-theme-variant="light-soft";
+   при data-theme="system" приложение само ставит ступень той темы, что сейчас в ОС. */
+[data-theme-variant="light-soft"] {
+  /* цвета · light-soft */
+  --bw-bg: #ebe7dc;
+  --bw-surface-1: #f4f1e8;
+  --bw-surface-2: #faf8f2;
+  --bw-surface-3: #e0dbcd;
+  --bw-surface-4: #d4cebf;
+  --bw-field-bg: #faf8f2;
+  --bw-border: #c9c3b3;
+  --bw-hatch-a: #c9c3b3;
+  --bw-hatch-b: #e0dbcd;
+  --bw-disabled-bg: #e0dbcd;
+  --bw-disabled-text: #8f897c;
+  --bw-switch-off: #a8a293;
+}
+
 :root {
   /* шрифты */
   --bw-font-sans: Inter, -apple-system, "Segoe UI", sans-serif;

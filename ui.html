@@ -48,7 +48,7 @@
   <b>bedware</b>
   <a href="#components">Компоненты</a>
   <a href="system.html">← Итог: бренд</a>
-  <span class="pick" id="theme-pick"><label><input type="radio" name="th" value="dark" checked>тёмная тема</label><label><input type="radio" name="th" value="light">светлая тема</label></span>
+  <span class="pick" id="theme-pick"><label><input type="radio" name="th" value="dark" checked>тёмная тема</label><label><input type="radio" name="th" value="light">светлая тема</label><label><input type="radio" name="th" value="dark-soft">тёмная мягкая</label><label><input type="radio" name="th" value="light-soft">светлая мягкая</label></span>
 </nav>
 <main>
 <div class="hero" style="grid-template-columns:1fr"><div>
@@ -61,7 +61,7 @@
 </main>
 <script>
   const themed = document.querySelector('#themed');
-  const setTheme = (t) => { themed.dataset.theme = t; document.querySelectorAll('#theme-pick input').forEach((i) => (i.checked = i.value === t)); try { localStorage.setItem('bw-ui-theme', t); } catch {} };
+  const setTheme = (t) => { themed.dataset.theme = t.split('-')[0]; themed.dataset.themeVariant = t; document.querySelectorAll('#theme-pick input').forEach((i) => (i.checked = i.value === t)); try { localStorage.setItem('bw-ui-theme', t); } catch {} };
   let start = new URLSearchParams(location.search).get('theme');
   try { start ??= localStorage.getItem('bw-ui-theme'); } catch {}
   if (start === 'light' || start === 'dark') setTheme(start);

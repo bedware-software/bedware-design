@@ -45,7 +45,7 @@
   .d0 { --c-bg: #000; --c-card: #0e0d0c; --c-toolbar: #0e0d0c; --c-secondary: #22201d; --c-border: #3a3732; --c-field: #0b0a09; --c-fg: #f4f1e8; --c-muted: #a8a49a; --c-primary: #ffde5d; --c-primary-fg: #000; }
   .d-deep { --c-bg: oklch(0.14 0 0); --c-card: oklch(0.10 0 0); --c-toolbar: oklch(0.12 0 0); --c-secondary: oklch(0.22 0 0); --c-border: oklch(0.22 0 0); --c-field: oklch(0.18 0 0); }
   .d-soft { --c-bg: oklch(0.28 0 0); --c-card: oklch(0.23 0 0); --c-toolbar: oklch(0.27 0 0); --c-secondary: oklch(0.36 0 0); --c-border: oklch(0.36 0 0); --c-field: oklch(0.32 0 0); }
-  .d-warm { --c-bg: #171513; --c-card: #22201d; --c-toolbar: #22201d; --c-secondary: #2e2b27; --c-border: #5a564f; --c-field: #0e0d0c; }
+  .d-warm { --c-bg: #171513; --c-card: #22201d; --c-toolbar: #22201d; --c-secondary: #33302b; --c-border: #5a564f; --c-field: #0e0d0c; }
   .l0 { --c-bg: #f4f1e8; --c-card: #faf8f2; --c-toolbar: #faf8f2; --c-secondary: #ebe7dc; --c-border: #d9d4c6; --c-field: #fff; --c-fg: #1d1b18; --c-muted: #5a564f; --c-primary: #000; --c-primary-fg: #ffde5d; }
   .l-bright { --c-bg: oklch(0.985 0 0); --c-card: oklch(1 0 0); --c-toolbar: oklch(0.99 0 0); --c-secondary: oklch(0.975 0 0); --c-border: oklch(0.94 0 0); }
   .l-soft { --c-bg: oklch(0.92 0 0); --c-card: oklch(0.955 0 0); --c-toolbar: oklch(0.935 0 0); --c-secondary: oklch(0.905 0 0); --c-border: oklch(0.87 0 0); --c-field: oklch(0.975 0 0); }
@@ -79,13 +79,13 @@
       <button class="bw-seg__opt" role="radio" aria-checked="false" data-t="light">Светлая</button>
     </div>
   </div>
-  <p>Цвета и шрифты Vimperium уже берутся из дизайн-системы (ветка <code>bedware-design</code>). Ниже четыре места, которых в дизайн-системе нет: по каждому нужен выбор. Вариант с меткой «сейчас» — то, что уже лежит в ветке.</p>
+  <p>Цвета и шрифты Vimperium уже берутся из дизайн-системы (ветка <code>bedware-design</code>). Ниже четыре места, которых в дизайн-системе нет: по каждому нужен выбор. Все четыре решены; выбранный вариант помечен.</p>
 
   <h2><i>1</i>Яркость темы: Default / Deep / Soft / Bright</h2>
   <p>В настройках Vimperium у каждой темы три ступени яркости. В дизайн-системе их нет: тёмная тема одна (чёрный фон), светлая одна. Старые ступени — нейтрально-серые, без тёплого оттенка бренда.</p>
 
   <section class="opt">
-    <header><b>A</b><em>выбрано</em><span>Убрать ступени: остаются только тёмная и светлая темы бренда. Совпадает с решением «фон чистый чёрный везде».</span></header>
+    <header><b>A</b><span>Убрать ступени: остаются только тёмная и светлая темы бренда. Совпадает с решением «фон чистый чёрный везде».</span></header>
     <div>
       <div><div class="win d0"><div class="tb"><i class="btn"></i><div class="addr">bedware.software</div><i class="btn"></i></div><div class="cols"><div class="side"><div class="row on">Почта</div><div class="row">Документы</div><div class="row">GitHub</div></div><div class="page"><b>Тёмная</b><span>Чёрный фон бренда</span><u>Открыть</u></div></div></div><p class="cap">Тёмная</p></div>
       <div><div class="win l0"><div class="tb"><i class="btn"></i><div class="addr">bedware.software</div><i class="btn"></i></div><div class="cols"><div class="side"><div class="row on">Почта</div><div class="row">Документы</div><div class="row">GitHub</div></div><div class="page"><b>Светлая</b><span>Тёплая бумага</span><u>Открыть</u></div></div></div><p class="cap">Светлая</p></div>
@@ -103,7 +103,7 @@
   </section>
 
   <section class="opt">
-    <header><b>C</b><span>Оставить выбор яркости, но пересчитать ступени в тёплые тона бренда (по одной «мягкой» на тему; значения добавляются в дизайн-систему).</span></header>
+    <header><b>C</b><em>выбрано</em><span>Оставить выбор яркости, но пересчитать ступени в тёплые тона бренда (по одной «мягкой» на тему; значения добавляются в дизайн-систему).</span></header>
     <div>
       <div><div class="win d0 d-warm"><div class="tb"><i class="btn"></i><div class="addr">bedware.software</div><i class="btn"></i></div><div class="cols"><div class="side"><div class="row on">Почта</div><div class="row">Документы</div><div class="row">GitHub</div></div><div class="page"><b>Тёмная · мягкая</b><span>Фон не чёрный, а тёплый тёмный</span><u>Открыть</u></div></div></div><p class="cap">Тёмная · мягкая (набросок)</p></div>
       <div><div class="win l0 l-warm"><div class="tb"><i class="btn"></i><div class="addr">bedware.software</div><i class="btn"></i></div><div class="cols"><div class="side"><div class="row on">Почта</div><div class="row">Документы</div><div class="row">GitHub</div></div><div class="page"><b>Светлая · мягкая</b><span>Бумага на тон темнее</span><u>Открыть</u></div></div></div><p class="cap">Светлая · мягкая (набросок)</p></div>
@@ -113,18 +113,18 @@
   <h2><i>2</i>Поле ввода</h2>
   <p>Поле Vimperium (адресная строка, поиск, формы) нарисовано по-своему: без рамки, с мягкой тенью и скруглением. Поле бренда — с рамкой и срезанным углом — уже выбрано, вопрос только когда менять.</p>
   <section class="opt">
-    <header><b>A</b><em>сейчас</em><span>Оставить нынешнее поле до шага «компоненты»; заменить его там целиком на поле пакета.</span></header>
+    <header><b>A</b><span>Оставить нынешнее поле до шага «компоненты»; заменить его там целиком на поле пакета.</span></header>
     <div><div class="stage"><input class="old-field" placeholder="Поиск или адрес"></div></div>
   </section>
   <section class="opt">
-    <header><b>B</b><span>Поменять вид поля уже сейчас, не дожидаясь шага «компоненты».</span></header>
+    <header><b>B</b><em>выбрано</em><span>Поменять вид поля уже сейчас, не дожидаясь шага «компоненты».</span></header>
     <div><div class="stage"><input class="bw-field" placeholder="Поиск или адрес"></div></div>
   </section>
 
   <h2><i>3</i>Цвета групп вкладок</h2>
   <p>Двенадцать цветов, которыми пользователь красит группы вкладок. Это не цвета интерфейса, а метки; выбранный цвет хранится в данных пользователя.</p>
   <section class="opt">
-    <header><b>A</b><em>сейчас</em><span>Оставить палитру как есть.</span></header>
+    <header><b>A</b><em>выбрано</em><span>Оставить палитру как есть.</span></header>
     <div>
       <div class="pills dk" id="p-a-dk"></div>
       <div class="pills lt" id="p-a-lt"></div>
@@ -141,7 +141,7 @@
   <h2><i>4</i>Кромка режима Vim вокруг адресной строки</h2>
   <p>Решение «командный — жёлтый, ввод — персиковый» применено к метке режима и к светящейся кромке поля. Кромке нужны три оттенка на режим; взял их из токенов. Здесь кромка неподвижна, в приложении она движется.</p>
   <section class="opt">
-    <header><b>A</b><em>сейчас</em><span>Командный: жёлтый с тёмной кромкой пластины. Ввод: персиковый, светлее и краснее.</span></header>
+    <header><b>A</b><em>выбрано</em><span>Командный: жёлтый с тёмной кромкой пластины. Ввод: персиковый, светлее и краснее.</span></header>
     <div><div class="edges">
       <div class="edge" style="--e1: var(--bw-plate); --e2: var(--bw-plate-edge); --e3: var(--bw-plate-pressed); --et: var(--bw-text-strong)"><div><kbd>CMD</kbd>bedware.software</div></div>
       <div class="edge" style="--e1: var(--bw-link); --e2: color-mix(in oklab, var(--bw-link) 70%, var(--bw-text-strong)); --e3: color-mix(in oklab, var(--bw-link) 70%, var(--bw-error)); --et: var(--bw-link)"><div><kbd>INS</kbd>bedware.software</div></div>
