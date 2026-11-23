@@ -46,10 +46,17 @@ export function IconButton({ label, size = 28, danger, pressed, className, title
 export interface LinkButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /** Моноширинная: путь к папке, адрес. */
   mono?: boolean
+  /** Значок 12px перед текстом: шеврон, стрелка наружу. */
+  icon?: ReactNode
   ref?: Ref<HTMLButtonElement>
 }
 
 /** Кнопка-ссылка: второстепенное действие в тексте («Вернуть по умолчанию», путь к папке). */
-export function LinkButton({ mono, className, type = 'button', ...rest }: LinkButtonProps) {
-  return <button type={type} className={cx('bw-link', mono && 'bw-link--mono', className)} {...rest} />
+export function LinkButton({ mono, icon, className, children, type = 'button', ...rest }: LinkButtonProps) {
+  return (
+    <button type={type} className={cx('bw-link', mono && 'bw-link--mono', !!icon && 'bw-link--icon', className)} {...rest}>
+      {icon && <span className="bw-btn__icon">{icon}</span>}
+      {icon ? <span>{children}</span> : children}
+    </button>
+  )
 }

@@ -12,14 +12,15 @@ export interface SwitchProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement
 }
 
 /** Переключатель «вкл / выкл», применяется сразу. Внутри <label> переключается и по нажатию на подпись. */
-export function Switch({ checked, onChange, label, size = 'sm', className, ...rest }: SwitchProps) {
+export function Switch({ checked, onChange, label, size = 'sm', className, onClick, ...rest }: SwitchProps) {
   return (
     <button
       type="button"
       role="switch"
       aria-checked={checked}
       aria-label={label}
-      onClick={() => onChange(!checked)}
+      // Свой onClick потребителя идёт первым и переключение не заменяет; отменить его — preventDefault().
+      onClick={(e) => { onClick?.(e); if (!e.defaultPrevented) onChange(!checked) }}
       className={cx('bw-switch', size !== 'sm' && `bw-switch--${size}`, className)}
       {...rest}
     />

@@ -7,7 +7,7 @@ export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElemen
   mono?: boolean
   /** Ошибка: красная рамка и нижняя полоса. */
   invalid?: boolean
-  /** Высота растёт по содержимому (по умолчанию). false — высоту задаёт rows или style. */
+  /** Высота растёт по содержимому (по умолчанию). false — высоту задаёт rows или style, длинный текст прокручивается. */
   autoGrow?: boolean
   ref?: Ref<HTMLTextAreaElement>
 }
@@ -27,7 +27,7 @@ export function Textarea({ mono = false, invalid = false, autoGrow = true, class
       ref={mergeRefs(own, ref)}
       value={value}
       aria-invalid={invalid || undefined}
-      className={cx('bw-field', 'bw-textarea', mono && 'bw-field--mono', className)}
+      className={cx('bw-field', 'bw-textarea', !autoGrow && 'bw-textarea--scroll', mono && 'bw-field--mono', className)}
       onInput={(e) => { fit(); onInput?.(e) }}
       {...rest}
     />

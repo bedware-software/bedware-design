@@ -77,6 +77,8 @@ export function CommandRow({ rowKey, rowKeyQuiet, keys, selected = false, classN
 }
 
 export interface ListRowProps extends HTMLAttributes<HTMLDivElement> {
+  /** Клавиша строки у левого края: метка для набора или номер (как у CommandRow). */
+  rowKey?: ReactNode
   /** Значок 16px слева. */
   icon?: ReactNode
   /** Пояснение у правого края. */
@@ -87,10 +89,12 @@ export interface ListRowProps extends HTMLAttributes<HTMLDivElement> {
   ref?: Ref<HTMLDivElement>
 }
 
-/** Плотная строка списка 32px: значок, подпись в одну строку с обрезкой, пояснение справа. */
-export function ListRow({ icon, note, side, selected = false, className, children, ...rest }: ListRowProps) {
+/** Плотная строка списка 32px: значок, подпись в одну строку с обрезкой, пояснение справа.
+ *  Вне списка с выбором передайте свой role (например role="listitem") — он заменит role="option". */
+export function ListRow({ rowKey, icon, note, side, selected = false, className, children, ...rest }: ListRowProps) {
   return (
     <div role="option" aria-selected={selected} className={cx('bw-listrow', className)} {...rest}>
+      {rowKey !== undefined && <RowKey>{rowKey}</RowKey>}
       {icon && <span className="bw-listrow__icon">{icon}</span>}
       <span className="bw-listrow__label">{children}</span>
       {note && <span className="bw-listrow__note">{note}</span>}

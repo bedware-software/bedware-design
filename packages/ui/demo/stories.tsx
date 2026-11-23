@@ -141,7 +141,7 @@ function ChoiceDemo() {
 function NavDemo() {
   const [at, setAt] = useState('windows')
   const [on, setOn] = useState<Record<string, boolean>>({ windows: true, keys: false })
-  const sw = (id: string) => <Switch size="xs" checked={on[id]} onChange={(v) => setOn({ ...on, [id]: v })} onClick={(e) => { e.stopPropagation(); setOn({ ...on, [id]: !on[id] }) }} label="Модуль включён" />
+  const sw = (id: string) => <Switch size="xs" checked={on[id]} onChange={(v) => setOn({ ...on, [id]: v })} onClick={(e) => e.stopPropagation()} label="Модуль включён" />
   return (
     <Nav style={{ width: 220 }} aria-label="Разделы настроек">
       <NavGroup>Общее</NavGroup>
@@ -325,7 +325,7 @@ function MenuDemo() {
       <Menu style={{ width: 240 }}>
         <MenuHeader>Профили</MenuHeader>
         <MenuItem icon={icons.folder()} current>Работа</MenuItem>
-        <MenuItem icon={icons.folder()} selected actions={<><IconButton size={20} label="Переименовать">{icons.pencil(12)}</IconButton><IconButton size={20} label="Удалить" danger>{icons.trash(12)}</IconButton></>}>Личное</MenuItem>
+        <MenuItem icon={icons.folder()} selected actionsShown="active" actions={<><IconButton size={20} label="Переименовать">{icons.pencil(12)}</IconButton><IconButton size={20} label="Удалить" danger>{icons.trash(12)}</IconButton></>}>Личное</MenuItem>
         <MenuItem icon={icons.folder()} submenu>Перенести в…</MenuItem>
         <MenuSeparator />
         <MenuItem icon={icons.plus()} keys={['n']} accent>Новый профиль…</MenuItem>

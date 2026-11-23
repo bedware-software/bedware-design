@@ -17,9 +17,9 @@ const Check = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" s
 const Dash = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" aria-hidden="true"><path d="M5 12h14" /></svg>
 
 /** Флажок: отметка в форме, которая применяется вместе с формой. Для «вкл / выкл сразу» — Switch. */
-export function Checkbox({ checked, onChange, label, description, className, disabled, ...rest }: CheckboxProps) {
+export function Checkbox({ checked, onChange, label, description, className, disabled, onClick, ...rest }: CheckboxProps) {
   const box = (
-    <button type="button" role="checkbox" aria-checked={checked} disabled={disabled} onClick={() => onChange(checked !== true)} className={cx('bw-check', !label && className)} {...rest}>
+    <button type="button" role="checkbox" aria-checked={checked} disabled={disabled} onClick={(e) => { onClick?.(e); if (!e.defaultPrevented) onChange(checked !== true) }} className={cx('bw-check', !label && className)} {...rest}>
       {checked === 'mixed' ? <Dash /> : <Check />}
     </button>
   )
