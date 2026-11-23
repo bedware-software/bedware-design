@@ -1,4 +1,4 @@
-<!-- @dsCard group="Действия" height=190 subtitle="Основная, вторичная, текстовая, опасная, выключенные" -->
+<!-- @dsCard group="Действия" height=170 subtitle="Основная, вторичная, текстовая, опасная; с клавишей и значком; выключенные" -->
 <!doctype html>
 <html lang="ru"><head><meta charset="utf-8"><style>
   html, body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font-sans); }
@@ -6,8 +6,8 @@
   .line { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 14px; }
   .line:last-child { margin-bottom: 0; }
   .cap { font: 11px var(--font-mono); color: var(--text-dim); width: 84px; flex: none; }
+  .grow { flex: 1; min-width: 0; }
+  .frame { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
 </style></head><body>
-<div class="line"><span class="cap">обычные</span><button class="bw-btn bw-btn--primary">Сохранить</button><button class="bw-btn bw-btn--secondary">Изменить</button><button class="bw-btn bw-btn--ghost">Отмена</button><button class="bw-btn bw-btn--danger">Удалить</button></div>
-<div class="line"><span class="cap">с клавишей</span><button class="bw-btn bw-btn--primary">Сохранить <span class="bw-kbd">↵</span></button><button class="bw-btn bw-btn--ghost">Отмена <span class="bw-kbd">esc</span></button></div>
-<div class="line"><span class="cap">выключены</span><button class="bw-btn bw-btn--primary" disabled>Сохранить</button><button class="bw-btn bw-btn--secondary" disabled>Изменить</button><button class="bw-btn bw-btn--ghost" disabled>Отмена</button></div>
+<div class="line"><span class="cap">обычные</span><button type="button" class="bw-btn bw-btn--primary">Сохранить</button><button type="button" class="bw-btn bw-btn--secondary">Изменить</button><button type="button" class="bw-btn bw-btn--ghost">Отмена</button><button type="button" class="bw-btn bw-btn--danger">Удалить</button></div><div class="line"><span class="cap">с клавишей</span><button type="button" class="bw-btn bw-btn--primary">Сохранить<kbd class="bw-kbd">↵</kbd></button><button type="button" class="bw-btn bw-btn--ghost">Отмена<kbd class="bw-kbd">esc</kbd></button><button type="button" class="bw-btn bw-btn--secondary"><span class="bw-btn__icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg></span>Добавить</button><button type="button" class="bw-btn bw-btn--danger"><span class="bw-btn__icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16"></path><path d="M9 7V4h6v3"></path><path d="m6 7 1 13h10l1-13"></path></svg></span>Удалить<kbd class="bw-kbd">d</kbd></button></div><div class="line"><span class="cap">выключены</span><button type="button" class="bw-btn bw-btn--primary" disabled="">Сохранить</button><button type="button" class="bw-btn bw-btn--secondary" disabled="">Изменить</button><button type="button" class="bw-btn bw-btn--ghost" disabled="">Отмена</button><button type="button" class="bw-btn bw-btn--danger" disabled="">Удалить</button></div>
 </body></html>

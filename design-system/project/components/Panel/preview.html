@@ -1,4 +1,4 @@
-<!-- @dsCard group="Контейнеры" height=330 subtitle="Шапка с плашкой, строки, выбранная строка, подвал" -->
+<!-- @dsCard group="Контейнеры" height=350 subtitle="Шапка с плашкой, строки, выбранная строка, подвал" -->
 <!doctype html>
 <html lang="ru"><head><meta charset="utf-8"><style>
   html, body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font-sans); }
@@ -6,11 +6,8 @@
   .line { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 14px; }
   .line:last-child { margin-bottom: 0; }
   .cap { font: 11px var(--font-mono); color: var(--text-dim); width: 84px; flex: none; }
+  .grow { flex: 1; min-width: 0; }
+  .frame { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
 </style></head><body>
-<div class="bw-panel" style="max-width:520px">
-<div class="bw-panel__head" data-n="01"><div><b class="bw-panel__title">Запуск</b><span class="bw-panel__desc">Как приложение стартует вместе с системой.</span></div></div>
-<div class="bw-row"><div><b class="bw-row__title">Запускать при входе</b><span class="bw-row__desc">Стартовать автоматически.</span></div><button class="bw-switch" role="switch" aria-checked="true"></button></div>
-<div class="bw-row" aria-selected="true"><div><b class="bw-row__title">Выбранная строка <span class="bw-tag">new</span></b><span class="bw-row__desc">Так выглядит выделение в списке.</span></div><button class="bw-btn bw-btn--secondary">Изменить</button></div>
-<div class="bw-panel__foot"><button class="bw-btn bw-btn--danger" style="margin-right:auto">Удалить</button><button class="bw-btn bw-btn--ghost">Отмена</button><button class="bw-btn bw-btn--primary">Сохранить</button></div>
-</div>
+<div class="bw-panel" style="max-width:520px"><div class="bw-panel__head" data-n="01"><div><span class="bw-panel__title">Запуск</span><span class="bw-panel__desc">Как приложение стартует вместе с системой.</span></div></div><div class="bw-row"><div><span class="bw-row__title">Запускать при входе</span><span class="bw-row__desc">Стартовать автоматически.</span></div><button type="button" role="switch" aria-checked="true" aria-label="Запускать при входе" class="bw-switch"></button></div><div class="bw-row" aria-selected="true"><div><span class="bw-row__title">Выбранная строка <span class="bw-tag">new</span></span><span class="bw-row__desc">Так выглядит выделение в списке.</span></div><button type="button" class="bw-btn bw-btn--secondary">Изменить</button></div><div class="bw-row"><div><span class="bw-row__title">Разрешение</span><span class="bw-row__desc">Статус показывает бейдж.</span></div><span class="bw-badge bw-badge--success">выдано</span></div><div class="bw-panel__foot"><button type="button" class="bw-btn bw-btn--danger" style="margin-right:auto">Удалить</button><button type="button" class="bw-btn bw-btn--ghost">Отмена<kbd class="bw-kbd">esc</kbd></button><button type="button" class="bw-btn bw-btn--primary">Сохранить<kbd class="bw-kbd">↵</kbd></button></div></div>
 </body></html>

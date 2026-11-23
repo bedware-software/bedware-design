@@ -1,10 +1,12 @@
 // Собирает файлы дизайн-системы для Claude (тип Design System) из источников репозитория:
-// tokens/tokens.json, components/components.css, fonts/, brand/logo/.
+// tokens/tokens.json, components/components.css, fonts/, brand/logo/ и образцов пакета packages/ui
+// (packages/ui/demo/stories.tsx — те же, что на витрине ui.html, отрисованные в статичный HTML).
 // Результат: design-system/project/** (кроме индекса design-system.json — он хранит id загруженных картинок).
 // Запуск: npm run design-system
 import { readFileSync, writeFileSync, mkdirSync, copyFileSync, rmSync, readdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
+import { build } from 'esbuild';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const out = join(root, 'design-system/project');
@@ -40,112 +42,142 @@ const doc = (group, height, body, subtitle = '') => `<!-- @dsCard group="${group
   .line { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 14px; }
   .line:last-child { margin-bottom: 0; }
   .cap { font: 11px var(--font-mono); color: var(--text-dim); width: 84px; flex: none; }
+  .grow { flex: 1; min-width: 0; }
+  .frame { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
 </style></head><body>
 ${body}
 </body></html>
 `;
-const C = {
-  Button: {
-    group: 'Действия', height: 190, subtitle: 'Основная, вторичная, текстовая, опасная, выключенные',
-    readme: `Кнопка высотой 32px; основная и опасная — жёлтая или красная «пластина» со срезанными углами и тёмной нижней кромкой.
+// Руководства. Разметку превью даёт пакет: образцы из packages/ui/demo/stories.tsx.
+const README = {
+  Button: `Кнопка высотой 32px; основная и опасная — жёлтая или красная «пластина» со срезанными углами и тёмной нижней кромкой.
+React: \`<Button variant="primary" keys="↵">\` из \`@bedware/ui\`.
 
 ## Когда какую
-- \`bw-btn--primary\` — одно главное действие на экран или диалог. Жёлтая пластина, текст чёрный (\`on-yellow\`).
-- \`bw-btn--secondary\` — обычные действия. Рамка \`border-strong\`, скругление \`radius-md\`.
-- \`bw-btn--ghost\` — «Отмена» и второстепенное. Без рамки, hover \`surface-3\`.
-- \`bw-btn--danger\` — необратимое действие. Пластина \`error\` с кромкой \`error-edge\`.
+- \`primary\` (\`bw-btn--primary\`) — одно главное действие на экран или диалог. Пластина \`plate\`, текст \`on-plate\`.
+- \`secondary\` (\`bw-btn--secondary\`) — обычные действия. Рамка \`border-strong\`, скругление \`radius-md\`.
+- \`ghost\` (\`bw-btn--ghost\`) — «Отмена» и второстепенное. Без рамки, hover \`surface-3\`.
+- \`danger\` (\`bw-btn--danger\`) — необратимое действие. Пластина \`error\` с кромкой \`error-edge\`.
 
 ## Правила
 - Подпись — Inter 12px/600, обычный регистр. Капс не используется.
-- Наведение: пластина сдвигается на 1px вверх, кромка 3px → 5px; цвет не меняется. Нажатие: на 1px вниз, \`yellow-pressed\`.
+- Наведение: пластина сдвигается на 1px вверх, кромка 3px → 5px; цвет не меняется. Нажатие: на 1px вниз, \`plate-pressed\`.
 - Выключено: атрибут \`disabled\` — диагональная штриховка \`hatch-a\` / \`hatch-b\`, текст \`text-dim\`. Прозрачность не используется.
 - Фокус: кольцо \`focus\` 2px с отступом 3px, только \`:focus-visible\`.
-- Клавиша внутри кнопки — \`<span class="bw-kbd">\`.
-
-## Что даёт потребитель
-Текст подписи и, при необходимости, значок 12–14px слева от него.`,
-    preview: `<div class="line"><span class="cap">обычные</span><button class="bw-btn bw-btn--primary">Сохранить</button><button class="bw-btn bw-btn--secondary">Изменить</button><button class="bw-btn bw-btn--ghost">Отмена</button><button class="bw-btn bw-btn--danger">Удалить</button></div>
-<div class="line"><span class="cap">с клавишей</span><button class="bw-btn bw-btn--primary">Сохранить <span class="bw-kbd">↵</span></button><button class="bw-btn bw-btn--ghost">Отмена <span class="bw-kbd">esc</span></button></div>
-<div class="line"><span class="cap">выключены</span><button class="bw-btn bw-btn--primary" disabled>Сохранить</button><button class="bw-btn bw-btn--secondary" disabled>Изменить</button><button class="bw-btn bw-btn--ghost" disabled>Отмена</button></div>`,
-  },
-  Field: {
-    group: 'Формы', height: 300, subtitle: 'Три высоты, фокус, ошибка, выключенное',
-    readme: `Однострочное поле ввода со срезанным правым нижним углом; в фокусе получает жёлтую рамку и жёлтую полосу снизу.
+- Клавиша внутри кнопки — свойство \`keys\` (одна или несколько), значок 12–14px — свойство \`icon\`.`,
+  Field: `Однострочное поле ввода со срезанным правым нижним углом; в фокусе получает рамку и полосу снизу цвета \`focus\`.
+React: \`<InputField>\` — рамка вокруг input и того, что рядом (значок, клавиша); \`<Field label error>\` — оно же с подписью и текстом ошибки.
 
 ## Размеры
-- \`bw-field\` — 36px (\`control-md\`), формы и настройки.
-- \`bw-field--sm\` — 32px (\`control-sm\`), адресная строка и поиск.
-- \`bw-field--lg\` — 40px (\`control-lg\`), палитра команд.
-- \`bw-field--mono\` — моноширинный текст: пути, сочетания клавиш, код.
+- \`size="md"\` — 36px (\`control-md\`), формы и настройки.
+- \`size="sm"\` — 32px (\`control-sm\`), адресная строка и поиск.
+- \`size="lg"\` — 40px (\`control-lg\`), палитра команд.
+- \`mono\` — моноширинный текст: пути, сочетания клавиш, код.
 
 ## Состояния
 - Рамка \`border-strong\`, при наведении \`border-hover\`, фон \`field-bg\`.
 - Фокус — рамка и нижняя полоса 2px цвета \`focus\`. Отдельного кольца у поля нет.
-- Ошибка — \`aria-invalid="true"\`: рамка и полоса \`error\`, под полем текст \`bw-error-text\`.
+- Ошибка — \`invalid\` или непустой \`error\`: рамка и полоса \`error\`, под полем текст.
 - Выключено — \`disabled\`: фон \`disabled-bg\`, текст \`disabled-text\`.
 
-## Что даёт потребитель
-Подпись над полем (\`bw-label\`), плейсхолдер-пример и текст ошибки.`,
-    preview: `<div style="max-width:420px">
-<div class="line"><span class="cap">пустое</span><input class="bw-field" placeholder="например, ktalk.exe" style="flex:1"></div>
-<div class="line"><span class="cap">заполнено</span><input class="bw-field bw-field--mono" value="ktalk.exe" style="flex:1"></div>
-<div class="line"><span class="cap">ошибка</span><span style="flex:1"><input class="bw-field" aria-invalid="true" value="Открыть проект"><div class="bw-error-text">Команда с таким названием уже есть.</div></span></div>
-<div class="line"><span class="cap">выключено</span><input class="bw-field" value="недоступно" disabled style="flex:1"></div>
-<div class="line"><span class="cap">32 / 40</span><input class="bw-field bw-field--sm" placeholder="Поиск" style="flex:1"><input class="bw-field bw-field--lg" placeholder="Команда…" style="flex:1"></div>
-</div>`,
-  },
-  Panel: {
-    group: 'Контейнеры', height: 330, subtitle: 'Шапка с плашкой, строки, выбранная строка, подвал',
-    readme: `Карточка-группа настроек: шапка с жёлтой плашкой-номером, строки «заголовок + описание + элемент управления» и подвал с кнопками.
+## Правила
+- Нажатие в любом месте рамки ставит курсор в поле.
+- \`leading\` — значок перед текстом, \`trailing\` — клавиша (\`<Kbd on="field">\`), счётчик или режим после него.`,
+  Select: `Выпадающий список вместо системного \`<select>\`: кнопка 32px в виде поля и список-меню под ней.
+React: \`<Select value options onChange label>\`.
+
+- Закрыт: Enter, пробел, ↓ или ↑ открывают список.
+- Открыт: ↓ / ↑ и Home / End двигают подсветку, Enter или пробел выбирает, Esc и Tab закрывают, буква ведёт к первому варианту на неё.
+- Список встаёт под кнопкой, а если снизу тесно — над ней; не уже кнопки, не выше 280px, пункты по 28px.
+- Нажатие мимо, прокрутка под списком, потеря фокуса окном и изменение его размера закрывают список.
+- Выбранный вариант отмечен галочкой, подсвеченный — фоном \`surface-4\` и полосой \`plate\` слева; недоступный — \`text-dim\`.
+- \`handle\` даёт \`step(±1)\`, \`open()\`, \`close()\` — для собственной клавиатуры приложения.`,
+  Segmented: `Один выбор из нескольких, все варианты видны сразу: ряд кнопок 28px, выбранная — пластина.
+React: \`<Segmented value options onChange label>\`; у варианта есть \`label\`, необязательные \`icon\` (14px) и \`title\`.
+
+- Это \`radiogroup\` из \`radio\`: выбранная — \`aria-checked="true"\`.
+- Два–пять вариантов; если не помещаются в строку — \`wrap\`. Больше пяти — \`Select\`.
+- Ширина кнопки не меняется при выборе.`,
+  Switch: `Переключатель для настроек «вкл / выкл», которые применяются сразу.
+React: \`<Switch checked onChange label>\`.
+
+- Два размера: \`sm\` 36×20 — в строке, \`md\` 44×24 — во главе раздела.
+- Включён — дорожка \`plate\`, бегунок \`on-plate\`; выключен — дорожка \`switch-off\`, бегунок белый.
+- Недоступен — \`disabled\`: дорожка в штриховку, бегунок \`text-dim\`.
+- Бегунок движется 200 мс. Фокус — кольцо \`focus\`.
+- Подпись и описание стоят слева, в строке панели; \`label\` — для экранных дикторов.`,
+  Panel: `Карточка-группа настроек: шапка с плашкой-номером, строки «заголовок + описание + элемент управления» и подвал с кнопками.
+React: \`<Panel>\`, \`<PanelHeader number title description>\`, \`<PanelRow title description selected>\`, \`<PanelFooter>\`.
 
 ## Устройство
-- \`bw-panel\` — рамка \`border-strong\`, скругление \`radius-lg\`, фон от \`surface-2\` к \`surface-1\`.
-- \`bw-panel__head\` с атрибутом \`data-n="01"\` — плашка с номером раздела; заголовок \`bw-panel__title\` (моноширинный, заглавными), описание \`bw-panel__desc\`.
-- \`bw-row\` — отступы \`space-3\` × \`space-4\`; \`bw-row__title\` 14px/500, \`bw-row__desc\` 12px \`text-muted\`.
-- Выбранная строка — \`aria-selected="true"\`: фон \`surface-3\` и жёлтая кромка 4px слева.
-- \`bw-panel__foot\` — кнопки справа, опасная — слева.
+- Панель — рамка \`border-strong\`, скругление \`radius-lg\`, фон от \`surface-2\` к \`surface-1\`.
+- Шапка — плашка с номером раздела; заголовок моноширинный, заглавными; описание 12px.
+- Строка — отступы \`space-3\` × \`space-4\`; заголовок 14px/500, описание 12px \`text-muted\`.
+- Выбранная строка — \`selected\`: фон \`surface-3\` и кромка \`plate\` 4px слева.
+- Подвал — кнопки справа, опасная — слева.
 
 ## Правила
-- Плашка — единственное место в панели, где есть жёлтая заливка, кроме основной кнопки.
-- Номер в плашке — две цифры; без нумерации плашку не ставят.`,
-    preview: `<div class="bw-panel" style="max-width:520px">
-<div class="bw-panel__head" data-n="01"><div><b class="bw-panel__title">Запуск</b><span class="bw-panel__desc">Как приложение стартует вместе с системой.</span></div></div>
-<div class="bw-row"><div><b class="bw-row__title">Запускать при входе</b><span class="bw-row__desc">Стартовать автоматически.</span></div><button class="bw-switch" role="switch" aria-checked="true"></button></div>
-<div class="bw-row" aria-selected="true"><div><b class="bw-row__title">Выбранная строка <span class="bw-tag">new</span></b><span class="bw-row__desc">Так выглядит выделение в списке.</span></div><button class="bw-btn bw-btn--secondary">Изменить</button></div>
-<div class="bw-panel__foot"><button class="bw-btn bw-btn--danger" style="margin-right:auto">Удалить</button><button class="bw-btn bw-btn--ghost">Отмена</button><button class="bw-btn bw-btn--primary">Сохранить</button></div>
-</div>`,
-  },
-  Tag: {
-    group: 'Метки', height: 80, subtitle: 'Наклонная жёлтая метка',
-    readme: `Короткая жёлтая метка-параллелограмм с наклоном −3° — единственное место в интерфейсе, кроме логотипа, где текст наклонён.
+- Плашка — единственное место в панели с заливкой \`plate\`, кроме основной кнопки.
+- Номер в плашке — две цифры; без нумерации шапку с плашкой не ставят.`,
+  Menu: `Выпадающее и контекстное меню: заголовок группы, пункты со значками и клавишами, разделители.
+React: \`<Menu>\`, \`<MenuHeader>\`, \`<MenuItem icon keys selected danger disabled>\`, \`<MenuSeparator>\`.
+
+- Меню — фон \`surface-2\`, рамка \`border-strong\`, скругление \`radius-lg\`, текст 12px, тень \`shadow-popover\`.
+- Заголовок — моноширинный 10px заглавными, \`text-muted\`.
+- Пункт — hover \`surface-3\`; выбранный с клавиатуры — \`selected\`: фон \`surface-4\` и полоса \`plate\` 3px слева.
+- Опасный пункт — \`danger\`, цвет \`error\`; недоступный — \`disabled\`, цвет \`text-dim\`.
+- Клавиши справа — каждая своей шапкой. Клавиатурой управляет тот, кто открыл меню.`,
+  ConfirmDialog: `«Вы уверены?»: заголовок, сообщение 14px, кнопки справа и полоса подсказок внизу.
+React: \`<ConfirmDialog open title message onConfirm onCancel>\`.
+
+- \`tone="destructive"\` — красная кнопка подтверждения (по умолчанию), \`tone="primary"\` — основная.
+- Клавиатура стоит на кнопке подтверждения (Enter); \`y\` — да, \`n\` и Esc — нет. Эти же клавиши названы в полосе подсказок.
+- \`placement="overlay"\` — поверх окна с затемнением (Runwa); \`"window"\` — диалог занимает собственное окно ОС целиком (Vimperium); \`"inline"\` — только карточка, без клавиш, для образцов.
+- Ширина 460px, скругление \`radius-lg\`, фон \`surface-2\`, тень \`shadow-popover\`.`,
+  PaletteRows: `Две строки результата палитры команд.
+React: \`<ResultRow>\` — высокая, \`<CommandRow>\` — плотная.
+
+## Высокая (\`ResultRow\`)
+- Плитка 32px со значком 18px или готовая картинка приложения, заголовок 14px/500, подзаголовок 12px.
+- \`alias\` — короткое имя рядом с заголовком (то, что набирают); \`note\` — пояснение у правого края (то, что сообщают).
+- \`numberHint\` — цифра 1–9 у левого края окна, запускает строку сразу.
+
+## Плотная (\`CommandRow\`)
+- Слева клавиша строки (\`rowKey\`: метка для набора или номер) в своей колонке с линейкой, затем подпись 14px, справа сочетание клавиш.
+- Есть hover \`surface-3\`.
+
+## Общее
+- Выбранная строка — \`selected\`: фон \`surface-4\` и полоса \`plate\` 3px слева; у высокой строки цифра становится пластиной.`,
+  Kbd: `Клавиша и полоса подсказок.
+React: \`<Kbd>\`, \`<Hint label keys>\`, \`<HintBar>\`.
+
+- Клавиша — моноширинный 11px, рамка \`border-strong\`, фон \`surface-3\`, скругление 4px. Одна клавиша — одна шапка: ⌘ и K стоят отдельно.
+- \`on="field"\` — на поле ввода: заливка \`surface-4\` без видимой рамки, иначе шапка сливается с полем.
+- \`on="button"\` — на кнопке: полупрозрачная, цветом подписи кнопки. Внутри \`Button\` включается сама.
+- Полоса подсказок — 40px вдоль нижнего края любой поверхности с клавиатурой: «подпись + клавиши», по центру, 11px \`text-muted\`, фон \`surface-1\`.
+- В полосе только главные клавиши; если их больше — в конце «Все клавиши ?».`,
+  Badge: `Бейдж-статус: прямоугольный (скругление 4px), моноширинный 10px заглавными.
+React: \`<Badge tone="success">\`.
+
+- Тона: \`neutral\` — справка, \`accent\` — выделенное («global»), \`success\`, \`warning\`, \`error\`.
+- Текст цвета тона на его же заливке 15%.
+- Одно-два слова. Для «new» и «beta» — наклонная метка \`Tag\`, не бейдж.`,
+  Tag: `Короткая метка-параллелограмм цвета \`plate\` с наклоном −3° — единственное место в интерфейсе, кроме логотипа, где текст наклонён.
+React: \`<Tag>new</Tag>\`.
 
 - Текст — одно слово, моноширинный 10px заглавными: \`new\`, \`beta\`, номер версии.
-- Не больше одной метки на строку и двух-трёх на экран; для статусов («включено», «ошибка») метка не используется.`,
-    preview: `<div class="line"><span class="bw-tag">new</span><span class="bw-tag">beta</span><span class="bw-tag">v1.4</span><b class="bw-row__title">Палитра команд <span class="bw-tag">new</span></b></div>`,
-  },
-  Switch: {
-    group: 'Формы', height: 80, subtitle: 'Включён и выключен',
-    readme: `Переключатель 36×20 для настроек «вкл / выкл», которые применяются сразу.
-
-- Состояние — \`aria-checked\`: включён — дорожка \`yellow\`, бегунок чёрный; выключен — дорожка \`switch-off\`, бегунок белый.
-- Бегунок движется 200 мс. Фокус — кольцо \`focus\`.
-- Подпись и описание стоят слева, в строке \`bw-row\`.`,
-    preview: `<div class="line"><button class="bw-switch" role="switch" aria-checked="true"></button><button class="bw-switch" role="switch" aria-checked="false"></button></div>`,
-  },
-  Menu: {
-    group: 'Контейнеры', height: 170, subtitle: 'Заголовок, пункты с клавишами, выбранный пункт',
-    readme: `Выпадающее и контекстное меню: заголовок группы, пункты высотой 28px с клавишами справа.
-
-- \`bw-menu\` — фон \`surface-2\`, рамка \`border-strong\`, скругление \`radius-lg\`, текст 12px.
-- \`bw-menu__head\` — моноширинный 10px заглавными, \`text-muted\`.
-- \`bw-menu__item\` — hover \`surface-3\`; выбранный с клавиатуры — \`aria-selected="true"\`: фон \`surface-4\` и жёлтая полоса 3px слева.
-- Клавиша справа — \`bw-kbd\`.`,
-    preview: `<div class="bw-menu" style="width:240px"><div class="bw-menu__head">Рабочие области</div><div class="bw-menu__item" aria-selected="true"><span>Работа</span><span class="bw-kbd">1</span></div><div class="bw-menu__item"><span>Личное</span><span class="bw-kbd">2</span></div><div class="bw-menu__item"><span>Настройки</span><span class="bw-kbd">⌘ ,</span></div></div>`,
-  },
+- Не больше одной метки на строку и двух-трёх на экран; для статусов («включено», «ошибка») — \`Badge\`.`,
 };
-for (const [name, c] of Object.entries(C)) {
-  put(`components/${name}/README.md`, c.readme + '\n');
-  put(`components/${name}/preview.html`, doc(c.group, c.height, c.preview, c.subtitle));
+
+// Образцы пакета → статичный HTML. Переменные на странице дизайн-системы — без префикса bw-.
+const tmp = join(root, 'packages/ui/demo/build/static.mjs');
+await build({ entryPoints: [join(root, 'packages/ui/demo/static.tsx')], outfile: tmp, bundle: true, format: 'esm', platform: 'node', jsx: 'automatic',
+  define: { 'process.env.NODE_ENV': '"production"' }, banner: { js: "import { createRequire } from 'node:module'; const require = createRequire(import.meta.url);" }, logLevel: 'warning' });
+const { previews } = await import(pathToFileURL(tmp).href);
+for (const { name, group, height, subtitle, html } of previews) {
+  if (!README[name]) throw new Error(`Нет руководства для компонента ${name}`);
+  put(`components/${name}/README.md`, README[name] + '\n');
+  put(`components/${name}/preview.html`, doc(group, height, html.replaceAll('--bw-', '--'), subtitle));
 }
 
 /* ── обложка ── */

@@ -1,4 +1,4 @@
-<!-- @dsCard group="Формы" height=80 subtitle="Включён и выключен" -->
+<!-- @dsCard group="Формы" height=135 subtitle="Два размера, включён, выключен, недоступен" -->
 <!doctype html>
 <html lang="ru"><head><meta charset="utf-8"><style>
   html, body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font-sans); }
@@ -6,6 +6,8 @@
   .line { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 14px; }
   .line:last-child { margin-bottom: 0; }
   .cap { font: 11px var(--font-mono); color: var(--text-dim); width: 84px; flex: none; }
+  .grow { flex: 1; min-width: 0; }
+  .frame { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
 </style></head><body>
-<div class="line"><button class="bw-switch" role="switch" aria-checked="true"></button><button class="bw-switch" role="switch" aria-checked="false"></button></div>
+<div class="line"><span class="cap">36×20</span><button type="button" role="switch" aria-checked="true" aria-label="Включён" class="bw-switch"></button><button type="button" role="switch" aria-checked="false" aria-label="Выключен" class="bw-switch"></button></div><div class="line"><span class="cap">44×24</span><button type="button" role="switch" aria-checked="true" aria-label="Включён, большой" class="bw-switch bw-switch--md"></button><button type="button" role="switch" aria-checked="false" aria-label="Выключен, большой" class="bw-switch bw-switch--md"></button></div><div class="line"><span class="cap">недоступен</span><button type="button" role="switch" aria-checked="true" aria-label="Недоступен, включён" class="bw-switch" disabled=""></button><button type="button" role="switch" aria-checked="false" aria-label="Недоступен, выключен" class="bw-switch" disabled=""></button></div>
 </body></html>

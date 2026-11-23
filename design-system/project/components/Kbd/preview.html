@@ -1,0 +1,13 @@
+<!-- @dsCard group="Метки" height=215 subtitle="Обычная, на поле, на кнопке; полоса подсказок" -->
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><style>
+  html, body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font-sans); }
+  body { padding: 20px; }
+  .line { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 14px; }
+  .line:last-child { margin-bottom: 0; }
+  .cap { font: 11px var(--font-mono); color: var(--text-dim); width: 84px; flex: none; }
+  .grow { flex: 1; min-width: 0; }
+  .frame { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+</style></head><body>
+<div class="line"><span class="cap">обычные</span><kbd class="bw-kbd">esc</kbd><kbd class="bw-kbd">↵</kbd><kbd class="bw-kbd">⌘</kbd><kbd class="bw-kbd">K</kbd><kbd class="bw-kbd">Ctrl</kbd><kbd class="bw-kbd">gg</kbd></div><div class="line"><span class="cap">на поле</span><div class="bw-field bw-field--box bw-field--sm grow"><input class="bw-field__input" placeholder="Поиск"/><span class="bw-field__side"><kbd class="bw-kbd bw-kbd--on-field">/</kbd></span></div></div><div class="line"><span class="cap">на кнопке</span><button type="button" class="bw-btn bw-btn--primary">Сохранить<kbd class="bw-kbd">↵</kbd></button><button type="button" class="bw-btn bw-btn--secondary">Сохранить как<kbd class="bw-kbd">⌘</kbd><kbd class="bw-kbd">S</kbd></button><button type="button" class="bw-btn bw-btn--danger">Удалить<kbd class="bw-kbd">d</kbd></button></div><div class="line"><span class="cap">полоса</span><div class="grow frame"><div class="bw-hintbar"><span class="bw-hint">Открыть<kbd class="bw-kbd">↵</kbd></span><span class="bw-hint">Вниз / вверх<kbd class="bw-kbd">j</kbd><kbd class="bw-kbd">k</kbd></span><span class="bw-hint">Закрыть<kbd class="bw-kbd">Esc</kbd></span><span class="bw-hint">Все клавиши<kbd class="bw-kbd">?</kbd></span></div></div></div>
+</body></html>

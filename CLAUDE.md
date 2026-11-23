@@ -26,23 +26,35 @@
 | Правится руками (источник) | Собирается из него | Команда |
 | --- | --- | --- |
 | `tokens/tokens.json` — цвета, шрифты, размеры, скругления, тени | `tokens/tokens.css`, `tokens/tailwind-theme.css` | `npm run tokens` |
-| `components/components.css` — эталон компонентов (классы `bw-*`, только на токенах) | — | — |
+| `components/components.css` — все стили компонентов (классы `bw-*`, только на токенах). Единственный источник стилей: пакет своих стилей не имеет | `packages/ui/dist/styles.css` (копия) | `npm run ui` |
+| `packages/ui/src/*.tsx` — React-компоненты пакета `@bedware/ui` (разметка и поведение на классах `bw-*`) | `packages/ui/dist/**` — JS, типы, `styles.css`, `tokens.css`, `tailwind-theme.css`, `fonts.css` и `fonts/` | `npm run ui` |
+| `packages/ui/demo/stories.tsx` — образцы компонентов (общие для витрины и дизайн-системы), `packages/ui/demo/showcase.tsx` — страница-витрина | `packages/ui/demo/build/showcase.js` (для `ui.html`); `design-system/project/components/*/preview.html` | `npm run ui`; `npm run design-system` |
 | `tools/build-logo.mjs` (раскладка логотипа), `assets/glyphs.js` ← `tools/extract-glyphs.py` | `brand/logo/*.svg` | `npm run logo` |
 | `tools/build-posters.py`, `brand/backdrop.png` ← `tools/clean-backdrop.py` | `brand/logo/*-poster.png` | `python tools/build-posters.py` |
 | `design-system/README.src.md` — текст бренд-бука | `design-system/project/README.md` | `npm run design-system` |
-| `tools/build-design-system.mjs` — описания и превью компонентов, обложка | `design-system/project/**` (кроме индекса) | `npm run design-system` |
+| `tools/build-design-system.mjs` — описания компонентов (руководства), обложка | `design-system/project/**` (кроме индекса) | `npm run design-system` |
 | `design-system/project/design-system.json` — индекс дизайн-системы (название, id загруженных картинок) | — | правится руками, осторожно |
 
+`packages/ui/dist/` и `packages/ui/demo/build/` в git не хранятся: после клонирования выполнить `npm install` и `npm run ui`.
 `fonts/` — Inter и JetBrains Mono (woff2, OFL), скопированы из пакетов `@fontsource/*`.
 Скриптам на Python нужны Pillow и fonttools (ставить в отдельное окружение, не в систему).
 
 ## Порядок любой правки
 
 1. Изменить источник (таблица выше).
-2. Пересобрать: `npm run tokens`, при необходимости `npm run logo`, затем `npm run design-system`.
-3. Проверить на локальной странице: `npm run serve` → http://localhost:4173/system.html (итог: логотип, компоненты, токены).
+2. Пересобрать: `npm run tokens`, при необходимости `npm run logo`, затем `npm run ui` (пакет и витрина; `npm run ui:check` — проверка типов), затем `npm run design-system`.
+3. Проверить на локальной странице: `npm run serve` → http://localhost:4173/ui.html (все компоненты пакета во всех состояниях, обе темы) и http://localhost:4173/system.html (итог: логотип, компоненты, токены).
 4. Закоммитить локально.
 5. Опубликовать в дизайн-систему (раздел ниже).
+
+## Пакет компонентов `@bedware/ui`
+
+- Папка `packages/ui`, npm-workspace этого репозитория. TypeScript, React 19 — peer-зависимость, других зависимостей нет (значки передаёт потребитель).
+- Компоненты: `Button`, `InputField` / `Field`, `Select`, `Segmented`, `Switch`, `Panel*`, `Menu*`, `ConfirmDialog`, `ResultRow` / `CommandRow` / `RowKey`, `Kbd` / `Hint` / `HintBar`, `Badge`, `Tag`.
+- Компонент — это разметка и поведение; внешний вид целиком в `components/components.css`. Новый вид или состояние: сначала класс в `components/components.css`, потом свойство компонента, потом образец в `demo/stories.tsx`.
+- Подключение в приложении: `import '@bedware/ui/tokens.css'`, `'@bedware/ui/styles.css'`, при необходимости `'@bedware/ui/fonts.css'`; тема — `data-theme` на предке.
+- Поведение и размеры взяты из приложений (`VimSelect`, `Segmented`, `Switch`, `InputField`, `ConfirmDialog`, `KeyHints` Vimperium; `ResultRow`, бейджи Runwa). Клавиши Vim (h / l в формах) в пакет не входят: для них у `Select` есть `handle`, остальные компоненты принимают `data-*` атрибуты.
+- Варианты спорных мест для владельца живут только на странице `ui.html` (классы `alt-*` в её `<style>`), в пакет не попадают.
 
 ## Дизайн-система в Claude
 
@@ -52,11 +64,13 @@
 - Картинки (логотипы, робот) — это загрузки (`asset: true`), их id записаны в индексе. При замене картинки: загрузить новую, вписать её id в индекс, старую удалить.
 - Хранилище вырезает из SVG вшитые растровые картинки — постеры с подложкой загружать как PNG.
 - Формат токенов дизайн-системы не принимает семейство `motion` — сборщик его убирает.
-- Команда `/design-sync` пока не используется: она рассчитана на библиотеку React-компонентов, которой ещё нет. Вернуться к ней, когда появится общий пакет компонентов.
+- Превью компонентов — образцы пакета (`packages/ui/demo/stories.tsx`), отрисованные в статичный HTML; высота карточки задаётся там же, полем `height`.
+- Команда `/design-sync` пока не используется: публикация идёт сборщиком `npm run design-system`. Пакет `@bedware/ui` теперь есть — к `/design-sync` можно вернуться, если понадобятся живые React-компоненты в самой дизайн-системе.
 
 ## Страницы
 
-- `system.html` — чистовой итог. Основная страница для проверки.
+- `ui.html` — витрина пакета `@bedware/ui`: каждый компонент во всех состояниях, переключатель темы, варианты нерешённых мест. Основная страница для проверки компонентов.
+- `system.html` — чистовой итог бренда: логотип, шесть первых компонентов, токены.
 - `light.html` — три варианта светлой темы (история выбора; выбран B).
 - `index.html` — этап 1: палитра, шрифты, каталог Runwa и Vimperium «рядом», таблица расхождений (история выбора).
 - `c.html` — доводка направления C (история выбора).
@@ -64,5 +78,6 @@
 
 ## Где мы сейчас
 
-Сделано: палитра, шрифты, направление C «Пластины», токены тёмной и светлой темы, логотип, шесть эталонных компонентов, дизайн-система в Claude.
-Дальше по порядку: общий пакет React-компонентов → миграция приложений (сначала токены, потом компоненты) → сайт bedware.software на Astro.
+Сделано: палитра, шрифты, направление C «Пластины», токены тёмной и светлой темы, логотип, шесть эталонных компонентов, дизайн-система в Claude, общий пакет React-компонентов `@bedware/ui` с витриной.
+Ждёт решения владельца (варианты на `ui.html`): вид выбранного сегмента, вид кнопки выпадающего списка, бейджи заливкой или контуром. После решения — опубликовать новые компоненты в дизайн-систему (локально они уже собраны, в Claude ещё не отправлены).
+Дальше по порядку: миграция приложений (сначала токены, потом компоненты) → сайт bedware.software на Astro.

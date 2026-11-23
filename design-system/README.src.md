@@ -77,4 +77,4 @@ bedware software — организация одного разработчик�
 
 ## Откуда это берётся
 
-Источник истины — репозиторий `bedware-design`: `tokens/tokens.json`, `components/components.css`, `brand/logo/`. Эта система собирается из него командой `npm run design-system`; менять значения нужно в коде, а не здесь. Компоненты пока показаны статичной разметкой на классах `bw-*` из `components/bundle.css`; живые React-компоненты появятся вместе с общим пакетом.
+Источник истины — репозиторий `bedware-design`: `tokens/tokens.json`, `components/components.css`, `brand/logo/`. Эта система собирается из него командой `npm run design-system`; менять значения нужно в коде, а не здесь. Компоненты — это React-пакет `@bedware/ui` (`packages/ui` в репозитории) на классах `bw-*` из `components/bundle.css`; превью здесь — те же образцы пакета, отрисованные в статичную разметку.

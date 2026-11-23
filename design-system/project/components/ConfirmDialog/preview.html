@@ -1,0 +1,13 @@
+<!-- @dsCard group="Контейнеры" height=410 subtitle="Сообщение 14px, кнопки, полоса подсказок" -->
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><style>
+  html, body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font-sans); }
+  body { padding: 20px; }
+  .line { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 14px; }
+  .line:last-child { margin-bottom: 0; }
+  .cap { font: 11px var(--font-mono); color: var(--text-dim); width: 84px; flex: none; }
+  .grow { flex: 1; min-width: 0; }
+  .frame { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+</style></head><body>
+<div class="line" style="align-items:flex-start"><div role="alertdialog" class="bw-dialog"><div class="bw-dialog__body"><h3 class="bw-dialog__title">Удалить рабочую область «Учёба»?</h3><p class="bw-dialog__message">Закроются 14 вкладок. Это действие нельзя отменить.</p><div class="bw-dialog__actions"><button type="button" class="bw-btn bw-btn--ghost">Отмена</button><button type="button" class="bw-btn bw-btn--danger">Да, удалить</button></div></div><div class="bw-hintbar"><span class="bw-hint">Да<kbd class="bw-kbd">y</kbd></span><span class="bw-hint">Нет<kbd class="bw-kbd">n</kbd><kbd class="bw-kbd">Esc</kbd></span></div></div><div role="alertdialog" class="bw-dialog"><div class="bw-dialog__body"><h3 class="bw-dialog__title">Перезапустить, чтобы обновить?</h3><p class="bw-dialog__message">Вкладки и окна восстановятся после запуска.</p><div class="bw-dialog__actions"><button type="button" class="bw-btn bw-btn--ghost">Позже</button><button type="button" class="bw-btn bw-btn--primary">Перезапустить</button></div></div><div class="bw-hintbar"><span class="bw-hint">Да<kbd class="bw-kbd">y</kbd></span><span class="bw-hint">Нет<kbd class="bw-kbd">n</kbd><kbd class="bw-kbd">Esc</kbd></span></div></div></div>
+</body></html>

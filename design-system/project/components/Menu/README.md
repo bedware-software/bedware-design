@@ -1,6 +1,8 @@
-Выпадающее и контекстное меню: заголовок группы, пункты высотой 28px с клавишами справа.
+Выпадающее и контекстное меню: заголовок группы, пункты со значками и клавишами, разделители.
+React: `<Menu>`, `<MenuHeader>`, `<MenuItem icon keys selected danger disabled>`, `<MenuSeparator>`.
 
-- `bw-menu` — фон `surface-2`, рамка `border-strong`, скругление `radius-lg`, текст 12px.
-- `bw-menu__head` — моноширинный 10px заглавными, `text-muted`.
-- `bw-menu__item` — hover `surface-3`; выбранный с клавиатуры — `aria-selected="true"`: фон `surface-4` и жёлтая полоса 3px слева.
-- Клавиша справа — `bw-kbd`.
+- Меню — фон `surface-2`, рамка `border-strong`, скругление `radius-lg`, текст 12px, тень `shadow-popover`.
+- Заголовок — моноширинный 10px заглавными, `text-muted`.
+- Пункт — hover `surface-3`; выбранный с клавиатуры — `selected`: фон `surface-4` и полоса `plate` 3px слева.
+- Опасный пункт — `danger`, цвет `error`; недоступный — `disabled`, цвет `text-dim`.
+- Клавиши справа — каждая своей шапкой. Клавиатурой управляет тот, кто открыл меню.

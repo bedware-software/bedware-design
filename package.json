@@ -8,12 +8,17 @@
     "serve": "python3 -m http.server 4173",
     "tokens": "node tools/build-tokens.mjs",
     "logo": "node tools/build-logo.mjs",
-    "design-system": "node tools/build-design-system.mjs"
+    "design-system": "node tools/build-design-system.mjs",
+    "ui": "npm run build -w @bedware/ui",
+    "ui:check": "npm run typecheck -w @bedware/ui"
   },
   "devDependencies": {
     "@fontsource/inter": "^5.3.0",
     "@fontsource/jetbrains-mono": "^5.3.0",
     "@tailwindcss/cli": "^4.3.5",
     "tailwindcss": "^4.3.5"
-  }
+  },
+  "workspaces": [
+    "packages/*"
+  ]
 }
