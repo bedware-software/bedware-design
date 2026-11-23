@@ -19,3 +19,4 @@ export { ChoiceCards, type ChoiceOption, type ChoiceCardsProps } from './ChoiceC
 export { Nav, NavGroup, NavItem, type NavItemProps } from './Nav';
 export { Tooltip, Tip, type TooltipProps, type TipProps } from './Tooltip';
 export { FormDialog, type FormDialogProps } from './FormDialog';
+export { Slider, Progress, type SliderProps, type ProgressProps } from './Slider';

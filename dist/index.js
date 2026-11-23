@@ -19,4 +19,5 @@ export { ChoiceCards } from './ChoiceCards';
 export { Nav, NavGroup, NavItem } from './Nav';
 export { Tooltip, Tip } from './Tooltip';
 export { FormDialog } from './FormDialog';
+export { Slider, Progress } from './Slider';
 //# sourceMappingURL=index.js.map
