@@ -7,6 +7,10 @@ export interface SectionTitleProps extends Omit<HTMLAttributes<HTMLDivElement>, 
     level?: 1 | 2;
     /** Опасный раздел (Danger Zone): заголовок и пластинка красные. */
     danger?: boolean;
+    /** Справа от заголовка: кнопка «Добавить», счётчик, переключатель. */
+    side?: ReactNode;
+    /** Без нижнего отступа: когда отступ задаёт родитель (заголовок внутри строки или подписи). */
+    flush?: boolean;
 }
 /** Заголовок раздела без номера: моноширинный, заглавными. С номером — PanelHeader. */
-export declare function SectionTitle({ title, description, level, danger, className, ...rest }: SectionTitleProps): import("react").JSX.Element;
+export declare function SectionTitle({ title, description, level, danger, side, flush, className, ...rest }: SectionTitleProps): import("react").JSX.Element;

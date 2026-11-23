@@ -1,4 +1,4 @@
-import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
 import { useId, useRef } from 'react';
 import { cx, mergeRefs } from './util';
 /** Однострочное поле: рамка со срезанным углом вокруг input и того, что рядом с ним.
@@ -17,11 +17,20 @@ export function InputField({ size = 'md', mono = false, invalid = false, leading
                 input.focus();
         }, children: [leading && _jsx("span", { className: "bw-field__side", children: leading }), _jsx("input", { ref: mergeRefs(inputRef, ref), className: cx('bw-field__input', className), disabled: disabled, "aria-invalid": invalid || undefined, ...rest }), trailing && _jsx("span", { className: "bw-field__side", children: trailing }), children] }));
 }
+/** Подпись поля или подраздела: 12px/500. С description под ней встаёт пояснение 12px text-muted.
+ *  Для любого элемента управления, не только поля: списка, дорожки сегментов, набора флажков. */
+export function Label({ description, className, children, ...rest }) {
+    return (_jsxs(_Fragment, { children: [_jsx("label", { className: cx('bw-label', !!description && 'bw-label--with-desc', className), ...rest, children: children }), description && _jsx("p", { className: "bw-label-desc", children: description })] }));
+}
+/** Строка под формой целиком: подсказка или ошибка, которая относится не к одному полю. */
+export function HelpText({ error, className, ...rest }) {
+    return _jsx("p", { role: error ? 'alert' : undefined, className: cx('bw-help-text', error && 'bw-help-text--error', className), ...rest });
+}
 /** Поле с подписью и текстом ошибки. */
-export function Field({ label, error, id, invalid, ...rest }) {
+export function Field({ label, description, error, id, invalid, ...rest }) {
     const auto = useId();
     const inputId = id ?? auto;
     const errorId = `${inputId}-error`;
-    return (_jsxs("div", { children: [label && _jsx("label", { className: "bw-label", htmlFor: inputId, children: label }), _jsx(InputField, { id: inputId, invalid: invalid ?? !!error, "aria-describedby": error ? errorId : undefined, ...rest }), error && _jsx("div", { className: "bw-error-text", id: errorId, children: error })] }));
+    return (_jsxs("div", { children: [label && _jsx(Label, { htmlFor: inputId, description: description, children: label }), _jsx(InputField, { id: inputId, invalid: invalid ?? !!error, "aria-describedby": error ? errorId : undefined, ...rest }), error && _jsx("div", { className: "bw-error-text", id: errorId, children: error })] }));
 }
 //# sourceMappingURL=InputField.js.map

@@ -1,5 +1,5 @@
 export { Button, IconButton, LinkButton } from './Button';
-export { InputField, Field } from './InputField';
+export { InputField, Field, Label, HelpText } from './InputField';
 export { Panel, PanelHeader, PanelRow, PanelFooter } from './Panel';
 export { Tag, Badge } from './Tag';
 export { Switch } from './Switch';
