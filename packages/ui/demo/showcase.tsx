@@ -2,11 +2,10 @@
 import { useState } from 'react'
 import type { ReactNode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { Badge, Button, ConfirmDialog, Hint, Segmented, Select } from '../src'
+import { Button, ConfirmDialog, Hint, Segmented } from '../src'
 import { stories } from './stories'
 
 const OPTIONS = [{ value: 'compact', label: 'Плотно' }, { value: 'normal', label: 'Обычно' }, { value: 'roomy', label: 'Свободно' }]
-const ENGINES = [{ value: 'ddg', label: 'DuckDuckGo' }, { value: 'google', label: 'Google' }, { value: 'kagi', label: 'Kagi' }]
 
 function Variant({ letter, name, note, picked, children }: { letter: string; name: string; note: string; picked?: boolean; children: ReactNode }) {
   return (
@@ -20,25 +19,19 @@ function Variant({ letter, name, note, picked, children }: { letter: string; nam
 
 function Decisions() {
   const [seg, setSeg] = useState('normal')
-  const [engine, setEngine] = useState('ddg')
-  const badges = <><Badge>local</Badge><Badge tone="accent">global</Badge><Badge tone="success">granted</Badge><Badge tone="warning">overridden</Badge><Badge tone="error">not granted</Badge></>
   return (
     <>
-      <h3 id="q-seg">1. Сегменты: как выглядит выбранный</h3>
+      <h3 id="q-seg">1. Сегменты: дорожка + пластина</h3>
+      <p className="muted small">Сегменты — это один блок с несколькими значениями, из которых выбрано ровно одно. Оба варианта — общая дорожка (как в прежнем C) с пластиной на выбранном (как в прежнем A).</p>
       <div className="variants">
-        <Variant letter="A" name="Пластина" picked note="Срез и кромка, как у основной кнопки. Выбранное сразу видно, но жёлтого на экране становится больше."><Segmented label="Плотность A" value={seg} onChange={setSeg} options={OPTIONS} /></Variant>
-        <Variant letter="B" name="Плоская заливка" note="Как в Vimperium сейчас: заливка цветом пластины, углы 6px, без среза и кромки."><div className="alt-seg-b"><Segmented label="Плотность B" value={seg} onChange={setSeg} options={OPTIONS} /></div></Variant>
-        <Variant letter="C" name="Дорожка с подчёркиванием" note="Общая рамка, выбранный — светлее и с полосой снизу. Самый тихий; жёлтый остаётся только у основной кнопки."><div className="alt-seg-c"><Segmented label="Плотность C" value={seg} onChange={setSeg} options={OPTIONS} /></div></Variant>
+        <Variant letter="A" name="Пластина внутри дорожки" picked note="У дорожки зазор 2px, выбранный — пластина со срезом и кромкой, как основная кнопка. Высота блока 32px."><Segmented label="Плотность A" value={seg} onChange={setSeg} options={OPTIONS} /></Variant>
+        <Variant letter="B" name="Пластина во всю ячейку" note="Без зазора и без среза: выбранная ячейка залита целиком, кромка снизу. Плотнее, но пластина теряет срезанный угол."><div className="alt-seg-flush"><Segmented label="Плотность B" value={seg} onChange={setSeg} options={OPTIONS} /></div></Variant>
       </div>
-      <h3 id="q-select">2. Выпадающий список: вид кнопки</h3>
+      <h3 id="q-secondary">2. Вторичная кнопка без выпуклой заливки</h3>
+      <p className="muted small">Выпуклая заливка убрана везде. Чем её заменить на вторичной кнопке:</p>
       <div className="variants">
-        <Variant letter="A" name="Как поле" picked note="Тёмный фон поля, срез справа снизу, в открытом виде — рамка и полоса цвета фокуса. Читается как «значение, которое можно сменить»."><Select label="Поиск A" value={engine} onChange={setEngine} options={ENGINES} style={{ width: 180 }} /></Variant>
-        <Variant letter="B" name="Как вторичная кнопка" note="Выпуклая заливка, углы 6px. Читается как «кнопка, открывающая меню»."><div className="alt-select-b"><Select label="Поиск B" value={engine} onChange={setEngine} options={ENGINES} style={{ width: 180 }} /></div></Variant>
-      </div>
-      <h3 id="q-badge">3. Бейджи: заливка или контур</h3>
-      <div className="variants">
-        <Variant letter="A" name="Заливка 15%" picked note="Как в Runwa: текст цвета тона на его же прозрачной заливке.">{badges}</Variant>
-        <Variant letter="B" name="Контур" note="Рамка цвета тона, без заливки. Легче, на плотных строках меньше пятен."><div className="alt-badge-b" style={{ display: 'contents' }}>{badges}</div></Variant>
+        <Variant letter="A" name="Ровная заливка" picked note="Рамка и ровный фон на тон светлее панели; при наведении — ещё на тон. Кнопка видна и без наведения."><Button>Изменить</Button><Button keys="⌘ S">Сохранить как</Button><Button disabled>Недоступно</Button></Variant>
+        <Variant letter="B" name="Только рамка" note="Без фона, заливка появляется при наведении. Тише, но на панели кнопка ближе к текстовой."><div className="alt-btn-outline" style={{ display: 'contents' }}><Button>Изменить</Button><Button keys="⌘ S">Сохранить как</Button><Button disabled>Недоступно</Button></div></Variant>
       </div>
     </>
   )
@@ -86,7 +79,7 @@ function App() {
       </section>
       <section id="decisions">
         <div className="sec-head"><span className="n">2</span><h2>Нужно ваше решение</h2></div>
-        <p className="muted small">Этих мест нет в <code>DECISIONS.md</code>. В пакете пока стоит вариант A; назовите букву — остальное уберу.</p>
+        <p className="muted small">Этих мест нет в <code>DECISIONS.md</code>. В пакете пока стоит вариант A; назовите букву — остальное уберу. Уже решено: выпадающий список — как поле, бейджи — заливкой.</p>
         <div className="themed-inner"><Decisions /></div>
       </section>
     </>

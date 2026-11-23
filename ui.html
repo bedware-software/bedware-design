@@ -50,17 +50,11 @@
   .variant__note { margin: 14px 0 0; font-size: 12px; line-height: 1.45; color: var(--bw-text-muted); }
 
   /* ── варианты спорных мест: только для этой страницы, в пакет не входят ── */
-  .alt-seg-b .bw-btn.bw-seg__opt.bw-btn--primary { border-radius: var(--bw-radius-md); }
-  .alt-seg-b .bw-btn.bw-seg__opt.bw-btn--primary::before { clip-path: none; box-shadow: none !important; }
-  .alt-seg-c .bw-seg { gap: 0; border: 1px solid var(--bw-border-strong); border-radius: var(--bw-radius-md); overflow: hidden; background: var(--bw-field-bg); }
-  .alt-seg-c .bw-btn.bw-seg__opt { border: 0; border-radius: 0; color: var(--bw-text-muted); }
-  .alt-seg-c .bw-btn.bw-seg__opt::before { inset: 0; clip-path: none; border-radius: 0; background: none; box-shadow: none !important; }
-  .alt-seg-c .bw-btn.bw-seg__opt:hover::before { background: var(--bw-surface-3); }
-  .alt-seg-c .bw-btn.bw-seg__opt[aria-checked="true"] { color: var(--bw-text-strong); }
-  .alt-seg-c .bw-btn.bw-seg__opt[aria-checked="true"]::before { background: var(--bw-surface-4); box-shadow: inset 0 -2px 0 var(--bw-plate) !important; }
-  .alt-select-b .bw-select { clip-path: none; border-radius: var(--bw-radius-md); background: linear-gradient(var(--bw-raised-top), var(--bw-raised-bottom)); box-shadow: none; }
-  .alt-select-b .bw-select:focus-visible, .alt-select-b .bw-select[aria-expanded="true"] { border-color: var(--bw-border-hover); outline: 2px solid var(--bw-focus); outline-offset: 3px; }
-  .alt-badge-b .bw-badge { background: none; box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--bw-badge-c) 60%, transparent); }
+  .alt-seg-flush .bw-seg { gap: 0; padding: 0; overflow: hidden; }
+  .alt-seg-flush .bw-seg__opt { height: 30px; border-radius: 0; }
+  .alt-seg-flush .bw-seg__opt[aria-checked="true"]::before { clip-path: none; }
+  .alt-btn-outline .bw-btn--secondary::before { background: none; }
+  .alt-btn-outline .bw-btn--secondary:hover::before { background: var(--bw-surface-3); }
 </style>
 </head>
 <body>

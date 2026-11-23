@@ -19,7 +19,7 @@ export interface SegmentedProps<T> extends Omit<HTMLAttributes<HTMLDivElement>, 
   wrap?: boolean
 }
 
-/** Один выбор из нескольких рядом кнопок: radiogroup, выбранная — пластина. */
+/** Один выбор из нескольких в общей дорожке: radiogroup, выбранный — пластина. */
 export function Segmented<T extends string | boolean>({ value, options, onChange, label, wrap = false, className, ...rest }: SegmentedProps<T>) {
   return (
     <div role="radiogroup" aria-label={label} className={cx('bw-seg', wrap && 'bw-seg--wrap', className)} {...rest}>
@@ -33,7 +33,7 @@ export function Segmented<T extends string | boolean>({ value, options, onChange
             aria-checked={chosen}
             title={title}
             onClick={() => onChange(option)}
-            className={cx('bw-btn', 'bw-seg__opt', chosen ? 'bw-btn--primary' : 'bw-btn--secondary')}
+            className="bw-seg__opt"
           >
             {icon && <span className="bw-btn__icon">{icon}</span>}
             {text}
