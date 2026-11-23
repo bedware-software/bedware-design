@@ -9,4 +9,4 @@ export interface SwitchProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement
     ref?: Ref<HTMLButtonElement>;
 }
 /** Переключатель «вкл / выкл», применяется сразу. Внутри <label> переключается и по нажатию на подпись. */
-export declare function Switch({ checked, onChange, label, size, className, ...rest }: SwitchProps): import("react").JSX.Element;
+export declare function Switch({ checked, onChange, label, size, className, onClick, ...rest }: SwitchProps): import("react").JSX.Element;

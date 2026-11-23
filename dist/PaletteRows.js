@@ -13,9 +13,10 @@ export function ResultRow({ title, subtitle, icon, imageSrc, corner, alias, note
 export function CommandRow({ rowKey, rowKeyQuiet, keys, selected = false, className, children, ...rest }) {
     return (_jsxs("div", { role: "option", "aria-selected": selected, className: cx('bw-command', className), ...rest, children: [rowKey !== undefined && _jsx("span", { className: "bw-command__cap", children: _jsx(RowKey, { quiet: rowKeyQuiet, children: rowKey }) }), _jsx("span", { className: "bw-command__label", children: children }), keys && keys.length > 0 && _jsx("span", { className: "bw-command__keys", children: keys.map((key, i) => _jsx(Kbd, { children: key }, i)) })] }));
 }
-/** Плотная строка списка 32px: значок, подпись в одну строку с обрезкой, пояснение справа. */
-export function ListRow({ icon, note, side, selected = false, className, children, ...rest }) {
-    return (_jsxs("div", { role: "option", "aria-selected": selected, className: cx('bw-listrow', className), ...rest, children: [icon && _jsx("span", { className: "bw-listrow__icon", children: icon }), _jsx("span", { className: "bw-listrow__label", children: children }), note && _jsx("span", { className: "bw-listrow__note", children: note }), side && _jsx("span", { className: "bw-listrow__side", children: side })] }));
+/** Плотная строка списка 32px: значок, подпись в одну строку с обрезкой, пояснение справа.
+ *  Вне списка с выбором передайте свой role (например role="listitem") — он заменит role="option". */
+export function ListRow({ rowKey, icon, note, side, selected = false, className, children, ...rest }) {
+    return (_jsxs("div", { role: "option", "aria-selected": selected, className: cx('bw-listrow', className), ...rest, children: [rowKey !== undefined && _jsx(RowKey, { children: rowKey }), icon && _jsx("span", { className: "bw-listrow__icon", children: icon }), _jsx("span", { className: "bw-listrow__label", children: children }), note && _jsx("span", { className: "bw-listrow__note", children: note }), side && _jsx("span", { className: "bw-listrow__side", children: side })] }));
 }
 /** Заголовок группы над строками списка: ярлык-пластина. */
 export function GroupTitle({ className, children, ...rest }) {

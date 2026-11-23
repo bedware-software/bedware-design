@@ -11,4 +11,4 @@ export interface CheckboxProps extends Omit<ButtonHTMLAttributes<HTMLButtonEleme
     ref?: Ref<HTMLButtonElement>;
 }
 /** Флажок: отметка в форме, которая применяется вместе с формой. Для «вкл / выкл сразу» — Switch. */
-export declare function Checkbox({ checked, onChange, label, description, className, disabled, ...rest }: CheckboxProps): import("react").JSX.Element;
+export declare function Checkbox({ checked, onChange, label, description, className, disabled, onClick, ...rest }: CheckboxProps): import("react").JSX.Element;

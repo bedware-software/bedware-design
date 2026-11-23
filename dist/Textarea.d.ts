@@ -4,7 +4,7 @@ export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElemen
     mono?: boolean;
     /** Ошибка: красная рамка и нижняя полоса. */
     invalid?: boolean;
-    /** Высота растёт по содержимому (по умолчанию). false — высоту задаёт rows или style. */
+    /** Высота растёт по содержимому (по умолчанию). false — высоту задаёт rows или style, длинный текст прокручивается. */
     autoGrow?: boolean;
     ref?: Ref<HTMLTextAreaElement>;
 }

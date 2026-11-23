@@ -12,6 +12,6 @@ export function Textarea({ mono = false, invalid = false, autoGrow = true, class
         el.style.height = `${el.scrollHeight + 2}px`;
     };
     useLayoutEffect(fit, [value, autoGrow]);
-    return (_jsx("textarea", { ref: mergeRefs(own, ref), value: value, "aria-invalid": invalid || undefined, className: cx('bw-field', 'bw-textarea', mono && 'bw-field--mono', className), onInput: (e) => { fit(); onInput?.(e); }, ...rest }));
+    return (_jsx("textarea", { ref: mergeRefs(own, ref), value: value, "aria-invalid": invalid || undefined, className: cx('bw-field', 'bw-textarea', !autoGrow && 'bw-textarea--scroll', mono && 'bw-field--mono', className), onInput: (e) => { fit(); onInput?.(e); }, ...rest }));
 }
 //# sourceMappingURL=Textarea.js.map

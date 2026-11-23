@@ -38,6 +38,8 @@ export interface CommandRowProps extends HTMLAttributes<HTMLDivElement> {
 /** Плотная строка команды: клавиша строки, подпись, сочетание клавиш. */
 export declare function CommandRow({ rowKey, rowKeyQuiet, keys, selected, className, children, ...rest }: CommandRowProps): import("react").JSX.Element;
 export interface ListRowProps extends HTMLAttributes<HTMLDivElement> {
+    /** Клавиша строки у левого края: метка для набора или номер (как у CommandRow). */
+    rowKey?: ReactNode;
     /** Значок 16px слева. */
     icon?: ReactNode;
     /** Пояснение у правого края. */
@@ -47,7 +49,8 @@ export interface ListRowProps extends HTMLAttributes<HTMLDivElement> {
     selected?: boolean;
     ref?: Ref<HTMLDivElement>;
 }
-/** Плотная строка списка 32px: значок, подпись в одну строку с обрезкой, пояснение справа. */
-export declare function ListRow({ icon, note, side, selected, className, children, ...rest }: ListRowProps): import("react").JSX.Element;
+/** Плотная строка списка 32px: значок, подпись в одну строку с обрезкой, пояснение справа.
+ *  Вне списка с выбором передайте свой role (например role="listitem") — он заменит role="option". */
+export declare function ListRow({ rowKey, icon, note, side, selected, className, children, ...rest }: ListRowProps): import("react").JSX.Element;
 /** Заголовок группы над строками списка: ярлык-пластина. */
 export declare function GroupTitle({ className, children, ...rest }: HTMLAttributes<HTMLDivElement>): import("react").JSX.Element;

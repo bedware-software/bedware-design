@@ -10,7 +10,7 @@ export function IconButton({ label, size = 28, danger, pressed, className, title
     return _jsx("button", { type: type, "aria-label": label, title: title ?? label, "aria-pressed": pressed, className: cx('bw-iconbtn', size !== 28 && `bw-iconbtn--${size}`, danger && 'bw-iconbtn--danger', className), ...rest });
 }
 /** Кнопка-ссылка: второстепенное действие в тексте («Вернуть по умолчанию», путь к папке). */
-export function LinkButton({ mono, className, type = 'button', ...rest }) {
-    return _jsx("button", { type: type, className: cx('bw-link', mono && 'bw-link--mono', className), ...rest });
+export function LinkButton({ mono, icon, className, children, type = 'button', ...rest }) {
+    return (_jsxs("button", { type: type, className: cx('bw-link', mono && 'bw-link--mono', !!icon && 'bw-link--icon', className), ...rest, children: [icon && _jsx("span", { className: "bw-btn__icon", children: icon }), icon ? _jsx("span", { children: children }) : children] }));
 }
 //# sourceMappingURL=Button.js.map

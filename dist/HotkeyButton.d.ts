@@ -11,8 +11,10 @@ export interface HotkeyButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonE
     setLabel?: ReactNode;
     recordingLabel?: ReactNode;
     invalidLabel?: ReactNode;
+    /** md — 32px; sm — 24px, в плотной строке рядом с малыми кнопками. */
+    size?: 'md' | 'sm';
     ref?: Ref<HTMLButtonElement>;
 }
 /** Запись сочетания клавиш в виде кнопки. Только вид и состояния: сами клавиши слушает приложение
  *  и передаёт сюда keys / recording / invalid. Очистка — отдельной IconButton рядом. */
-export declare function HotkeyButton({ keys, recording, invalid, emptyLabel, setLabel, recordingLabel, invalidLabel, className, ...rest }: HotkeyButtonProps): import("react").JSX.Element;
+export declare function HotkeyButton({ keys, recording, invalid, emptyLabel, setLabel, recordingLabel, invalidLabel, size, className, ...rest }: HotkeyButtonProps): import("react").JSX.Element;

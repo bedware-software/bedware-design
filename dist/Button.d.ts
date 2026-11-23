@@ -28,7 +28,9 @@ export declare function IconButton({ label, size, danger, pressed, className, ti
 export interface LinkButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     /** Моноширинная: путь к папке, адрес. */
     mono?: boolean;
+    /** Значок 12px перед текстом: шеврон, стрелка наружу. */
+    icon?: ReactNode;
     ref?: Ref<HTMLButtonElement>;
 }
 /** Кнопка-ссылка: второстепенное действие в тексте («Вернуть по умолчанию», путь к папке). */
-export declare function LinkButton({ mono, className, type, ...rest }: LinkButtonProps): import("react").JSX.Element;
+export declare function LinkButton({ mono, icon, className, children, type, ...rest }: LinkButtonProps): import("react").JSX.Element;

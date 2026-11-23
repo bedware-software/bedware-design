@@ -24,6 +24,8 @@ export interface MenuItemProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     submenu?: boolean;
     /** Кнопки действий в строке справа (IconButton size={20}). С ними пункт — не <button>, а блок с role="menuitem". */
     actions?: ReactNode;
+    /** always — кнопки действий видны всегда; active — только у пункта под курсором, под клавиатурой (selected) или с фокусом внутри. */
+    actionsShown?: 'always' | 'active';
     ref?: Ref<HTMLButtonElement>;
 }
-export declare function MenuItem({ icon, keys, selected, danger, current, accent, submenu, actions, className, children, type, ...rest }: MenuItemProps): import("react").JSX.Element;
+export declare function MenuItem({ icon, keys, selected, danger, current, accent, submenu, actions, actionsShown, className, children, type, ...rest }: MenuItemProps): import("react").JSX.Element;
