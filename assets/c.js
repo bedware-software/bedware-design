@@ -74,7 +74,7 @@ const refresh = () => {
   }
   final.className = 'final ' + cls(over);
   $('#final-logo').innerHTML = logo(sw);
-  $('#out').value = 'Доводка направления C (Bedware Software):\n' + lines.map((l) => '• ' + l).join('\n');
+  $('#out').value = 'Доводка направления C (bedware software):\n' + lines.map((l) => '• ' + l).join('\n');
   $('#count').textContent = `выбрано ${done} из ${$$('.pick[data-q]').length}`;
   try { localStorage.setItem(KEY, JSON.stringify(state)); } catch {}
 };

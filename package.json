@@ -2,7 +2,7 @@
   "name": "bedware-design",
   "private": true,
   "version": "0.0.0",
-  "description": "Bedware Software — brand foundation and component catalog",
+  "description": "bedware software — brand foundation and component catalog",
   "scripts": {
     "catalog:css": "node tools/build-catalog-css.mjs",
     "serve": "python3 -m http.server 4173",

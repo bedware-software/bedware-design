@@ -186,7 +186,7 @@ const refresh = () => {
     if (c) { done++; state[p.dataset.q] = c.value; }
     lines.push(`${p.dataset.q}: ${c ? c.value : '— не выбрано'}`);
   }
-  $('#out').value = 'Решения по этапу 1 (Bedware Software):\n' + lines.map((l) => '• ' + l).join('\n');
+  $('#out').value = 'Решения по этапу 1 (bedware software):\n' + lines.map((l) => '• ' + l).join('\n');
   $('#count').textContent = `выбрано ${done} из ${picks().length}`;
   try { localStorage.setItem(KEY, JSON.stringify(state)); } catch {}
 };
