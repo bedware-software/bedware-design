@@ -26,9 +26,22 @@ const lockup = (bg) => svg(700, 330,
   word('software', { size: 72, fill: PEACH, x: 276, y: 236, rot: 6.5 }), bg);
 const single = (text, fill = YELLOW) => { const size = 96, w = Math.ceil(width(text, size) + 40); return svg(w, 140, word(text, { size, fill, x: 22, y: 104, rot: -3 })); };
 
+// Постер: слово бренда поверх подложки (код и силуэт из inputs/logo-empty.png, см. tools/clean-backdrop.py).
+// Подложка вшита в файл, поэтому SVG самодостаточен и работает в <img>.
+const poster = (name, { size = 150, x = 318, y = 402, second = true } = {}) => {
+  const bd = readFileSync(join(root, 'brand/backdrop.png')).toString('base64');
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1285 808" width="1285" height="808"><image width="1285" height="808" href="data:image/png;base64,${bd}"/>` +
+    word(name, { size, x, y, rot: -3.2 }) +
+    word('WRITE C0DE!', { face: 'jb400', size: 27, stroke: 0, fill: '#ffffff', x: 690, y: 432, rot: 7, ls: 0 }) +
+    (second ? word('software', { size: 86, fill: PEACH, x: 604, y: 512, rot: 6.5 }) : '') + '</svg>\n';
+};
+
 const out = join(root, 'brand/logo');
 mkdirSync(out, { recursive: true });
 const files = {
+  'bedware-software-poster.svg': poster('bedware'),
+  'runwa-poster.svg': poster('Runwa', { second: false }),
+  'vimperium-poster.svg': poster('Vimperium', { size: 124, x: 300, y: 396, second: false }),
   'bedware-software.svg': lockup(null),
   'bedware-software-on-black.svg': lockup('#000000'),
   'bedware.svg': single('bedware'),
