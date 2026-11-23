@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bedware Software — основа бренда, этап 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700;800&family=Martian+Mono:wght@400;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/brand.css">
+<link rel="stylesheet" href="assets/page.css">
+<link rel="stylesheet" href="assets/directions.css">
+</head>
+<body>
+<nav class="topnav">
+  <b>bedware</b>
+  <a href="#palette">1 Палитра</a>
+  <a href="#fonts">2 Шрифты</a>
+  <a href="#directions">3 Направления</a>
+  <a href="#catalog">4 Каталог «рядом»</a>
+  <a href="#diff">5 Расхождения</a>
+  <a href="#claude-design">6 Claude Design</a>
+  <a href="#decisions">7 Решения</a>
+</nav>
+<main>
+
+<div class="hero">
+  <div>
+    <h1>Основа бренда <em>Bedware Software</em><br>и каталог того, что уже есть</h1>
+    <p style="margin-top:14px">Настроение и цвета — из логотипа и робота. Форма и поведение компонентов — из Runwa и Vimperium, где они отлажены. Здесь всё показано рядом, чтобы выбирать глазами, а не вслепую.</p>
+    <p class="muted small">Выбирайте варианты прямо на странице (жёлтые переключатели) — внизу кнопка «Скопировать решения», результат можно вставить в чат. Рекомендации помечены <span class="rec" style="margin:0">совет</span>, но решения ваши.</p>
+  </div>
+  <img src="assets/img/logo.png" alt="Логотип Bedware Software">
+</div>
+
+<!-- ───────────────────────── 1. ПАЛИТРА ───────────────────────── -->
+<section id="palette">
+  <div class="sec-head"><span class="n">1</span><h2>Палитра</h2></div>
+  <p>Цвета сняты программно, по пикселям. В логотипе всего семь плоских цветов — без градиентов, поэтому значения точные. У робота живописная фактура, поэтому его цвета — центры кластеров (усреднённые тона).</p>
+
+  <h3>Что измерено в исходниках</h3>
+  <div class="grid cols-2">
+    <div class="box"><h4>Логотип и вариации — точные значения</h4>
+      <div class="src"><img src="assets/img/logo.png" alt=""><div><div class="measured" id="m-logo"></div>
+      <p class="small muted" style="margin-top:10px">Жёлтый — <code>#FFDE5D</code>, а не <code>#FFDD55</code>; персиковый — <code>#FFBF68</code>, а не <code>#FFBB66</code>. Одинаково во всех пяти файлах. Серые <code>#666</code>/<code>#999</code>/<code>#333</code> — тона силуэта и «дальние» строки кода.</p></div></div>
+    </div>
+    <div class="box"><h4>Робот — центры кластеров</h4>
+      <div class="src"><img src="assets/img/robot.jpg" alt=""><div>
+        <div class="small muted" style="margin-bottom:4px">Жёлтые пластины (6% площади)</div><div class="measured" id="m-plates"></div>
+        <div class="small muted" style="margin:10px 0 4px">Броня и туман</div><div class="measured" id="m-armor"></div>
+        <p class="small muted" style="margin-top:10px">Жёлтый робота темнее и грязнее логотипного (<code>#EAD075</code> в свету, <code>#B7974E</code> в массе). В интерфейс он идёт только как «тень пластины», основной жёлтый — логотипный.</p></div></div>
+    </div>
+  </div>
+
+  <h3>Предлагаемая палитра (тёмная тема — основная)</h3>
+  <p class="muted small">Клик по образцу копирует значение. Серые слегка утеплены в сторону брони робота, чтобы рядом с жёлтым не выглядели синеватыми; чистый нейтральный вариант — вопрос в разделе 7.</p>
+  <div id="pal"></div>
+
+  <h3>Контраст текста (WCAG 2.1)</h3>
+  <p class="muted small">Считается на странице из тех же переменных. Норма: 4.5 для обычного текста, 3.0 для крупного (от 24px) и для границ элементов управления.</p>
+  <div class="tablewrap"><table id="contrast"></table></div>
+  <div class="grid cols-3" style="margin-top:12px" id="contrast-notes"></div>
+</section>
+
+<!-- ───────────────────────── 2. ШРИФТЫ ───────────────────────── -->
+<section id="fonts">
+  <div class="sec-head"><span class="n">2</span><h2>Шрифты</h2></div>
+  <p><b>Шрифт логотипа — Menlo Bold</b> (системный моноширинный macOS; его свободный «родитель» — <b>DejaVu Sans Mono Bold</b>, рисунок букв практически тот же). Скруглённым и «толстым» слово стало не из-за шрифта, а из-за <b>обводки тем же цветом со скруглёнными стыками</b> — примерно 5–6% от кегля в каждую сторону. Подпись «WRITE C0DE!» — Menlo Regular (перечёркнутый ноль — его примета), «дождь» кода — Menlo Bold Italic.</p>
+  <p class="muted small">Уверенность: высокая, ~90%. Проверено наложением: ниже слева — вырезки из ваших файлов, справа — то же слово, набранное Menlo Bold с обводкой прямо в браузере. Совпадают хвост «y», двухэтажная «a», одноэтажная «g», засечка у «r», ширина букв. Оставшиеся 10% — на то, что исходник мог быть DejaVu Sans Mono (отличается в основном нулём) и что точная толщина обводки подобрана на глаз.</p>
+
+  <div class="proof" id="proof"></div>
+
+  <h3>Слово бренда: три варианта шрифта</h3>
+  <p class="muted small">Все три — тот же приём: жирный моноширинный + круглая обводка + наклон. Menlo нельзя раздавать с сайта (лицензия Apple), поэтому для сайта нужен свободный шрифт или логотип картинкой/SVG в кривых.</p>
+  <div class="grid cols-3" id="wm"></div>
+  <p style="margin-top:10px"><span class="pick" data-q="Шрифт слова бренда" data-rec="A">
+    <label><input type="radio" name="q-wm" value="A — DejaVu Sans Mono Bold (как в логотипе)">A</label>
+    <label><input type="radio" name="q-wm" value="B — JetBrains Mono ExtraBold">B</label>
+    <label><input type="radio" name="q-wm" value="C — Martian Mono ExtraBold">C</label></span>
+    <span class="rec">совет: A</span> <span class="muted small">— это буквально ваш логотип, лицензия свободная, есть кириллица.</span></p>
+
+  <h3>Шрифт текста интерфейса</h3>
+  <p class="muted small">Сейчас оба приложения используют системный шрифт (<code>-apple-system, Segoe UI, Roboto</code>), моноширинный — только в клавишах и коде.</p>
+  <div class="grid cols-3" id="ui-fonts"></div>
+  <p style="margin-top:10px"><span class="pick" data-q="Шрифт текста интерфейса" data-rec="1">
+    <label><input type="radio" name="q-ui" value="1 — системный шрифт для текста + моноширинный для заголовков, клавиш и меток">1</label>
+    <label><input type="radio" name="q-ui" value="2 — Inter для текста + моноширинный для заголовков и меток">2</label>
+    <label><input type="radio" name="q-ui" value="3 — моноширинный везде (JetBrains Mono)">3</label></span>
+    <span class="rec">совет: 1 в приложениях, 2 на сайте</span> <span class="muted small">— в приложениях всё отлажено под системный шрифт; на сайте нужен одинаковый вид на всех ОС.</span></p>
+</section>
+
+<!-- ───────────────────────── 3. НАПРАВЛЕНИЯ ───────────────────────── -->
+<section id="directions">
+  <div class="sec-head"><span class="n">3</span><h2>Три направления</h2></div>
+  <p>Кнопка, поле ввода и панель в новой палитре. Размеры, отступы, скругления и анимации взяты из приложений как есть (откуда именно — подписано), меняется только цвет и то, как используется жёлтый. Состояния показаны статично все сразу; правая колонка в каждом блоке — живая, её можно трогать мышью и клавиатурой.</p>
+  <div id="dir"></div>
+  <p style="margin-top:14px"><b>Какое направление берём?</b> <span class="pick" data-q="Направление">
+    <label><input type="radio" name="q-dir" value="A — жёлтый только как акцент">A · Акцент</label>
+    <label><input type="radio" name="q-dir" value="B — жёлтая заливка основных кнопок">B · Заливка</label>
+    <label><input type="radio" name="q-dir" value="C — пластины">C · Пластины</label>
+    <label><input type="radio" name="q-dir" value="B в целом + пластины из C только для редких акцентных элементов">B + пластины точечно</label></span>
+    <span class="rec">совет: B + пластины точечно</span></p>
+</section>
+
+<!-- ───────────────────────── 4. КАТАЛОГ ───────────────────────── -->
+<section id="catalog">
+  <div class="sec-head"><span class="n">4</span><h2>Каталог «рядом»: Runwa и Vimperium как есть</h2></div>
+  <p>Каждая рамка ниже — настоящий CSS приложения: <code>globals.css</code> и классы Tailwind собраны прямо из исходников (исходники не тронуты), разметка перенесена из компонентов дословно, со ссылкой на файл. Это не перерисовка, а нынешний вид.</p>
+  <div class="toolbar">
+    <span class="muted small">Тема в рамках:</span>
+    <span class="pick" id="theme-pick">
+      <label><input type="radio" name="cat-theme" value="dark" checked>тёмная</label>
+      <label><input type="radio" name="cat-theme" value="light">светлая</label></span>
+  </div>
+  <div id="cat"></div>
+</section>
+
+<!-- ───────────────────────── 5. РАСХОЖДЕНИЯ ───────────────────────── -->
+<section id="diff">
+  <div class="sec-head"><span class="n">5</span><h2>Расхождения и токены</h2></div>
+  <h3>Токены темы: что общее, что разошлось</h3>
+  <div id="tokens"></div>
+  <h3>Таблица расхождений — нужны ваши решения</h3>
+  <p class="muted small">По каждой строке выберите источник. «Ни тот, ни другой» значит, что я предложу третий вариант на следующем этапе.</p>
+  <div class="tablewrap"><table id="difftable"></table></div>
+  <h3>Есть только в одном приложении</h3>
+  <div class="grid cols-2" id="only"></div>
+</section>
+
+<!-- ───────────────────────── 6. CLAUDE DESIGN ───────────────────────── -->
+<section id="claude-design">
+  <div class="sec-head"><span class="n">6</span><h2>Claude Design</h2></div>
+  <div class="grid cols-2">
+    <div class="box"><h4>Что есть на вашем аккаунте</h4>
+      <p>Проверено: доступны типы <b>Design System</b>, Design, Slides, Docs, Sheets, Data, Whiteboard. Дизайн-систем пока нет ни одной — создавать будем с нуля. Сейчас ничего не создано: ждём выбора направления.</p>
+      <p class="muted small">Тип Design System хранит: README (бренд-бук), <code>tokens.json</code> (цвета по темам, шрифты и кегли, отступы, скругления, тени), компоненты с живыми превью, шрифты и ассеты (логотипы, робот). Его читают другие сессии Claude — в том числе когда делают макеты, слайды и сайт.</p>
+    </div>
+    <div class="box"><h4>Как связать с кодом</h4>
+      <p><b>Источник истины — репозиторий</b> (этот, <code>bedware-design</code>): файл токенов + общий пакет компонентов. Из него в одну сторону собираются:</p>
+      <p class="small">1. CSS-переменные / тема Tailwind 4 (<code>@theme</code>) для Runwa, Vimperium и сайта на Astro;<br>
+      2. дизайн-система в Claude Design — командой <code>/design-sync</code> в Claude Code: она читает токены, компоненты и ассеты из репозитория и публикует их в Design System. Такая система помечается как «синхронизируется из кода» и в Claude Design открывается только для чтения, то есть разойтись с кодом не может.</p>
+      <p class="muted small">Правка всегда идёт в коде → повторный <code>/design-sync</code>. Обратного пути (правка в Claude Design → код) в этом режиме нет, и это хорошо для «одного источника истины». Альтернатива — редактируемая вручную система без синхронизации; её не советую.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────────────────── 7. РЕШЕНИЯ ───────────────────────── -->
+<section id="decisions">
+  <div class="sec-head"><span class="n">7</span><h2>Решения, которые нужны от вас</h2></div>
+  <table id="qs"></table>
+  <h3>Итог выбора</h3>
+  <textarea id="out" readonly></textarea>
+</section>
+
+<div class="decide">
+  <button id="copy">Скопировать решения</button>
+  <button class="ghost" id="recs">Отметить все советы</button>
+  <button class="ghost" id="reset">Сбросить</button>
+  <span class="muted small" id="count"></span>
+</div>
+</main>
+<script src="assets/data.js"></script>
+<script src="assets/directions.js"></script>
+<script src="assets/page.js"></script>
+</body>
+</html>

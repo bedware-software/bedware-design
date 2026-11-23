@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<title>catalog frame</title>
+<script>
+  // Одна рамка = один компонент одного приложения, с настоящим CSS этого приложения.
+  const q = new URLSearchParams(location.search);
+  const app = q.get('app') === 'vimperium' ? 'vimperium' : 'runwa';
+  const id = q.get('id') || '';
+  document.documentElement.dataset.theme = q.get('theme') === 'light' ? 'light' : 'dark';
+  document.write(`<link rel="stylesheet" href="build/${app}.css">`);
+  document.write(`<script src="icons.js"><\/script><script src="demos-${app}.js"><\/script>`);
+</script>
+<style>
+  /* Только для рамки: приложения задают body{height:100vh;overflow:hidden} под окно Electron. */
+  html, body { height: auto !important; overflow: visible !important; }
+  body { padding: 16px; }
+  #root { height: auto !important; display: block !important; }
+  .cat-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+  .cat-col { display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+  .cat-label { font: 11px ui-monospace, Menlo, monospace; opacity: .55; margin: 14px 0 6px; }
+  .cat-label:first-child { margin-top: 0; }
+  .cat-stage { position: relative; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+  const root = document.getElementById('root');
+  root.innerHTML = (window.DEMOS && window.DEMOS[id]) || '<div class="cat-label">нет демо: ' + id + '</div>';
+  const post = () => parent.postMessage({ type: 'bw-height', height: document.documentElement.scrollHeight }, '*');
+  new ResizeObserver(post).observe(document.body);
+  addEventListener('load', post); post();
+  addEventListener('message', (e) => { if (e.data && e.data.type === 'bw-theme') document.documentElement.dataset.theme = e.data.theme; });
+</script>
+</body>
+</html>

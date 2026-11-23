@@ -1,0 +1,106 @@
+/* Три направления для кнопки, поля и панели.
+   Геометрия общая и взята из приложений:
+   кнопка  h 32 / px 12 / radius 6 / 12px medium          (Runwa+Vimperium: h-8 px-3 rounded-md text-xs font-medium)
+   поле    h 36 / px 12 / 14px                             (оба: h-9 px-3 text-sm)
+   панель  radius 6, строки px 16 py 12, 14px/12px         (оба: карточка-список в настройках)
+   переходы 150 мс (Tailwind по умолчанию), бегунок 200 мс (Vimperium Switch) */
+.dir { --r: 6px; --r-field: 6px; border: 1px solid var(--bw-border); border-radius: 12px; background: var(--bw-bg); margin-bottom: 16px; overflow: hidden; }
+.dir > header { display: flex; align-items: baseline; gap: 12px; padding: 14px 18px; border-bottom: 1px solid var(--bw-border); background: var(--bw-surface-1); flex-wrap: wrap; }
+.dir > header b { font: 700 16px var(--bw-font-mono); color: var(--bw-yellow); }
+.dir > header span { color: var(--bw-text-muted); font-size: 13px; }
+.dir .body { display: grid; grid-template-columns: max-content minmax(220px, 1fr) minmax(300px, 1.15fr); gap: 0; }
+.dir .col { padding: 16px 18px 20px; border-right: 1px solid var(--bw-border); min-width: 0; }
+.dir .col:last-child { border-right: 0; }
+@media (max-width: 1080px) { .dir .body { grid-template-columns: 1fr; } .dir .col { border-right: 0; border-bottom: 1px solid var(--bw-border); } }
+.dir h5 { margin: 0 0 12px; font: 500 11px var(--bw-font-mono); color: var(--bw-text-dim); text-transform: uppercase; letter-spacing: .08em; }
+.st { display: grid; grid-template-columns: 76px repeat(4, max-content); gap: 10px 10px; align-items: center; }
+.st > i, .sti > i { font: normal 11px var(--bw-font-mono); color: var(--bw-text-dim); }
+.st .hd { font: 11px var(--bw-font-mono); color: var(--bw-text-dim); }
+.sti { display: grid; grid-template-columns: 76px 1fr; gap: 10px; align-items: center; }
+.sti .msg { grid-column: 2; margin-top: -6px; font-size: 11px; color: var(--bw-error); }
+
+/* ── кнопка ── */
+.b { height: 32px; padding: 0 12px; border-radius: var(--r); font: 500 12px var(--bw-font-sans); display: inline-flex; align-items: center; gap: 6px; border: 1px solid transparent; cursor: pointer; white-space: nowrap; transition: background-color .15s, border-color .15s, color .15s, box-shadow .15s, transform .15s; background: none; color: var(--bw-text); }
+.b:focus-visible, .b.is-focus { outline: 2px solid var(--bw-focus); outline-offset: 2px; }
+.b:disabled, .b.is-disabled { background: var(--bw-disabled-bg) !important; color: var(--bw-disabled-text) !important; border-color: transparent !important; cursor: not-allowed; box-shadow: none !important; }
+.b kbd { font: 11px var(--bw-font-mono); padding: 2px 5px; border-radius: 4px; border: 1px solid color-mix(in srgb, currentColor 30%, transparent); background: color-mix(in srgb, currentColor 12%, transparent); }
+.b.secondary { background: var(--bw-surface-3); border-color: var(--bw-border); }
+.b.secondary:hover, .b.secondary.is-hover { background: var(--bw-surface-4); border-color: var(--bw-border-strong); }
+.b.secondary:active, .b.secondary.is-active { background: var(--bw-surface-2); }
+.b.ghost { color: var(--bw-text-muted); }
+.b.ghost:hover, .b.ghost.is-hover { background: var(--bw-surface-3); color: var(--bw-text); }
+.b.ghost:active, .b.ghost.is-active { background: var(--bw-surface-4); }
+.b.danger { background: var(--bw-error); color: #000; }
+.b.danger:hover, .b.danger.is-hover { background: #ff8a7f; }
+.b.danger:active, .b.danger.is-active { background: #e2574b; }
+
+/* ── поле ── */
+.f { height: 36px; width: 100%; padding: 0 12px; border-radius: var(--r-field); font: 14px var(--bw-font-sans); color: var(--bw-text); background: var(--bw-surface-2); border: 1px solid var(--bw-border-strong); outline: none; transition: border-color .15s, box-shadow .2s, background-color .2s; }
+.f::placeholder { color: var(--bw-text-dim); }
+.f:hover, .f.is-hover { border-color: #77736a; }
+.f.is-error { border-color: var(--bw-error) !important; }
+.f:disabled { background: var(--bw-disabled-bg); color: var(--bw-disabled-text); border-color: var(--bw-border); cursor: not-allowed; }
+.lbl { display: block; font: 500 12px var(--bw-font-sans); color: var(--bw-text); margin-bottom: 6px; }
+
+/* ── панель ── */
+.p { border: 1px solid var(--bw-border); border-radius: var(--r); background: var(--bw-surface-1); overflow: hidden; }
+.p .ph { padding: 12px 16px; border-bottom: 1px solid var(--bw-border); }
+.p .ph b { display: block; font: 600 14px var(--bw-font-sans); color: var(--bw-text-strong); }
+.p .ph span { font-size: 12px; color: var(--bw-text-muted); }
+.p .row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 16px; border-bottom: 1px solid var(--bw-border); transition: background-color .15s; }
+.p .row:last-child { border-bottom: 0; }
+.p .row b { display: block; font: 500 14px var(--bw-font-sans); color: var(--bw-text); }
+.p .row span.d { display: block; font-size: 12px; color: var(--bw-text-muted); margin-top: 2px; }
+.p .row.sel { background: var(--bw-surface-3); position: relative; }
+.p .pf { display: flex; justify-content: flex-end; gap: 8px; padding: 12px 16px; background: var(--bw-surface-1); border-top: 1px solid var(--bw-border); }
+.tgl { width: 36px; height: 20px; border-radius: 999px; background: #4a4640; position: relative; flex: none; border: 0; cursor: pointer; transition: background-color .15s; padding: 0; }
+.tgl::after { content: ''; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgb(0 0 0 / .4); transition: transform .2s; }
+.tgl[aria-checked="true"] { background: var(--bw-yellow); }
+.tgl[aria-checked="true"]::after { transform: translateX(16px); background: #000; }
+.tgl:focus-visible { outline: 2px solid var(--bw-focus); outline-offset: 2px; }
+.tag { font: 600 10px var(--bw-font-mono); text-transform: uppercase; letter-spacing: .05em; padding: 2px 6px; border-radius: 4px; }
+
+/* ══ A · Акцент: жёлтый только в линиях, тексте и фокусе ══ */
+.dir-a .b.primary { background: transparent; color: var(--bw-yellow); border-color: var(--bw-yellow); }
+.dir-a .b.primary:hover, .dir-a .b.primary.is-hover { background: rgb(255 222 93 / .14); }
+.dir-a .b.primary:active, .dir-a .b.primary.is-active { background: rgb(255 222 93 / .26); }
+.dir-a .f:focus, .dir-a .f.is-focus { border-color: var(--bw-yellow); }
+.dir-a .p .row.sel::before { content: ''; position: absolute; left: 4px; top: 8px; bottom: 8px; width: 3px; border-radius: 3px; background: var(--bw-yellow); }
+.dir-a .tag { color: var(--bw-yellow); border: 1px solid rgb(255 222 93 / .45); }
+
+/* ══ B · Заливка: основная кнопка — жёлтая, текст чёрный ══ */
+.dir-b .b.primary { background: var(--bw-yellow); color: var(--bw-on-yellow); font-weight: 600; }
+.dir-b .b.primary:hover, .dir-b .b.primary.is-hover { background: var(--bw-yellow-hover); }
+.dir-b .b.primary:active, .dir-b .b.primary.is-active { background: var(--bw-yellow-pressed); }
+.dir-b .f:focus, .dir-b .f.is-focus { border-color: var(--bw-yellow); box-shadow: 0 0 0 3px rgb(255 222 93 / .22); }
+.dir-b .f.is-error:focus { box-shadow: 0 0 0 3px rgb(255 107 94 / .25); }
+.dir-b .p .row.sel::before { content: ''; position: absolute; left: 4px; top: 8px; bottom: 8px; width: 3px; border-radius: 3px; background: var(--bw-yellow); }
+.dir-b .tag { background: var(--bw-yellow); color: #000; }
+
+/* ══ C · Пластины: жёлтые детали со срезанным углом на тёмном металле ══ */
+.dir-c { --cut: 8px; }
+.dir-c .b { font-family: var(--bw-font-mono); font-size: 11.5px; letter-spacing: .02em; border-radius: 2px; }
+.dir-c .b.primary { background: var(--bw-yellow); color: #000; font-weight: 700; text-transform: uppercase; border: 0; padding: 0 14px;
+  clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut));
+  box-shadow: inset 0 -3px 0 var(--bw-yellow-plate); }
+.dir-c .b.primary:hover, .dir-c .b.primary.is-hover { background: var(--bw-yellow-hover); }
+.dir-c .b.primary:active, .dir-c .b.primary.is-active { background: var(--bw-yellow-pressed); box-shadow: inset 0 2px 0 var(--bw-yellow-plate); transform: translateY(1px); }
+.dir-c .b.primary:focus-visible, .dir-c .b.primary.is-focus { outline: 0; filter: drop-shadow(0 0 0 #000) drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 2px 0 #fff) drop-shadow(0 -2px 0 #fff); }
+.dir-c .b.primary.is-disabled, .dir-c .b.primary:disabled { clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut)); }
+.dir-c .b.secondary { background: linear-gradient(#2a2724, #201e1b); border-color: var(--bw-border-strong); }
+.dir-c .b.secondary:hover, .dir-c .b.secondary.is-hover { background: linear-gradient(#35322d, #282522); border-color: #77736a; }
+.dir-c .b.danger { text-transform: uppercase; font-weight: 700; }
+.dir-c .f { border-radius: 2px; background: #0b0a09; border-color: var(--bw-border-strong); font-family: var(--bw-font-mono); font-size: 13px;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%); }
+.dir-c .f:focus, .dir-c .f.is-focus { border-color: var(--bw-yellow); box-shadow: inset 0 -2px 0 var(--bw-yellow); }
+.dir-c .f.is-error { box-shadow: inset 0 -2px 0 var(--bw-error); }
+.dir-c .p { border-radius: 2px; background: linear-gradient(#171513, #100f0e); border-color: var(--bw-border-strong); position: relative; }
+.dir-c .p .ph { display: flex; align-items: center; gap: 12px; padding-left: 0; }
+.dir-c .p .ph::before { content: attr(data-n); align-self: stretch; margin: -12px 0; display: flex; align-items: center; padding: 0 14px 0 12px; background: var(--bw-yellow); color: #000; font: 700 13px var(--bw-font-mono);
+  clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 100%, 0 100%); box-shadow: inset 0 -3px 0 var(--bw-yellow-plate); }
+.dir-c .p .ph b { font-family: var(--bw-font-mono); text-transform: uppercase; font-size: 13px; letter-spacing: .04em; }
+.dir-c .p .row.sel { background: #24211d; }
+.dir-c .p .row.sel::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--bw-yellow); box-shadow: inset 0 -3px 0 var(--bw-yellow-plate); }
+.dir-c .tgl { border-radius: 3px; }
+.dir-c .tgl::after { border-radius: 2px; }
+.dir-c .tag { background: var(--bw-yellow); color: #000; border-radius: 0; clip-path: polygon(5px 0, 100% 0, calc(100% - 5px) 100%, 0 100%); padding: 2px 10px; transform: rotate(-3deg); display: inline-block; }
