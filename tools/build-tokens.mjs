@@ -49,6 +49,9 @@ const MAP = {
   muted: 'surface-4', 'muted-foreground': 'text-muted',
   accent: 'surface-3', 'accent-foreground': 'text-strong',
   destructive: 'error', 'destructive-foreground': 'on-error',
+  // Текст на заливке success и warning меняется по темам так же, как на error: чёрный в тёмной, белый в светлой.
+  success: 'success', 'success-foreground': 'on-error',
+  warning: 'warning', 'warning-foreground': 'on-error',
   border: 'border', input: 'border-strong', ring: 'focus',
   toolbar: 'surface-1',
   field: 'field-bg',
