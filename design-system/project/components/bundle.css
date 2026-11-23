@@ -274,6 +274,10 @@
   background: var(--plate); box-shadow: inset 0 -3px 0 var(--plate-edge), inset 0 0 0 1px var(--plate-outline); clip-path: polygon(4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%, 0 4px);
   transition: transform 150ms; }
 .bw-slider:hover .bw-slider__knob { transform: translateY(calc(-50% - 1px)); }
+/* риска значения по умолчанию: зубец под дорожкой; --sl-d — его доля 0…1, центр зубца совпадает с центром бегунка в этом значении */
+.bw-slider__mark { position: absolute; top: 50%; left: calc((100% - var(--sl-k)) * var(--sl-d) + var(--sl-k) / 2); width: 8px; height: 5px; margin: 6px 0 0 -4px; pointer-events: none;
+  background: var(--text-muted); clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+.bw-slider:has(input:disabled) .bw-slider__mark { background: var(--text-dim); }
 /* кольцо фокуса — на невидимой рамке вокруг бегунка: сам бегунок обрезан срезами */
 .bw-slider__ring { position: absolute; top: 50%; left: calc((100% - var(--sl-k)) * var(--sl-f)); width: var(--sl-k); height: var(--sl-k); transform: translateY(-50%); pointer-events: none; }
 .bw-slider:has(input:focus-visible) .bw-slider__ring { outline: 2px solid var(--focus); outline-offset: 2px; }
@@ -287,6 +291,8 @@
   clip-path: polygon(0 0, 100% 0, calc(100% - 6px) 100%, 0 100%); transition: width 200ms; }
 .bw-progress[data-full] .bw-progress__fill { clip-path: none; }
 .bw-progress--error { --pg-c: var(--error); --pg-e: var(--error-edge); }
+/* на паузе: серая заливка без кромки */
+.bw-progress--paused { --pg-c: var(--text-dim); --pg-e: transparent; }
 /* размер неизвестен: скошенный отрезок бежит слева направо */
 .bw-progress--busy .bw-progress__fill { width: 35%; clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%); animation: bw-progress-run 1.4s linear infinite; }
 @keyframes bw-progress-run { from { left: -35%; } to { left: 100%; } }

@@ -106,10 +106,11 @@ function SliderDemo() {
   const [b, setB] = useState(1.25)
   return (
     <>
-      <Line cap="обычный"><Slider label="Яркость" value={a} onChange={setA} /><span className="cap" style={{ width: 'auto' }}>{a}%</span></Line>
-      <Line cap="с шагом"><Slider label="Свечение" min={0} max={2} step={0.25} value={b} onChange={setB} boxClassName="grow" /><span className="cap" style={{ width: 'auto' }}>{b.toFixed(2)}×</span></Line>
+      <Line cap="обычный"><Slider label="Яркость" value={a} onChange={setA} mark={50} onDoubleClick={() => setA(50)} title="Двойной щелчок — вернуть по умолчанию" /><span className="cap" style={{ width: 'auto' }}>{a}%</span></Line>
+      <Line cap="с шагом"><Slider label="Свечение" min={0} max={2} step={0.25} value={b} onChange={setB} mark={1} boxClassName="grow" /><span className="cap" style={{ width: 'auto' }}>{b.toFixed(2)}×</span></Line>
       <Line cap="недоступен"><Slider label="Недоступно" value={60} onChange={() => {}} disabled /></Line>
       <Line cap="прогресс"><Progress label="Загрузка" value={40} style={{ width: 220 }} /><Progress label="Готово" value={100} style={{ width: 120 }} /></Line>
+      <Line cap="пауза"><Progress label="Загрузка на паузе" value={40} paused style={{ width: 220 }} /></Line>
       <Line cap="ошибка"><Progress label="Ошибка загрузки" value={65} error style={{ width: 220 }} /></Line>
       <Line cap="неизвестно"><Progress label="Подготовка" style={{ width: 220 }} /></Line>
     </>
@@ -419,7 +420,7 @@ export const stories: Story[] = [
   { name: 'Checkbox', title: 'Флажок и подписи', group: 'Формы', height: 335, subtitle: 'Включён, выключен, частично, недоступен, с подписью; подпись с описанием и строка под формой', Demo: CheckboxDemo },
   { name: 'ChoiceCards', title: 'Карточки-выбор', group: 'Формы', height: 130, subtitle: 'Один вариант из нескольких с описанием', Demo: ChoiceDemo },
   { name: 'ColorHotkey', title: 'Поле цвета и запись сочетания', group: 'Формы', height: 235, subtitle: 'Образец в поле; сочетание клавиш кнопкой: не задано, задано, запись, занято', Demo: ColorHotkeyDemo },
-  { name: 'Slider', title: 'Ползунок и полоса прогресса', group: 'Формы', height: 290, subtitle: 'Бегунок-пластина; прогресс со штриховкой: доля, ошибка, размер неизвестен', Demo: SliderDemo },
+  { name: 'Slider', title: 'Ползунок и полоса прогресса', group: 'Формы', height: 320, subtitle: 'Бегунок-пластина, риска значения по умолчанию; прогресс со штриховкой: доля, пауза, ошибка, размер неизвестен', Demo: SliderDemo },
   { name: 'Select', title: 'Выпадающий список', group: 'Формы', height: 260, subtitle: 'Кнопка-поле и список с клавиатурой', Demo: SelectDemo },
   { name: 'Segmented', title: 'Сегменты', group: 'Формы', height: 235, subtitle: 'Один выбор из нескольких кнопок', Demo: SegmentedDemo },
   { name: 'Switch', title: 'Переключатель', group: 'Формы', height: 180, subtitle: 'Три размера, включён, выключен, недоступен', Demo: SwitchDemo },
