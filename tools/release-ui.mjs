@@ -1,8 +1,11 @@
 // Выпуск пакета @bedware/ui для приложений: собирает пакет и кладёт собранное (package.json + dist/)
 // отдельным коммитом в ветку ui-dist с тегом ui-v<версия>. Рабочую папку и текущую ветку не трогает.
-// Приложения подключают тег: "@bedware/ui": "git+https://github.com/bedware-software/bedware-design.git#ui-v<версия>".
-// Запуск: npm run ui:release            — собрать, закоммитить в ui-dist, поставить тег
-//         npm run ui:release -- --push  — и отправить ветку с тегом на GitHub
+// С --push ещё отправляет их на GitHub и создаёт там выпуск (release) с архивом пакета bedware-ui-<версия>.tgz.
+// Приложения подключают именно архив выпуска:
+//   "@bedware/ui": "https://github.com/bedware-software/bedware-design/releases/download/ui-v<версия>/bedware-ui-<версия>.tgz"
+// (git-зависимость не годится: npm пишет её в package-lock как git+ssh, и сборка на GitHub без ключей её не скачивает).
+// Запуск: npm run ui:release            — собрать, закоммитить в ui-dist, поставить тег (проверка без публикации)
+//         npm run ui:release -- --push  — и отправить на GitHub, создать выпуск с архивом
 // Версия берётся из packages/ui/package.json: перед новым выпуском её нужно поднять.
 import { execFileSync } from 'node:child_process';
 import { cpSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
@@ -44,12 +47,15 @@ try {
   git(['update-ref', 'refs/heads/ui-dist', commit]);
   git(['tag', tag, commit]);
   console.log(`Выпущено: ветка ui-dist, тег ${tag} (${commit.slice(0, 7)})`);
+
+  if (process.argv.includes('--push')) {
+    execFileSync('git', ['push', 'origin', 'refs/heads/ui-dist', `refs/tags/${tag}`], { cwd: root, stdio: 'inherit' });
+    const tgz = execFileSync('npm', ['pack', '--silent'], { cwd: tree, encoding: 'utf8' }).trim().split('\n').pop();
+    execFileSync('gh', ['release', 'create', tag, join(tree, tgz), '--title', `@bedware/ui ${src.version}`, '--notes', 'Собранный пакет для приложений.'], { cwd: root, stdio: 'inherit' });
+    console.log(`В приложении: npm install https://github.com/bedware-software/bedware-design/releases/download/${tag}/${tgz}`);
+  } else {
+    console.log(`Не опубликовано. Отправить: git push origin ui-dist ${tag} — или в следующий раз запускать с --push.`);
+  }
 } finally {
   rmSync(tmp, { recursive: true, force: true });
-}
-
-if (process.argv.includes('--push')) {
-  execFileSync('git', ['push', 'origin', 'refs/heads/ui-dist', `refs/tags/${tag}`], { cwd: root, stdio: 'inherit' });
-} else {
-  console.log(`Отправить на GitHub: git push origin ui-dist ${tag}`);
 }
