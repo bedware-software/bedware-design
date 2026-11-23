@@ -12,6 +12,8 @@ export interface SelectProps<T extends string> {
     label: string;
     title?: string;
     disabled?: boolean;
+    /** Список открылся или закрылся — чтобы своя клавиатура знала, кому отдавать клавиши. */
+    onOpenChange?: (open: boolean) => void;
     className?: string;
     style?: CSSProperties;
     ref?: Ref<HTMLButtonElement>;
@@ -20,8 +22,16 @@ export interface SelectProps<T extends string> {
 export interface SelectHandle {
     /** Выбрать соседний вариант, не открывая список: -1 предыдущий, +1 следующий. */
     step: (delta: number) => void;
-    open: () => void;
-    close: () => void;
+    /** Открыть список. takeFocus: false — фокус остаётся там, где был (клавиши ведёт сам вызывающий). */
+    open: (takeFocus?: boolean) => void;
+    /** Закрыть список. giveBackFocus: true — вернуть фокус на кнопку. */
+    close: (giveBackFocus?: boolean) => void;
+    /** Сдвинуть подсветку в открытом списке на delta доступных вариантов, без перехода через край. */
+    move: (delta: number) => void;
+    /** Подсветить первый или последний доступный вариант открытого списка. */
+    moveTo: (edge: 'first' | 'last') => void;
+    /** Выбрать подсвеченный вариант и закрыть список. */
+    pick: (giveBackFocus?: boolean) => void;
 }
 export interface SelectListProps<T extends string> extends Omit<HTMLAttributes<HTMLDivElement>, 'onMouseEnter'> {
     options: ReadonlyArray<SelectOption<T>>;
@@ -39,6 +49,6 @@ export declare function SelectList<T extends string>({ options, value, active, l
  *  Закрыт: Enter / Space / ↓ / ↑ открывают. Открыт: ↓ / ↑, Home / End, Enter или Space выбирает,
  *  Esc и Tab закрывают, буква ведёт к первому варианту на неё.
  *  Нажатие мимо, потеря фокуса окном, прокрутка под списком и изменение размера окна закрывают его. */
-export declare function Select<T extends string>({ value, options, onChange, label, title, disabled, className, style, ref, handle, ...rest }: SelectProps<T> & {
+export declare function Select<T extends string>({ value, options, onChange, label, title, disabled, onOpenChange, className, style, ref, handle, ...rest }: SelectProps<T> & {
     handle?: Ref<SelectHandle>;
 } & Omit<HTMLAttributes<HTMLButtonElement>, 'onChange'>): import("react").JSX.Element;

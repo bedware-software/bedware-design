@@ -47,20 +47,27 @@
 .bw-btn__icon { display: inline-flex; flex: none; }
 
 /* ── поле ── 36px (sm 32, lg 40); срез справа снизу; фокус — жёлтая рамка и нижняя полоса */
-.bw-field { display: block; width: 100%; height: var(--bw-control-md); padding: 0 var(--bw-space-3); font: 400 14px/20px var(--bw-font-sans); color: var(--bw-text);
-  background: var(--bw-field-bg); border: 1px solid var(--bw-border-strong); border-radius: var(--bw-radius-plate); outline: none;
-  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--bw-cut)), calc(100% - var(--bw-cut)) 100%, 0 100%);
+.bw-field { --bw-field-fill: var(--bw-field-bg); --bw-field-frame: var(--bw-border-strong); --bw-field-bar: 0 0 0 0 transparent;
+  --bw-field-cut: polygon(0 0, 100% 0, 100% calc(100% - var(--bw-cut)), calc(100% - var(--bw-cut)) 100%, 0 100%);
+  display: block; width: 100%; height: var(--bw-control-md); padding: 0 var(--bw-space-3); font: 400 14px/20px var(--bw-font-sans); color: var(--bw-text);
+  background: var(--bw-field-fill); border: 1px solid var(--bw-field-frame); border-radius: var(--bw-radius-plate); outline: none; box-shadow: var(--bw-field-bar);
+  clip-path: var(--bw-field-cut);
   transition: border-color var(--bw-duration-fast), box-shadow var(--bw-duration-base); }
 .bw-field--sm { height: var(--bw-control-sm); font-size: 13px; }
 .bw-field--lg { height: var(--bw-control-lg); }
 .bw-field--mono { font-family: var(--bw-font-mono); font-size: 13px; }
 .bw-field::placeholder { color: var(--bw-text-dim); }
-.bw-field:hover { border-color: var(--bw-border-hover); }
-.bw-field:focus, .bw-field--box:focus-within { border-color: var(--bw-focus); box-shadow: inset 0 -2px 0 var(--bw-focus); }
-.bw-field[aria-invalid="true"], .bw-field[data-invalid] { border-color: var(--bw-error); box-shadow: inset 0 -2px 0 var(--bw-error); }
-.bw-field:disabled, .bw-field[data-disabled] { background: var(--bw-disabled-bg); color: var(--bw-disabled-text); border-color: var(--bw-border); cursor: not-allowed; }
-/* поле-коробка: рамка на обёртке, внутри — сам input и то, что рядом с ним (значок, клавиша, счётчик) */
-.bw-field--box { display: flex; align-items: center; gap: var(--bw-space-2); min-width: 0; cursor: text; }
+.bw-field:hover { --bw-field-frame: var(--bw-border-hover); }
+.bw-field:focus, .bw-field--box:focus-within { --bw-field-frame: var(--bw-focus); --bw-field-bar: inset 0 -2px 0 var(--bw-focus); }
+.bw-field[aria-invalid="true"], .bw-field[data-invalid] { --bw-field-frame: var(--bw-error); --bw-field-bar: inset 0 -2px 0 var(--bw-error); }
+.bw-field:disabled, .bw-field[data-disabled] { --bw-field-fill: var(--bw-disabled-bg); --bw-field-frame: var(--bw-border); color: var(--bw-disabled-text); cursor: not-allowed; }
+/* поле-коробка: внутри — сам input и то, что рядом с ним (значок, клавиша, счётчик).
+   Заливку, рамку и срез рисует ::before, сама коробка ничего не обрезает: то, что стоит внутри, может выходить за её край (свет режима Vim) */
+.bw-field--box { display: flex; align-items: center; gap: var(--bw-space-2); min-width: 0; cursor: text;
+  position: relative; isolation: isolate; background: none; border-color: transparent; box-shadow: none; clip-path: none; }
+.bw-field--box::before { content: ""; position: absolute; inset: -1px; z-index: -1; box-sizing: border-box; pointer-events: none;
+  background: var(--bw-field-fill); border: 1px solid var(--bw-field-frame); border-radius: inherit; box-shadow: var(--bw-field-bar); clip-path: var(--bw-field-cut);
+  transition: border-color var(--bw-duration-fast), box-shadow var(--bw-duration-base); }
 .bw-field__input { flex: 1; min-width: 0; height: 100%; padding: 0; border: 0; outline: none; background: none; color: inherit; font: inherit; }
 .bw-field__input::placeholder { color: var(--bw-text-dim); }
 .bw-field__input:disabled { cursor: not-allowed; }

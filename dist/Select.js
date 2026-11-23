@@ -16,7 +16,7 @@ export function SelectList({ options, value, active, label, onActive, onPick, cl
  *  Закрыт: Enter / Space / ↓ / ↑ открывают. Открыт: ↓ / ↑, Home / End, Enter или Space выбирает,
  *  Esc и Tab закрывают, буква ведёт к первому варианту на неё.
  *  Нажатие мимо, потеря фокуса окном, прокрутка под списком и изменение размера окна закрывают его. */
-export function Select({ value, options, onChange, label, title, disabled = false, className, style, ref, handle, ...rest }) {
+export function Select({ value, options, onChange, label, title, disabled = false, onOpenChange, className, style, ref, handle, ...rest }) {
     const triggerRef = useRef(null);
     const listRef = useRef(null);
     const [open, setOpen] = useState(false);
@@ -55,9 +55,12 @@ export function Select({ value, options, onChange, label, title, disabled = fals
         if (giveBackFocus)
             triggerRef.current?.focus();
     };
-    const openList = () => {
+    // Берёт ли открытый список фокус: нет, когда его открыли извне с takeFocus: false.
+    const takeFocusRef = useRef(true);
+    const openList = (takeFocus = true) => {
         if (disabled)
             return;
+        takeFocusRef.current = takeFocus;
         const at = options.findIndex((o) => o.value === value);
         setActive(at >= 0 && !options[at].disabled ? at : enabledIndexes[0] ?? 0);
         setOpen(true);
@@ -71,15 +74,31 @@ export function Select({ value, options, onChange, label, title, disabled = fals
             const { options: list, value: current } = latest.current;
             choose(stepFrom(list.findIndex((o) => o.value === current), delta));
         },
-        open: openList,
-        close: () => close(false),
+        open: (takeFocus = true) => openList(takeFocus),
+        close: (giveBackFocus = false) => close(giveBackFocus),
+        move: (delta) => setActive(stepFrom(activeRef.current, delta)),
+        moveTo: (edge) => {
+            const enabled = latest.current.enabledIndexes;
+            setActive((edge === 'first' ? enabled[0] : enabled[enabled.length - 1]) ?? activeRef.current);
+        },
+        pick: (giveBackFocus = false) => {
+            choose(activeRef.current);
+            close(giveBackFocus);
+        },
     };
     const apiRef = useRef(api);
     apiRef.current = api;
     useEffect(() => {
         if (!handle)
             return;
-        const stable = { step: (d) => apiRef.current.step(d), open: () => apiRef.current.open(), close: () => apiRef.current.close() };
+        const stable = {
+            step: (d) => apiRef.current.step(d),
+            open: (takeFocus) => apiRef.current.open(takeFocus),
+            close: (giveBackFocus) => apiRef.current.close(giveBackFocus),
+            move: (d) => apiRef.current.move(d),
+            moveTo: (edge) => apiRef.current.moveTo(edge),
+            pick: (giveBackFocus) => apiRef.current.pick(giveBackFocus),
+        };
         if (typeof handle === 'function') {
             handle(stable);
             return () => { handle(null); };
@@ -112,9 +131,18 @@ export function Select({ value, options, onChange, label, title, disabled = fals
         });
     }, [open, options.length]);
     useEffect(() => {
-        if (open && placement)
+        if (open && placement && takeFocusRef.current)
             listRef.current?.focus({ preventScroll: true });
     }, [open, placement]);
+    const onOpenChangeRef = useRef(onOpenChange);
+    onOpenChangeRef.current = onOpenChange;
+    const reportedOpen = useRef(false);
+    useEffect(() => {
+        if (reportedOpen.current === open)
+            return;
+        reportedOpen.current = open;
+        onOpenChangeRef.current?.(open);
+    }, [open]);
     useEffect(() => {
         if (!open)
             return;
@@ -183,6 +211,6 @@ export function Select({ value, options, onChange, label, title, disabled = fals
                 setActive(next);
         }
     };
-    return (_jsxs(_Fragment, { children: [_jsxs("button", { ref: mergeRefs(triggerRef, ref), type: "button", "aria-haspopup": "listbox", "aria-expanded": open, "aria-label": label, title: title, disabled: disabled, onClick: () => (open ? close(true) : openList()), onKeyDown: onTriggerKeyDown, className: cx('bw-select', className), style: style, ...rest, children: [_jsx("span", { className: "bw-select__value", children: chosen?.label ?? '' }), _jsx(Chevron, {})] }), open && placement && (_jsx(SelectList, { ref: listRef, options: options, value: value, active: active, label: label, onActive: setActive, onPick: pick, onKeyDown: onListKeyDown, style: placement }))] }));
+    return (_jsxs(_Fragment, { children: [_jsxs("button", { ref: mergeRefs(triggerRef, ref), type: "button", "aria-haspopup": "listbox", "aria-expanded": open, "aria-label": label, title: title, disabled: disabled, onClick: () => (open ? close(true) : openList(true)), onKeyDown: onTriggerKeyDown, className: cx('bw-select', className), style: style, ...rest, children: [_jsx("span", { className: "bw-select__value", children: chosen?.label ?? '' }), _jsx(Chevron, {})] }), open && placement && (_jsx(SelectList, { ref: listRef, options: options, value: value, active: active, label: label, onActive: setActive, onPick: pick, onKeyDown: onListKeyDown, style: placement }))] }));
 }
 //# sourceMappingURL=Select.js.map

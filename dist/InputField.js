@@ -2,8 +2,9 @@ import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useId, useRef } from 'react';
 import { cx, mergeRefs } from './util';
 /** Однострочное поле: рамка со срезанным углом вокруг input и того, что рядом с ним.
+ *  Рамку и срез рисует ::before обёртки, сама обёртка содержимое не обрезает.
  *  Нажатие в любом месте рамки ставит курсор в поле. */
-export function InputField({ size = 'md', mono = false, invalid = false, leading, trailing, onPress, boxClassName, className, disabled, ref, ...rest }) {
+export function InputField({ size = 'md', mono = false, invalid = false, leading, trailing, children, onPress, boxClassName, className, disabled, ref, ...rest }) {
     const inputRef = useRef(null);
     return (_jsxs("div", { className: cx('bw-field', 'bw-field--box', size !== 'md' && `bw-field--${size}`, mono && 'bw-field--mono', boxClassName), "data-invalid": invalid ? '' : undefined, "data-disabled": disabled ? '' : undefined, onMouseDown: (e) => {
             const input = inputRef.current;
@@ -14,7 +15,7 @@ export function InputField({ size = 'md', mono = false, invalid = false, leading
                 onPress();
             else
                 input.focus();
-        }, children: [leading && _jsx("span", { className: "bw-field__side", children: leading }), _jsx("input", { ref: mergeRefs(inputRef, ref), className: cx('bw-field__input', className), disabled: disabled, "aria-invalid": invalid || undefined, ...rest }), trailing && _jsx("span", { className: "bw-field__side", children: trailing })] }));
+        }, children: [leading && _jsx("span", { className: "bw-field__side", children: leading }), _jsx("input", { ref: mergeRefs(inputRef, ref), className: cx('bw-field__input', className), disabled: disabled, "aria-invalid": invalid || undefined, ...rest }), trailing && _jsx("span", { className: "bw-field__side", children: trailing }), children] }));
 }
 /** Поле с подписью и текстом ошибки. */
 export function Field({ label, error, id, invalid, ...rest }) {
