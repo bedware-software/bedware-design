@@ -1,7 +1,8 @@
 /* bedware — сгенерировано из tokens/tokens.json командой «npm run tokens». Руками не править. */
 /* Темы бренда под имена, которые уже есть в globals.css обоих приложений.
    Подключение в приложении: @import "@bedware/ui/tailwind-theme.css" сразу после @import "tailwindcss";
-   свои блоки цветов из globals.css убрать. data-theme: dark, light или system (как в ОС). */
+   свои блоки цветов из globals.css убрать. data-theme: dark, light или system (как в ОС).
+   data-theme-variant на том же элементе — ступень яркости темы (dark-soft, light-soft); без него тема обычная. */
 @theme {
   --color-background: #000000;
   --color-foreground: #f4f1e8;
@@ -113,4 +114,34 @@
     --color-desktop-hint-border: #8a8475;
     --color-desktop-hint-muted: #5a564f;
   }
+}
+
+/* Dark · Soft: ступень яркости темы dark, атрибут data-theme-variant рядом с data-theme. */
+[data-theme-variant="dark-soft"] {
+  --color-background: #171513;
+  --color-card: #22201d;
+  --color-popover: #2a2723;
+  --color-secondary: #33302b;
+  --color-muted: #3f3b35;
+  --color-accent: #33302b;
+  --color-border: #5a564f;
+  --color-input: #77736a;
+  --color-toolbar: #22201d;
+  --color-field: #0e0d0c;
+  --color-desktop-hint: #2a2723;
+  --color-desktop-hint-border: #77736a;
+}
+
+/* Light · Soft: ступень яркости темы light, атрибут data-theme-variant рядом с data-theme. */
+[data-theme-variant="light-soft"] {
+  --color-background: #ebe7dc;
+  --color-card: #f4f1e8;
+  --color-popover: #faf8f2;
+  --color-secondary: #e0dbcd;
+  --color-muted: #d4cebf;
+  --color-accent: #e0dbcd;
+  --color-border: #c9c3b3;
+  --color-toolbar: #f4f1e8;
+  --color-field: #faf8f2;
+  --color-desktop-hint: #faf8f2;
 }
