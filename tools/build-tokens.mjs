@@ -26,7 +26,10 @@ for (const th of themes.slice(1)) {
   const diff = themed.filter((x) => typeof x.value !== 'string' && x.value[th] !== undefined && x.value[th] !== x.value[first]);
   // ссылки объявляем заново, чтобы внутри темы они указывали на её значения
   const aliases = t.color.tokens.filter((c) => !diff.includes(c) && /^\{/.test(raw(c, th)));
-  css += `\n[data-theme="${th}"] {\n` + block(`цвета и тени · ${th}`, [...diff, ...aliases].map((c) => [c.name, ref(raw(c, th))])) + '\n}\n';
+  const body = block(`цвета и тени · ${th}`, [...diff, ...aliases].map((c) => [c.name, ref(raw(c, th))]));
+  css += `\n[data-theme="${th}"] {\n${body}\n}\n`;
+  // data-theme="system" — тема как в ОС: по умолчанию первая, эта — когда ОС просит её.
+  css += `\n@media (prefers-color-scheme: ${th}) {\n  [data-theme="system"] {\n${body.replace(/^/gm, '  ')}\n  }\n}\n`;
 }
 css += '\n:root {\n' + [
   block('шрифты', [['font-sans', t.type.families.sans], ['font-mono', t.type.families.mono], ['font-display', t.type.families.mono]]),
@@ -55,13 +58,14 @@ const MAP = {
 };
 const lines = (theme) => Object.entries(MAP).map(([k, v]) => `  --color-${k}: ${hex(v, theme)};`).join('\n');
 const theme = HEAD + `/* Темы бренда под имена, которые уже есть в globals.css обоих приложений.
-   Подключение (этап миграции): заменить значения в @theme { … } и в блоке светлой темы на эти. */
+   Подключение в приложении: @import "@bedware/ui/tailwind-theme.css" сразу после @import "tailwindcss";
+   свои блоки цветов из globals.css убрать. data-theme: dark, light или system (как в ОС). */
 @theme {
 ${lines(first)}
   --radius: ${t.radius.tokens.find((r) => r.name === 'radius-md').value};
   --font-sans: ${t.type.families.sans};
   --font-mono: ${t.type.families.mono};
 }
-${themes.slice(1).map((th) => `\n[data-theme="${th}"] {\n${lines(th)}\n}\n`).join('')}`;
+${themes.slice(1).map((th) => `\n[data-theme="${th}"] {\n${lines(th)}\n}\n\n@media (prefers-color-scheme: ${th}) {\n  [data-theme="system"] {\n${lines(th).replace(/^/gm, '  ')}\n  }\n}\n`).join('')}`;
 writeFileSync(join(root, 'tokens/tailwind-theme.css'), theme);
 console.log(`tokens: ${t.color.tokens.length} colors × ${themes.length} themes → tokens/tokens.css, tokens/tailwind-theme.css`);
