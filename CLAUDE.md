@@ -31,6 +31,7 @@
 | `packages/ui/src/*.tsx` — React-компоненты пакета `@bedware/ui` (разметка и поведение на классах `bw-*`) | `packages/ui/dist/**` — JS, типы, `styles.css`, `tokens.css`, `tailwind-theme.css`, `fonts.css` и `fonts/` | `npm run ui` |
 | `packages/ui/demo/stories.tsx` — образцы компонентов (общие для витрины и дизайн-системы), `packages/ui/demo/showcase.tsx` — страница-витрина | `packages/ui/demo/build/showcase.js` (для `ui.html`); `design-system/project/components/*/preview.html` | `npm run ui`; `npm run design-system` |
 | `tools/build-logo.mjs` (раскладка логотипа), `assets/glyphs.js` ← `tools/extract-glyphs.py` | `brand/logo/*.svg` | `npm run logo` |
+| `tools/build-icons.mjs` — иконки приложений (варианты и выбранные; выбор записан в `tools/build-app-icons.mjs`) | `brand/icons/*.svg`; `brand/icons/app/<приложение>/icon.png`, `icon.ico` (копируются в `resources/` приложений) | `npm run icons`; `npm run icons:apps` (только macOS, `sips`) |
 | `tools/build-posters.py`, `brand/backdrop.png` ← `tools/clean-backdrop.py` | `brand/logo/*-poster.png` | `python tools/build-posters.py` |
 | `design-system/README.src.md` — текст бренд-бука | `design-system/project/README.md` | `npm run design-system` |
 | `tools/build-design-system.mjs` — описания компонентов (руководства), обложка | `design-system/project/**` (кроме индекса) | `npm run design-system` |

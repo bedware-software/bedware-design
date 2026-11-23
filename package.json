@@ -8,6 +8,8 @@
     "serve": "python3 -m http.server 4173",
     "tokens": "node tools/build-tokens.mjs",
     "logo": "node tools/build-logo.mjs",
+    "icons": "node tools/build-icons.mjs",
+    "icons:apps": "node tools/build-app-icons.mjs",
     "design-system": "node tools/build-design-system.mjs",
     "ui": "npm run build -w @bedware/ui",
     "ui:check": "npm run typecheck -w @bedware/ui",

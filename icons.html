@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ru" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>bedware — иконки приложений: варианты</title>
+<link rel="stylesheet" href="node_modules/@fontsource/inter/400.css">
+<link rel="stylesheet" href="node_modules/@fontsource/inter/600.css">
+<link rel="stylesheet" href="node_modules/@fontsource/jetbrains-mono/500.css">
+<link rel="stylesheet" href="node_modules/@fontsource/jetbrains-mono/700.css">
+<link rel="stylesheet" href="tokens/tokens.css">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bw-bg); color: var(--bw-text); font: 14px/1.5 Inter, system-ui, sans-serif; }
+  main { max-width: 1240px; margin: 0 auto; padding: 32px 24px 80px; }
+  h1, h2, h3, .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+  h1 { font-size: 26px; margin: 0 0 6px; color: var(--bw-text-strong); }
+  h2 { font-size: 20px; margin: 56px 0 4px; color: var(--bw-text-strong); }
+  h3 { font-size: 15px; margin: 0; color: var(--bw-text-strong); }
+  p { margin: 0 0 10px; color: var(--bw-text-muted); max-width: 820px; }
+  .label { font: 500 11px 'JetBrains Mono', monospace; color: var(--bw-text-dim); text-transform: uppercase; letter-spacing: .05em; }
+  .card { border: 1px solid var(--bw-border); border-radius: 8px; background: var(--bw-surface-1); padding: 20px; margin-top: 16px; }
+  .head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
+  .letter { font: 700 13px 'JetBrains Mono', monospace; background: var(--bw-plate); color: var(--bw-on-plate); padding: 2px 10px; clip-path: polygon(5px 0, 100% 0, calc(100% - 5px) 100%, 0 100%); }
+  .head span.note { color: var(--bw-text-muted); font-size: 13px; }
+  .grid { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 20px; align-items: start; }
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+  .big { display: block; border-radius: 8px; background: repeating-conic-gradient(#1b1917 0 25%, #0e0d0c 0 50%) 0 0 / 24px 24px; }
+  .big img { display: block; width: 100%; height: auto; }
+  .big + .label { display: block; margin-top: 6px; }
+  .docks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  @media (max-width: 640px) { .docks { grid-template-columns: 1fr; } }
+  .dock { border-radius: 14px; padding: 12px 16px 10px; overflow-x: auto; }
+  /* Фон Dock: размытые обои за полупрозрачной полкой — тёмный и светлый режим macOS. */
+  .dock.dark { background: linear-gradient(120deg, #2b3340, #3a2f3d 60%, #26303a); }
+  .dock.light { background: linear-gradient(120deg, #d7dde6, #e9e1e4 60%, #cfd9e2); }
+  .dock .label { display: block; margin-bottom: 8px; }
+  .dock.dark .label, .dock.dark .px { color: #b9bcc4; }
+  .dock.light .label, .dock.light .px { color: #4a4d55; }
+  .sizes { display: flex; align-items: flex-end; gap: 18px; }
+  .sizes figure { margin: 0; text-align: center; }
+  .sizes img { display: block; margin: 0 auto 4px; }
+  .px { font: 500 10px 'JetBrains Mono', monospace; }
+  .pair { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 12px; }
+  .shelf { display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px; border-radius: 20px; }
+  .dock.dark .shelf { background: rgba(30, 30, 34, .55); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .14); }
+  .dock.light .shelf { background: rgba(255, 255, 255, .5); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .7); }
+  .ghost { width: 52px; height: 52px; margin: 6px; border-radius: 12px; }
+  .taskbar { display: inline-flex; align-items: center; gap: 14px; padding: 8px 14px; border-radius: 4px; }
+  .dock.dark .taskbar { background: #1f2023; }
+  .dock.light .taskbar { background: #eef1f6; box-shadow: inset 0 0 0 1px #d5d9e0; }
+  .trays { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 12px; }
+  .menubar { display: inline-flex; align-items: center; gap: 14px; height: 28px; padding: 0 14px; border-radius: 6px; font: 500 12px Inter, sans-serif; }
+  .menubar.l { background: #e9e6ec; color: #111; }
+  .menubar.d { background: #23232a; color: #f2f2f2; }
+  .menubar.d img { filter: invert(1); }
+  .cur { display: flex; gap: 20px; align-items: flex-end; flex-wrap: wrap; }
+  .cur figure { margin: 0; text-align: center; }
+  .cur img { display: block; margin: 0 auto 4px; }
+  ul { margin: 0 0 10px; padding-left: 18px; color: var(--bw-text-muted); max-width: 820px; }
+  code { font: 12px 'JetBrains Mono', monospace; color: var(--bw-text); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Иконки приложений — варианты</h1>
+  <p><b>Runwa — выбран знак B</b> (шеврон «выполнить» и курсор). <b>Vimperium — пока выбран S3</b> (V-клинок). Остальные варианты Vimperium оставлены ниже для сравнения: голова робота (<b>K1–K3</b>, <b>W1–W2</b>) и клинки (<b>S1, S2, S4</b>).</p>
+  <p>Размеры 16 и 32px рисуются отдельным, упрощённым рисунком (без кромки и мелких деталей) — так делают все системные иконки. Исходники: <code>brand/icons/*.svg</code>, сборка <code>npm run icons</code>.</p>
+
+  <h2>Рядом с Runwa в Dock и на панели задач</h2>
+  <p>Слева выбранная иконка Runwa, справа вариант Vimperium: одна семья, но не путаются с первого взгляда.</p>
+  <div id="together"></div>
+
+  <div id="apps"></div>
+</main>
+<script>
+const APPS = [
+  { id: 'vimperium', name: 'Vimperium', what: 'браузер с клавишами Vim', v: {
+    s3: ['V-клинок — выбрано', 'Сама буква выкована как клинок: грани, острый низ, верхушки срезаны как острия.'],
+    k1: ['Крупный план · гладкая челюсть', 'Тот же крупный план без зубов: гладкая стальная челюсть со швом и линиями плит.'],
+    k2: ['Крупный план · решётка', 'Тот же крупный план, вместо зубов — решётка респиратора.'],
+    k3: ['Крупный план · по портрету', 'Лицо как у робота: тупой козырёк вместо клюва, знак V на лбу, глаза — пары огней в чёрной нише, щитки скул, стальная морда клином, клинки по бокам.'],
+    w1: ['Голова · с клинками', 'Бывший «клин», строже и по портрету: прямые и вертикали, плита с козырьком, огни глаз, морда клином, порты, широкие ступенчатые клинки.'],
+    w2: ['Голова · без клинков', 'Та же голова без клинков, крупнее: шлем, а не зверь.'],
+    s1: ['Два меча', 'Как в нынешней иконке: два меча сходятся остриями в V и перекрещиваются, поперёк персиковый росчерк. Цвета и грани бренда.'],
+    s2: ['Клинки робота', 'Два широких ступенчатых стальных клинка с жёлтой режущей кромкой — те, что у робота на голове, — сложены в V.'],
+    s4: ['Кинжал', 'Тяжёлая жёлтая V, сквозь неё — стальной клинок остриём вниз.'] } },
+  { id: 'runwa', name: 'Runwa', what: 'палитра команд и запуск', tray: true, chosen: true, v: {
+    b: ['Знак', 'Шеврон «выполнить» и персиковый курсор: строка, готовая к запуску.'] } },
+];
+const src = (app, v, shape, px) => `brand/icons/${app}-${v}-${shape}${px <= 32 ? '-small' : ''}.svg`;
+const img = (s, px, alt) => `<img src="${s}" width="${px}" height="${px}" alt="${alt}">`;
+const sizes = (app, v, shape) => `<div class="sizes">${[128, 64, 32, 16].map((px) => `<figure>${img(src(app, v, shape, px), px, `${app} ${v} ${px}`)}<span class="px">${px}</span></figure>`).join('')}</div>`;
+const dock = (mode, label, body) => `<div class="dock ${mode}"><span class="label">${label}</span>${body}</div>`;
+const ghost = (mode) => `<span class="ghost" style="background:${mode === 'dark' ? 'rgba(255,255,255,.14)' : 'rgba(0,0,0,.12)'}"></span>`;
+
+// Вместе: Dock macOS (64) и панель задач Windows (32, 16) — Runwa B и каждый вариант Vimperium.
+const VIM = APPS[0];
+document.getElementById('together').innerHTML = Object.entries(VIM.v).map(([v, [title]]) => `<div class="card"><div class="head"><span class="letter">${v.toUpperCase()}</span><h3>${title}</h3></div><div class="docks">${['dark', 'light'].map((m) =>
+  dock(m, m === 'dark' ? 'тёмный' : 'светлый', `<div class="shelf">${ghost(m)}${img(src('runwa', 'b', 'mac', 64), 64, 'Runwa')}${img(src('vimperium', v, 'mac', 64), 64, 'Vimperium')}${ghost(m)}</div>
+    <div class="pair"><div class="taskbar">${img(src('runwa', 'b', 'win', 32), 32, 'Runwa')}${img(src('vimperium', v, 'win', 32), 32, 'Vimperium')}</div><div class="taskbar">${img(src('runwa', 'b', 'win', 16), 16, 'Runwa')}${img(src('vimperium', v, 'win', 16), 16, 'Vimperium')}</div></div>`)).join('')}</div></div>`).join('');
+
+document.getElementById('apps').innerHTML = APPS.map((a) => `
+  <h2>${a.name}${a.chosen ? ' — выбрано' : ''}</h2>
+  <p>${a.what[0].toUpperCase() + a.what.slice(1)}.</p>
+  <div class="card"><div class="head"><h3>Сейчас</h3><span class="note">нынешняя иконка, для сравнения</span></div>
+    <div class="cur">${[128, 64, 32, 16].map((px) => `<figure>${img(`brand/icons/current/${a.id}.png`, px, 'сейчас')}<span class="px" style="color:var(--bw-text-dim)">${px}</span></figure>`).join('')}</div></div>
+  ${Object.entries(a.v).map(([v, [title, note]]) => `<div class="card"><div class="head"><span class="letter">${v.toUpperCase()}</span><h3>${a.name} ${v.toUpperCase()} · ${title}</h3><span class="note">${note}</span></div>
+    <div class="grid">
+      <div><a class="big" href="brand/icons/${a.id}-${v}-mac.svg" target="_blank">${img(`brand/icons/${a.id}-${v}-mac.svg`, 300, '1024')}</a><span class="label">1024 · macOS (уменьшено, по клику — полный размер)</span></div>
+      <div class="docks">
+        ${dock('dark', 'macOS · тёмный Dock', sizes(a.id, v, 'mac'))}
+        ${dock('light', 'macOS · светлый Dock', sizes(a.id, v, 'mac'))}
+        ${dock('dark', 'Windows · квадрат, тёмная панель', sizes(a.id, v, 'win'))}
+        ${dock('light', 'Windows · квадрат, светлая панель', sizes(a.id, v, 'win'))}
+      </div>
+    </div>
+    ${a.tray ? `<div class="trays"><span class="label" style="align-self:center">трей / строка меню, одноцветный:</span>
+      <span class="menubar l">${img(`brand/icons/${a.id}-${v}-tray.svg`, 18, 'трей')}<span>Пн 23 нояб. 21:40</span></span>
+      <span class="menubar d">${img(`brand/icons/${a.id}-${v}-tray.svg`, 18, 'трей')}<span>Пн 23 нояб. 21:40</span></span>
+      <span class="menubar l" style="border-radius:2px">${img(`brand/icons/${a.id}-${v}-tray.svg`, 16, 'трей')}<span>Windows 16px</span></span>
+      <span class="menubar d" style="border-radius:2px">${img(`brand/icons/${a.id}-${v}-tray.svg`, 16, 'трей')}<span>Windows 16px</span></span></div>` : ''}
+  </div>`).join('')}
+  ${a.tray ? '' : '<p style="margin-top:12px">Значка в трее у Vimperium нет — одноцветный вариант не нужен.</p>'}
+`).join('');
+</script>
+</body>
+</html>
