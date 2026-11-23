@@ -15,14 +15,18 @@ export interface InputFieldProps extends Omit<InputHTMLAttributes<HTMLInputEleme
   trailing?: ReactNode
   /** Нажатие мимо самого input, когда оно значит больше, чем фокус. */
   onPress?: () => void
+  /** Внутри рамки, после всего остального: то, что рисуется поверх или вокруг поля (свет режима, полоса хода).
+   *  Рамка поля не обрезает содержимое, так что оно может выходить за её край. */
+  children?: ReactNode
   /** Класс обёртки-рамки (ширина, отступы снаружи). */
   boxClassName?: string
   ref?: Ref<HTMLInputElement>
 }
 
 /** Однострочное поле: рамка со срезанным углом вокруг input и того, что рядом с ним.
+ *  Рамку и срез рисует ::before обёртки, сама обёртка содержимое не обрезает.
  *  Нажатие в любом месте рамки ставит курсор в поле. */
-export function InputField({ size = 'md', mono = false, invalid = false, leading, trailing, onPress, boxClassName, className, disabled, ref, ...rest }: InputFieldProps) {
+export function InputField({ size = 'md', mono = false, invalid = false, leading, trailing, children, onPress, boxClassName, className, disabled, ref, ...rest }: InputFieldProps) {
   const inputRef = useRef<HTMLInputElement>(null)
   return (
     <div
@@ -40,6 +44,7 @@ export function InputField({ size = 'md', mono = false, invalid = false, leading
       {leading && <span className="bw-field__side">{leading}</span>}
       <input ref={mergeRefs(inputRef, ref)} className={cx('bw-field__input', className)} disabled={disabled} aria-invalid={invalid || undefined} {...rest} />
       {trailing && <span className="bw-field__side">{trailing}</span>}
+      {children}
     </div>
   )
 }

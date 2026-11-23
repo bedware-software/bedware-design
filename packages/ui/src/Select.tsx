@@ -16,6 +16,8 @@ export interface SelectProps<T extends string> {
   label: string
   title?: string
   disabled?: boolean
+  /** Список открылся или закрылся — чтобы своя клавиатура знала, кому отдавать клавиши. */
+  onOpenChange?: (open: boolean) => void
   className?: string
   style?: CSSProperties
   ref?: Ref<HTMLButtonElement>
@@ -25,8 +27,16 @@ export interface SelectProps<T extends string> {
 export interface SelectHandle {
   /** Выбрать соседний вариант, не открывая список: -1 предыдущий, +1 следующий. */
   step: (delta: number) => void
-  open: () => void
-  close: () => void
+  /** Открыть список. takeFocus: false — фокус остаётся там, где был (клавиши ведёт сам вызывающий). */
+  open: (takeFocus?: boolean) => void
+  /** Закрыть список. giveBackFocus: true — вернуть фокус на кнопку. */
+  close: (giveBackFocus?: boolean) => void
+  /** Сдвинуть подсветку в открытом списке на delta доступных вариантов, без перехода через край. */
+  move: (delta: number) => void
+  /** Подсветить первый или последний доступный вариант открытого списка. */
+  moveTo: (edge: 'first' | 'last') => void
+  /** Выбрать подсвеченный вариант и закрыть список. */
+  pick: (giveBackFocus?: boolean) => void
 }
 
 interface Placement {
@@ -88,7 +98,7 @@ export function SelectList<T extends string>({ options, value, active, label, on
  *  Закрыт: Enter / Space / ↓ / ↑ открывают. Открыт: ↓ / ↑, Home / End, Enter или Space выбирает,
  *  Esc и Tab закрывают, буква ведёт к первому варианту на неё.
  *  Нажатие мимо, потеря фокуса окном, прокрутка под списком и изменение размера окна закрывают его. */
-export function Select<T extends string>({ value, options, onChange, label, title, disabled = false, className, style, ref, handle, ...rest }: SelectProps<T> & { handle?: Ref<SelectHandle> } & Omit<HTMLAttributes<HTMLButtonElement>, 'onChange'>) {
+export function Select<T extends string>({ value, options, onChange, label, title, disabled = false, onOpenChange, className, style, ref, handle, ...rest }: SelectProps<T> & { handle?: Ref<SelectHandle> } & Omit<HTMLAttributes<HTMLButtonElement>, 'onChange'>) {
   const triggerRef = useRef<HTMLButtonElement>(null)
   const listRef = useRef<HTMLDivElement>(null)
   const [open, setOpen] = useState(false)
@@ -128,8 +138,11 @@ export function Select<T extends string>({ value, options, onChange, label, titl
     if (giveBackFocus) triggerRef.current?.focus()
   }
 
-  const openList = (): void => {
+  // Берёт ли открытый список фокус: нет, когда его открыли извне с takeFocus: false.
+  const takeFocusRef = useRef(true)
+  const openList = (takeFocus = true): void => {
     if (disabled) return
+    takeFocusRef.current = takeFocus
     const at = options.findIndex((o) => o.value === value)
     setActive(at >= 0 && !options[at].disabled ? at : enabledIndexes[0] ?? 0)
     setOpen(true)
@@ -145,14 +158,30 @@ export function Select<T extends string>({ value, options, onChange, label, titl
       const { options: list, value: current } = latest.current
       choose(stepFrom(list.findIndex((o) => o.value === current), delta))
     },
-    open: openList,
-    close: () => close(false),
+    open: (takeFocus = true) => openList(takeFocus),
+    close: (giveBackFocus = false) => close(giveBackFocus),
+    move: (delta) => setActive(stepFrom(activeRef.current, delta)),
+    moveTo: (edge) => {
+      const enabled = latest.current.enabledIndexes
+      setActive((edge === 'first' ? enabled[0] : enabled[enabled.length - 1]) ?? activeRef.current)
+    },
+    pick: (giveBackFocus = false) => {
+      choose(activeRef.current)
+      close(giveBackFocus)
+    },
   }
   const apiRef = useRef(api)
   apiRef.current = api
   useEffect(() => {
     if (!handle) return
-    const stable: SelectHandle = { step: (d) => apiRef.current.step(d), open: () => apiRef.current.open(), close: () => apiRef.current.close() }
+    const stable: SelectHandle = {
+      step: (d) => apiRef.current.step(d),
+      open: (takeFocus) => apiRef.current.open(takeFocus),
+      close: (giveBackFocus) => apiRef.current.close(giveBackFocus),
+      move: (d) => apiRef.current.move(d),
+      moveTo: (edge) => apiRef.current.moveTo(edge),
+      pick: (giveBackFocus) => apiRef.current.pick(giveBackFocus),
+    }
     if (typeof handle === 'function') {
       handle(stable)
       return () => { handle(null) }
@@ -186,8 +215,17 @@ export function Select<T extends string>({ value, options, onChange, label, titl
   }, [open, options.length])
 
   useEffect(() => {
-    if (open && placement) listRef.current?.focus({ preventScroll: true })
+    if (open && placement && takeFocusRef.current) listRef.current?.focus({ preventScroll: true })
   }, [open, placement])
+
+  const onOpenChangeRef = useRef(onOpenChange)
+  onOpenChangeRef.current = onOpenChange
+  const reportedOpen = useRef(false)
+  useEffect(() => {
+    if (reportedOpen.current === open) return
+    reportedOpen.current = open
+    onOpenChangeRef.current?.(open)
+  }, [open])
 
   useEffect(() => {
     if (!open) return
@@ -261,7 +299,7 @@ export function Select<T extends string>({ value, options, onChange, label, titl
         aria-label={label}
         title={title}
         disabled={disabled}
-        onClick={() => (open ? close(true) : openList())}
+        onClick={() => (open ? close(true) : openList(true))}
         onKeyDown={onTriggerKeyDown}
         className={cx('bw-select', className)}
         style={style}
