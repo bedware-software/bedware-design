@@ -19,6 +19,7 @@ const css = HEAD + ':root {\n' + [
   block('шрифты', [['font-sans', t.type.families.sans], ['font-mono', t.type.families.mono], ['font-display', t.type.families.mono]]),
   block('отступы и размеры', t.spacing.tokens.map((s) => [s.name, s.value, s.usage])),
   block('скругления', t.radius.tokens.map((s) => [s.name, s.value, s.usage])),
+  block('тени', t.shadow.tokens.map((s) => [s.name, s.value, s.usage])),
   block('движение', t.motion.tokens.map((s) => [s.name, s.value, s.usage])),
 ].join('\n\n') + '\n}\n';
 writeFileSync(join(root, 'tokens/tokens.css'), css);
