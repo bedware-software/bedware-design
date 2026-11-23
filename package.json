@@ -1,0 +1,28 @@
+{
+  "name": "@bedware/ui",
+  "version": "0.1.0",
+  "description": "bedware — общие React-компоненты для Runwa, Vimperium и сайта",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./styles.css": "./dist/styles.css",
+    "./tokens.css": "./dist/tokens.css",
+    "./fonts.css": "./dist/fonts.css",
+    "./tailwind-theme.css": "./dist/tailwind-theme.css"
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": [
+    "*.css"
+  ],
+  "peerDependencies": {
+    "react": "^19.0.0"
+  },
+  "repository": "github:bedware-software/bedware-design"
+}
