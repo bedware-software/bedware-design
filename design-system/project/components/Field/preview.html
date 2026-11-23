@@ -1,0 +1,17 @@
+<!-- @dsCard group="Формы" height=300 subtitle="Три высоты, фокус, ошибка, выключенное" -->
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><style>
+  html, body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font-sans); }
+  body { padding: 20px; }
+  .line { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 14px; }
+  .line:last-child { margin-bottom: 0; }
+  .cap { font: 11px var(--font-mono); color: var(--text-dim); width: 84px; flex: none; }
+</style></head><body>
+<div style="max-width:420px">
+<div class="line"><span class="cap">пустое</span><input class="bw-field" placeholder="например, ktalk.exe" style="flex:1"></div>
+<div class="line"><span class="cap">заполнено</span><input class="bw-field bw-field--mono" value="ktalk.exe" style="flex:1"></div>
+<div class="line"><span class="cap">ошибка</span><span style="flex:1"><input class="bw-field" aria-invalid="true" value="Открыть проект"><div class="bw-error-text">Команда с таким названием уже есть.</div></span></div>
+<div class="line"><span class="cap">выключено</span><input class="bw-field" value="недоступно" disabled style="flex:1"></div>
+<div class="line"><span class="cap">32 / 40</span><input class="bw-field bw-field--sm" placeholder="Поиск" style="flex:1"><input class="bw-field bw-field--lg" placeholder="Команда…" style="flex:1"></div>
+</div>
+</body></html>

@@ -1,0 +1,39 @@
+{
+  "v": 3,
+  "layout": "files",
+  "createdOnFiles": { "v": 1, "at": "2026-11-23T17:30:00Z" },
+  "title": "Bedware",
+  "namespace": "Bedware",
+  "libraries": [],
+  "sections": {},
+  "groups": ["Logos", "Illustrations"],
+  "assetGroups": {
+    "Logos": {
+      "name": "Logos",
+      "tile": "l",
+      "order": ["bedware-software-poster.png", "bedware-software-on-black.svg", "bedware-software.svg", "runwa-poster.png", "vimperium-poster.png", "bedware.svg", "runwa.svg", "vimperium.svg", "nota.svg"],
+      "files": {
+        "bedware-software-poster.png": { "name": "bedware-software-poster.png", "blob": "ba239a3bd63cd6a4d1540497be571ef2", "size": 836330, "type": "image/png" },
+        "bedware-software-on-black.svg": { "name": "bedware-software-on-black.svg", "blob": "1daf2ce5ad01674da203d7698e40bf7b", "size": 7970, "type": "image/svg+xml" },
+        "bedware-software.svg": { "name": "bedware-software.svg", "blob": "a400e4fbde96c16ffd9e3ffde80bd75f", "size": 7917, "type": "image/svg+xml" },
+        "runwa-poster.png": { "name": "runwa-poster.png", "blob": "e1d1fcf2866e883f40e107a428c8b3a6", "size": 787510, "type": "image/png" },
+        "vimperium-poster.png": { "name": "vimperium-poster.png", "blob": "9722102708c8f56c4aaf2d5e807f0b51", "size": 789829, "type": "image/png" },
+        "bedware.svg": { "name": "bedware.svg", "blob": "1c45f1bc5e5e7a9a0fa2bdf7f25f1528", "size": 2698, "type": "image/svg+xml" },
+        "runwa.svg": { "name": "runwa.svg", "blob": "2371e77de61cb5c724847dbef74a26e3", "size": 1646, "type": "image/svg+xml" },
+        "vimperium.svg": { "name": "vimperium.svg", "blob": "7254860c0630e68d8d230c094c79cd73", "size": 2745, "type": "image/svg+xml" },
+        "nota.svg": { "name": "nota.svg", "blob": "c33d2df3704342ff5c01528955b10422", "size": 1392, "type": "image/svg+xml" }
+      }
+    },
+    "Illustrations": {
+      "name": "Illustrations",
+      "tile": "l",
+      "order": ["robot.png"],
+      "files": {
+        "robot.png": { "name": "robot.png", "blob": "9797f733b6d685e0f5d6dc1d916bec9e", "size": 1097306, "type": "image/png" }
+      }
+    }
+  },
+  "blobs": {},
+  "docs": { "sections": [] },
+  "lastChange": { "by": "Claude", "at": "2026-11-23T17:30:00Z", "via": "Claude Code", "note": "Первая сборка из репозитория bedware-design: токены, шрифты, логотипы, шесть компонентов, обложка." }
+}

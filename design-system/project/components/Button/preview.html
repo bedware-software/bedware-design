@@ -1,0 +1,13 @@
+<!-- @dsCard group="Действия" height=190 subtitle="Основная, вторичная, текстовая, опасная, выключенные" -->
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><style>
+  html, body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font-sans); }
+  body { padding: 20px; }
+  .line { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 14px; }
+  .line:last-child { margin-bottom: 0; }
+  .cap { font: 11px var(--font-mono); color: var(--text-dim); width: 84px; flex: none; }
+</style></head><body>
+<div class="line"><span class="cap">обычные</span><button class="bw-btn bw-btn--primary">Сохранить</button><button class="bw-btn bw-btn--secondary">Изменить</button><button class="bw-btn bw-btn--ghost">Отмена</button><button class="bw-btn bw-btn--danger">Удалить</button></div>
+<div class="line"><span class="cap">с клавишей</span><button class="bw-btn bw-btn--primary">Сохранить <span class="bw-kbd">↵</span></button><button class="bw-btn bw-btn--ghost">Отмена <span class="bw-kbd">esc</span></button></div>
+<div class="line"><span class="cap">выключены</span><button class="bw-btn bw-btn--primary" disabled>Сохранить</button><button class="bw-btn bw-btn--secondary" disabled>Изменить</button><button class="bw-btn bw-btn--ghost" disabled>Отмена</button></div>
+</body></html>

@@ -1,0 +1,30 @@
+<!-- @dsCard height=300 -->
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><style>
+  html, body { margin: 0; background: var(--bg); }
+  .cover { position: relative; width: 960px; height: 300px; overflow: hidden; background: var(--bg); }
+  svg { position: absolute; inset: 0; }
+  .yellow { fill: var(--yellow); } .edge { fill: var(--yellow-plate); } .peach { fill: var(--peach); }
+  .metal { fill: var(--surface-3); } .ink { fill: var(--text-strong); } .plus { stroke: var(--border-strong); stroke-width: 2; }
+  .name { position: absolute; left: 32px; bottom: 54px; margin: 0; font: 800 104px/.95 var(--font-mono); letter-spacing: -.02em; color: var(--text-strong); }
+  .tagline { position: absolute; left: 36px; bottom: 28px; margin: 0; font: 400 14px/1 var(--font-mono); color: var(--text-muted); }
+</style></head><body>
+<div class="cover">
+<svg viewBox="0 0 960 300" width="960" height="300" aria-hidden="true">
+  <!-- blocks: yellow 192×216 и 96×96, yellow-plate (кромка) 192×12, peach 144×96, surface-3 144×120, text-strong 48×48 — стороны кратны space-6 (24px)
+       arrangement: высокая жёлтая пластина со спутниками, блоки уходят за правый и верхний край
+       pattern: сетка плюсов с шагом space-6 — «технический, моноширинный»; срез углов = токен cut × 3, как у основной кнопки
+       steps and radii: space-6, space-3, cut; углы блоков — срезы, скруглений нет (radius-plate) -->
+  <g class="plus"><path d="M499 36h10M504 31v10"/><path d="M547 36h10M552 31v10"/><path d="M595 36h10M600 31v10"/><path d="M643 36h10M648 31v10"/><path d="M691 36h10M696 31v10"/><path d="M739 36h10M744 31v10"/><path d="M787 36h10M792 31v10"/><path d="M835 36h10M840 31v10"/><path d="M883 36h10M888 31v10"/><path d="M931 36h10M936 31v10"/><path d="M499 108h10M504 103v10"/><path d="M547 108h10M552 103v10"/><path d="M595 108h10M600 103v10"/><path d="M643 108h10M648 103v10"/><path d="M691 108h10M696 103v10"/><path d="M739 108h10M744 103v10"/><path d="M787 108h10M792 103v10"/><path d="M835 108h10M840 103v10"/><path d="M883 108h10M888 103v10"/><path d="M931 108h10M936 103v10"/><path d="M499 180h10M504 175v10"/><path d="M547 180h10M552 175v10"/><path d="M595 180h10M600 175v10"/><path d="M643 180h10M648 175v10"/><path d="M691 180h10M696 175v10"/><path d="M739 180h10M744 175v10"/><path d="M787 180h10M792 175v10"/><path d="M835 180h10M840 175v10"/><path d="M883 180h10M888 175v10"/><path d="M931 180h10M936 175v10"/><path d="M499 252h10M504 247v10"/><path d="M547 252h10M552 247v10"/><path d="M595 252h10M600 247v10"/><path d="M643 252h10M648 247v10"/><path d="M691 252h10M696 247v10"/><path d="M739 252h10M744 247v10"/><path d="M787 252h10M792 247v10"/><path d="M835 252h10M840 247v10"/><path d="M883 252h10M888 247v10"/><path d="M931 252h10M936 247v10"/></g>
+  <polygon class="yellow" points="576,24 744,24 768,48 768,240 600,240 576,216"/>
+  <rect class="edge" x="600" y="228" width="168" height="12"/>
+  <polygon class="edge" points="576,216 600,240 600,228 576,204"/>
+  <polygon class="peach" points="792,-24 960,-24 960,72 816,72 792,48"/>
+  <polygon class="metal" points="792,96 936,96 960,120 960,216 792,216"/>
+  <polygon class="yellow" points="864,240 960,240 960,336 888,336 864,312"/>
+  <rect class="ink" x="504" y="192" width="48" height="48"/>
+</svg>
+<p class="name">Bedware</p>
+<p class="tagline">WRITE C0DE! — чёрный, жёлтые пластины, моноширинные акценты</p>
+</div>
+</body></html>
