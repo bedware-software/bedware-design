@@ -52,7 +52,8 @@
 ## Пакет компонентов `@bedware/ui`
 
 - Папка `packages/ui`, npm-workspace этого репозитория. TypeScript, React 19 — peer-зависимость, других зависимостей нет (значки передаёт потребитель).
-- Компоненты: `Button` / `IconButton` / `LinkButton`, `InputField` / `Field`, `Textarea`, `Checkbox`, `ColorField`, `HotkeyButton`, `Slider`, `Progress`, `Select`, `Segmented`, `Switch`, `ChoiceCards`, `Panel*`, `SectionTitle`, `Notice`, `Menu*`, `Nav*`, `ConfirmDialog`, `FormDialog`, `ResultRow` / `CommandRow` / `ListRow` / `GroupTitle` / `RowKey`, `Kbd` / `Hint` / `HintBar`, `Tooltip` / `Tip`, `Badge`, `Tag`.
+- Компоненты: `Button` / `IconButton` / `LinkButton`, `InputField` / `Field`, `Textarea`, `Checkbox`, `ColorField`, `HotkeyButton`, `Slider`, `Progress`, `Select`, `Segmented`, `Switch`, `ChoiceCards`, `Panel*`, `SectionTitle`, `Notice`, `Menu*`, `Nav*`, `ConfirmDialog`, `FormDialog`, `ResultRow` / `CommandRow` / `ListRow` / `GroupTitle` / `RowKey`, `Kbd` / `Hint` / `HintBar`, `Tooltip` / `Tip`, `Badge`, `Tag`, `Count`, `IconPlate`, `ColorSwatch`, `Dot`; класс `bw-scrollbars` для полос прокрутки.
+- Кругов в интерфейсе нет (решение владельца): новые элементы — с прямыми углами или срезами.
 - Компонент — это разметка и поведение; внешний вид целиком в `components/components.css`. Новый вид или состояние: сначала класс в `components/components.css`, потом свойство компонента, потом образец в `demo/stories.tsx`.
 - Подключение в приложении: `import '@bedware/ui/tokens.css'`, `'@bedware/ui/styles.css'`, при необходимости `'@bedware/ui/fonts.css'`; тема — `data-theme` на предке.
 - Поведение и размеры взяты из приложений (`VimSelect`, `Segmented`, `Switch`, `InputField`, `ConfirmDialog`, `KeyHints` Vimperium; `ResultRow`, бейджи Runwa). Клавиши Vim (h / l в формах) в пакет не входят: для них у `Select` есть `handle`, остальные компоненты принимают `data-*` атрибуты.

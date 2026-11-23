@@ -4,7 +4,7 @@
 import { useState } from 'react'
 import type { ReactNode } from 'react'
 import {
-  Badge, Button, Checkbox, HelpText, Label, ChoiceCards, ColorField, CommandRow, ConfirmDialog, Field, FormDialog, GroupTitle, Hint, HintBar, HotkeyButton, IconButton, InputField, Kbd, LinkButton,
+  Badge, Button, Checkbox, ColorSwatch, Count, Dot, HelpText, IconPlate, Label, ChoiceCards, ColorField, CommandRow, ConfirmDialog, Field, FormDialog, GroupTitle, Hint, HintBar, HotkeyButton, IconButton, InputField, Kbd, LinkButton,
   ListRow, Menu, MenuHeader, MenuItem, MenuSeparator, Nav, NavGroup, NavItem, Notice, Panel, PanelFooter, PanelHeader, PanelRow, ResultRow, SectionTitle, Segmented, Select, SelectList,
   Progress, Slider, Switch, Tag, Textarea, Tip, Tooltip,
 } from '../src'
@@ -113,6 +113,21 @@ function SliderDemo() {
       <Line cap="пауза"><Progress label="Загрузка на паузе" value={40} paused style={{ width: 220 }} /></Line>
       <Line cap="ошибка"><Progress label="Ошибка загрузки" value={65} error style={{ width: 220 }} /></Line>
       <Line cap="неизвестно"><Progress label="Подготовка" style={{ width: 220 }} /></Line>
+    </>
+  )
+}
+
+const GROUP_COLORS = ['#7AAFAF', '#9C9C9C', '#5681B8', '#D08866', '#C4A140', '#B488C9', '#8E81C9', '#BD5E94', '#7FB87F', '#D6A87F', '#C46161', '#7FA8D6']
+
+function MarksDemo() {
+  const [color, setColor] = useState(4)
+  return (
+    <>
+      <Line cap="счётчик"><IconButton size={32} label="Расширения">{icons.window(16)}<Count>3</Count></IconButton><IconButton size={32} label="Расширения">{icons.window(16)}<Count>12</Count></IconButton><IconButton size={32} label="Загрузки">{icons.folder(16)}<Count tone="success">✓</Count></IconButton><IconButton size={32} label="Загрузки">{icons.folder(16)}<Count tone="muted">2</Count></IconButton><Count tone="error">!</Count></Line>
+      <Line cap="значок"><IconPlate size="sm">{icons.gear(16)}</IconPlate><IconPlate>{icons.keys(18)}</IconPlate><IconPlate tone="error">{icons.alert(18)}</IconPlate><IconPlate tone="neutral">{icons.folder(18)}</IconPlate><IconPlate size="lg" tone="error">{icons.alert(26)}</IconPlate></Line>
+      <Line cap="цвета"><span style={{ display: 'flex', flexWrap: 'wrap', gap: 6, width: 150 }}>{GROUP_COLORS.map((c, i) => <ColorSwatch key={c} color={c} label={c} selected={color === i} onClick={() => setColor(i)} />)}</span></Line>
+      <Line cap="точки"><span style={{ display: 'grid', gap: 4, font: '12px/16px var(--bw-font-sans)' }}>{['Читать историю', 'Менять вкладки'].map((t) => <span key={t} style={{ display: 'flex', alignItems: 'center', gap: 8 }}><Dot />{t}</span>)}</span><Kbd style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}><Dot size="md" tone="accent" />CMD</Kbd></Line>
+      <Line cap="прокрутка"><div className="bw-scrollbars frame" style={{ width: 200, height: 96, overflowY: 'scroll', padding: '6px 10px', font: '12px/20px var(--bw-font-sans)', color: 'var(--bw-text-muted)' }}>{['Работа', 'Личное', 'Учёба', 'Архив', 'Черновики', 'Заметки', 'Проекты', 'Прочее'].map((t) => <div key={t}>{t}</div>)}</div></Line>
     </>
   )
 }
@@ -435,6 +450,7 @@ export const stories: Story[] = [
   { name: 'ConfirmDialog', title: 'Диалог подтверждения', group: 'Контейнеры', height: 410, subtitle: 'Сообщение 14px, кнопки, полоса подсказок', Demo: DialogDemo },
   { name: 'PaletteRows', title: 'Строки палитры', group: 'Контейнеры', height: 330, subtitle: 'Высокая со значком и плотная с клавишей', Demo: PaletteDemo },
   { name: 'Kbd', title: 'Клавиша и полоса подсказок', group: 'Метки', height: 215, subtitle: 'Обычная, на поле, на кнопке; полоса подсказок', Demo: KbdDemo },
+  { name: 'Marks', title: 'Мелкие формы', group: 'Метки', height: 330, subtitle: 'Счётчик на кнопке, значок на пластине, образец цвета, точка, полоса прокрутки — без кругов', Demo: MarksDemo },
   { name: 'Badge', title: 'Бейдж', group: 'Метки', height: 135, subtitle: 'Статусы: пять тонов', Demo: BadgeDemo },
   { name: 'Tag', title: 'Метка', group: 'Метки', height: 80, subtitle: 'Наклонная метка-пластина', Demo: TagDemo },
 ]

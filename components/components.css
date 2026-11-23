@@ -418,3 +418,48 @@
 .bw-command__cap::after { content: ''; align-self: stretch; width: 1px; margin-left: var(--bw-space-2); background: var(--bw-border); }
 .bw-command__label { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .bw-command__keys { display: flex; flex: none; align-items: center; gap: 2px; margin-left: var(--bw-space-4); font-size: 12px; color: var(--bw-text-muted); }
+
+/* ══ мелкие формы без кругов ══ */
+/* ── счётчик на кнопке ── число или отметка со срезами; внутри IconButton встаёт на правый верхний угол */
+.bw-count { --bw-count-c: var(--bw-plate); --bw-count-t: var(--bw-on-plate); display: inline-flex; align-items: center; justify-content: center; min-width: 14px; height: 14px; padding: 0 3px; pointer-events: none;
+  font: 700 9px/1 var(--bw-font-mono); font-variant-numeric: tabular-nums; background: var(--bw-count-c); color: var(--bw-count-t); clip-path: polygon(3px 0, 100% 0, 100% calc(100% - 3px), calc(100% - 3px) 100%, 0 100%, 0 3px); }
+.bw-count svg { width: 9px; height: 9px; }
+.bw-count--success { --bw-count-c: var(--bw-success); --bw-count-t: var(--bw-bg); }
+.bw-count--muted { --bw-count-c: var(--bw-text-muted); --bw-count-t: var(--bw-bg); }
+.bw-count--error { --bw-count-c: var(--bw-error); --bw-count-t: var(--bw-on-error); }
+.bw-iconbtn > .bw-count { position: absolute; top: -3px; right: -3px; }
+.bw-iconbtn > .bw-count--bottom { top: auto; bottom: -3px; }
+
+/* ── значок на пластине ── крупный значок слева в диалоге, запросе страницы, на экране ошибки: 36px (sm 32, lg 56) */
+.bw-iconplate { --bw-ip-c: var(--bw-plate); --bw-ip-e: var(--bw-plate-edge); --bw-ip-cut: 8px; flex: none; display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px;
+  background: var(--bw-ip-c); color: var(--bw-on-plate); box-shadow: inset 0 -3px 0 var(--bw-ip-e);
+  clip-path: polygon(var(--bw-ip-cut) 0, 100% 0, 100% calc(100% - var(--bw-ip-cut)), calc(100% - var(--bw-ip-cut)) 100%, 0 100%, 0 var(--bw-ip-cut)); }
+.bw-iconplate--sm { width: var(--bw-control-sm); height: var(--bw-control-sm); }
+.bw-iconplate--lg { --bw-ip-cut: 12px; width: 56px; height: 56px; box-shadow: inset 0 -4px 0 var(--bw-ip-e); }
+.bw-iconplate--error { --bw-ip-c: var(--bw-error); --bw-ip-e: var(--bw-error-edge); color: var(--bw-on-error); }
+.bw-iconplate--neutral { --bw-ip-c: var(--bw-surface-4); --bw-ip-e: var(--bw-border-strong); color: var(--bw-text); }
+
+/* ── образец цвета ── квадрат 18px со срезами; цвет — данные (--bw-cs-c), у выбранного кромка и галочка. Форму рисует ::before: кольцо фокуса не обрезается */
+.bw-colorswatch { position: relative; isolation: isolate; flex: none; width: 18px; height: 18px; padding: 0; border: 0; background: none; display: inline-flex; align-items: center; justify-content: center; color: var(--bw-cs-ink, #1a1a1a); cursor: pointer; outline: none;
+  transition: transform var(--bw-duration-fast); }
+.bw-colorswatch::before { content: ''; position: absolute; inset: 0; z-index: -1; background: var(--bw-cs-c); clip-path: polygon(4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%, 0 4px); }
+.bw-colorswatch svg { width: 11px; height: 11px; }
+.bw-colorswatch:hover { transform: translateY(-1px); }
+.bw-colorswatch:focus-visible, .bw-colorswatch[data-focused] { outline: 2px solid var(--bw-focus); outline-offset: 2px; }
+.bw-colorswatch[aria-pressed="true"]::before { box-shadow: inset 0 -3px 0 rgb(0 0 0 / .35); }
+
+/* ── точка ── маркер списка и индикатор: квадратик 4px (md 6px, цветом пластины) */
+.bw-dot { display: inline-block; flex: none; width: 4px; height: 4px; background: var(--bw-text-muted); }
+.bw-dot--md { width: 6px; height: 6px; }
+.bw-dot--accent { background: var(--bw-plate); }
+.bw-dot--error { background: var(--bw-error); }
+.bw-dot--success { background: var(--bw-success); }
+
+/* ── полоса прокрутки ── класс bw-scrollbars на корне приложения: тонкая планка 4px, под курсором — пластина 8px с кромкой */
+.bw-scrollbars ::-webkit-scrollbar, .bw-scrollbars::-webkit-scrollbar { width: 10px; height: 10px; }
+.bw-scrollbars ::-webkit-scrollbar-track, .bw-scrollbars::-webkit-scrollbar-track, .bw-scrollbars ::-webkit-scrollbar-corner, .bw-scrollbars::-webkit-scrollbar-corner { background: transparent; }
+.bw-scrollbars ::-webkit-scrollbar-thumb, .bw-scrollbars::-webkit-scrollbar-thumb { background: var(--bw-border-strong); background-clip: padding-box; border: 3px solid transparent; border-radius: 0; }
+.bw-scrollbars ::-webkit-scrollbar-thumb:hover, .bw-scrollbars::-webkit-scrollbar-thumb:hover, .bw-scrollbars ::-webkit-scrollbar-thumb:active, .bw-scrollbars::-webkit-scrollbar-thumb:active {
+  background: linear-gradient(var(--bw-plate) calc(100% - 3px), var(--bw-plate-edge) 0); background-clip: padding-box; border-width: 1px; }
+.bw-scrollbars ::-webkit-scrollbar-thumb:horizontal:hover, .bw-scrollbars::-webkit-scrollbar-thumb:horizontal:hover, .bw-scrollbars ::-webkit-scrollbar-thumb:horizontal:active, .bw-scrollbars::-webkit-scrollbar-thumb:horizontal:active {
+  background: linear-gradient(var(--bw-plate) calc(100% - 2px), var(--bw-plate-edge) 0); background-clip: padding-box; }
