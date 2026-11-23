@@ -4,7 +4,7 @@
 import { useState } from 'react'
 import type { ReactNode } from 'react'
 import {
-  Badge, Button, Checkbox, ChoiceCards, ColorField, CommandRow, ConfirmDialog, Field, FormDialog, GroupTitle, Hint, HintBar, HotkeyButton, IconButton, InputField, Kbd, LinkButton,
+  Badge, Button, Checkbox, HelpText, Label, ChoiceCards, ColorField, CommandRow, ConfirmDialog, Field, FormDialog, GroupTitle, Hint, HintBar, HotkeyButton, IconButton, InputField, Kbd, LinkButton,
   ListRow, Menu, MenuHeader, MenuItem, MenuSeparator, Nav, NavGroup, NavItem, Notice, Panel, PanelFooter, PanelHeader, PanelRow, ResultRow, SectionTitle, Segmented, Select, SelectList,
   Switch, Tag, Textarea, Tip, Tooltip,
 } from '../src'
@@ -71,6 +71,7 @@ function CheckboxDemo() {
       <Line cap="недоступен"><Checkbox aria-label="Недоступен" checked={false} onChange={() => {}} disabled /><Checkbox aria-label="Недоступен, включён" checked onChange={() => {}} disabled /></Line>
       <Line cap="с подписью"><Checkbox checked={a} onChange={setA} label="Запускать при входе" description="Стартовать вместе с системой." /></Line>
       <Line cap="частично"><Checkbox checked={b} onChange={setB} label="Все модули" /></Line>
+      <Line cap="подпись"><div><Label description="Что показывать в списке окон.">Порядок окон</Label><Segmented size="sm" label="Порядок окон" value="recent" onChange={() => {}} options={[{ value: 'recent', label: 'Недавние' }, { value: 'name', label: 'По имени' }]} /><HelpText>Подсказка под формой целиком.</HelpText><HelpText error>Ошибка формы целиком.</HelpText></div></Line>
     </>
   )
 }
@@ -118,7 +119,7 @@ function SectionDemo() {
     <div style={{ maxWidth: 440 }}>
       <SectionTitle title="Переключение окон" description="Какие окна показывать и в каком порядке." />
       <Panel><PanelRow title="Только текущий рабочий стол" description="Окна с других столов скрыты."><Switch checked onChange={() => {}} label="Только текущий рабочий стол" /></PanelRow></Panel>
-      <SectionTitle level={2} title="Исключения" style={{ marginTop: 20 }} />
+      <SectionTitle level={2} title="Исключения" side={<Button size="sm" icon={icons.plus(12)}>Добавить</Button>} style={{ marginTop: 20 }} />
       <Panel><PanelRow title="ktalk.exe"><IconButton label="Убрать" danger>{icons.x()}</IconButton></PanelRow></Panel>
       <SectionTitle danger title="Опасная зона" description="Эти действия нельзя отменить." style={{ marginTop: 20 }} />
     </div>
@@ -400,7 +401,7 @@ export const stories: Story[] = [
   { name: 'IconButton', title: 'Кнопка-значок', group: 'Действия', height: 230, subtitle: 'Четыре размера, включённая, удаление, выключенная', Demo: IconButtonDemo },
   { name: 'Field', title: 'Поле ввода', group: 'Формы', height: 440, subtitle: 'Три высоты, моноширинное, ошибка, выключенное, значок и клавиша', Demo: FieldDemo },
   { name: 'Textarea', title: 'Многострочное поле', group: 'Формы', height: 420, subtitle: 'Растёт по содержимому; моноширинное, ошибка, выключенное', Demo: TextareaDemo },
-  { name: 'Checkbox', title: 'Флажок', group: 'Формы', height: 215, subtitle: 'Включён, выключен, частично, недоступен, с подписью', Demo: CheckboxDemo },
+  { name: 'Checkbox', title: 'Флажок и подписи', group: 'Формы', height: 335, subtitle: 'Включён, выключен, частично, недоступен, с подписью; подпись с описанием и строка под формой', Demo: CheckboxDemo },
   { name: 'ChoiceCards', title: 'Карточки-выбор', group: 'Формы', height: 130, subtitle: 'Один вариант из нескольких с описанием', Demo: ChoiceDemo },
   { name: 'ColorHotkey', title: 'Поле цвета и запись сочетания', group: 'Формы', height: 235, subtitle: 'Образец в поле; сочетание клавиш кнопкой: не задано, задано, запись, занято', Demo: ColorHotkeyDemo },
   { name: 'Select', title: 'Выпадающий список', group: 'Формы', height: 260, subtitle: 'Кнопка-поле и список с клавиатурой', Demo: SelectDemo },

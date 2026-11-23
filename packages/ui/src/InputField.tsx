@@ -1,5 +1,5 @@
 import { useId, useRef } from 'react'
-import type { InputHTMLAttributes, ReactNode, Ref } from 'react'
+import type { HTMLAttributes, InputHTMLAttributes, LabelHTMLAttributes, ReactNode, Ref } from 'react'
 import { cx, mergeRefs } from './util'
 
 export interface InputFieldProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
@@ -49,21 +49,49 @@ export function InputField({ size = 'md', mono = false, invalid = false, leading
   )
 }
 
+export interface LabelProps extends LabelHTMLAttributes<HTMLLabelElement> {
+  /** Пояснение под подписью, перед элементом управления. */
+  description?: ReactNode
+}
+
+/** Подпись поля или подраздела: 12px/500. С description под ней встаёт пояснение 12px text-muted.
+ *  Для любого элемента управления, не только поля: списка, дорожки сегментов, набора флажков. */
+export function Label({ description, className, children, ...rest }: LabelProps) {
+  return (
+    <>
+      <label className={cx('bw-label', !!description && 'bw-label--with-desc', className)} {...rest}>{children}</label>
+      {description && <p className="bw-label-desc">{description}</p>}
+    </>
+  )
+}
+
+export interface HelpTextProps extends HTMLAttributes<HTMLParagraphElement> {
+  /** Ошибка: красным, с role="alert". */
+  error?: boolean
+}
+
+/** Строка под формой целиком: подсказка или ошибка, которая относится не к одному полю. */
+export function HelpText({ error, className, ...rest }: HelpTextProps) {
+  return <p role={error ? 'alert' : undefined} className={cx('bw-help-text', error && 'bw-help-text--error', className)} {...rest} />
+}
+
 export interface FieldProps extends InputFieldProps {
   /** Подпись над полем. */
   label?: ReactNode
+  /** Пояснение между подписью и полем. */
+  description?: ReactNode
   /** Текст ошибки под полем; с ним поле само становится «с ошибкой». */
   error?: ReactNode
 }
 
 /** Поле с подписью и текстом ошибки. */
-export function Field({ label, error, id, invalid, ...rest }: FieldProps) {
+export function Field({ label, description, error, id, invalid, ...rest }: FieldProps) {
   const auto = useId()
   const inputId = id ?? auto
   const errorId = `${inputId}-error`
   return (
     <div>
-      {label && <label className="bw-label" htmlFor={inputId}>{label}</label>}
+      {label && <Label htmlFor={inputId} description={description}>{label}</Label>}
       <InputField id={inputId} invalid={invalid ?? !!error} aria-describedby={error ? errorId : undefined} {...rest} />
       {error && <div className="bw-error-text" id={errorId}>{error}</div>}
     </div>

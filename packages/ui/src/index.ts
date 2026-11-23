@@ -1,5 +1,5 @@
 export { Button, IconButton, LinkButton, type ButtonProps, type IconButtonProps, type LinkButtonProps } from './Button'
-export { InputField, Field, type InputFieldProps, type FieldProps } from './InputField'
+export { InputField, Field, Label, HelpText, type InputFieldProps, type FieldProps, type LabelProps, type HelpTextProps } from './InputField'
 export { Panel, PanelHeader, PanelRow, PanelFooter, type PanelHeaderProps, type PanelRowProps } from './Panel'
 export { Tag, Badge, type BadgeProps } from './Tag'
 export { Switch, type SwitchProps } from './Switch'
