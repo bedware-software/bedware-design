@@ -20,4 +20,5 @@ export { Nav, NavGroup, NavItem } from './Nav';
 export { Tooltip, Tip } from './Tooltip';
 export { FormDialog } from './FormDialog';
 export { Slider, Progress } from './Slider';
+export { Count, IconPlate, ColorSwatch, Dot } from './Marks';
 //# sourceMappingURL=index.js.map
