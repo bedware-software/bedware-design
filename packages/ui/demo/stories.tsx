@@ -6,7 +6,7 @@ import type { ReactNode } from 'react'
 import {
   Badge, Button, Checkbox, HelpText, Label, ChoiceCards, ColorField, CommandRow, ConfirmDialog, Field, FormDialog, GroupTitle, Hint, HintBar, HotkeyButton, IconButton, InputField, Kbd, LinkButton,
   ListRow, Menu, MenuHeader, MenuItem, MenuSeparator, Nav, NavGroup, NavItem, Notice, Panel, PanelFooter, PanelHeader, PanelRow, ResultRow, SectionTitle, Segmented, Select, SelectList,
-  Switch, Tag, Textarea, Tip, Tooltip,
+  Progress, Slider, Switch, Tag, Textarea, Tip, Tooltip,
 } from '../src'
 
 const Line = ({ cap, children }: { cap: string; children: ReactNode }) => (
@@ -97,6 +97,21 @@ function ColorHotkeyDemo() {
       <Line cap="сочетание"><HotkeyButton emptyLabel="Задать…" /><HotkeyButton keys={['⌥', 'Space']} setLabel="Изменить" /></Line>
       <Line cap="запись"><HotkeyButton recording recordingLabel="Нажмите сочетание…" /><HotkeyButton invalid keys={['⌘', 'Q']} invalidLabel="Занято" /></Line>
       <Line cap="живое"><HotkeyButton keys={['⌥', 'Space']} recording={rec} onClick={() => setRec(!rec)} setLabel="Изменить" recordingLabel="Нажмите сочетание…" /><IconButton label="Очистить" danger>{icons.x()}</IconButton></Line>
+    </>
+  )
+}
+
+function SliderDemo() {
+  const [a, setA] = useState(40)
+  const [b, setB] = useState(1.25)
+  return (
+    <>
+      <Line cap="обычный"><Slider label="Яркость" value={a} onChange={setA} /><span className="cap" style={{ width: 'auto' }}>{a}%</span></Line>
+      <Line cap="с шагом"><Slider label="Свечение" min={0} max={2} step={0.25} value={b} onChange={setB} boxClassName="grow" /><span className="cap" style={{ width: 'auto' }}>{b.toFixed(2)}×</span></Line>
+      <Line cap="недоступен"><Slider label="Недоступно" value={60} onChange={() => {}} disabled /></Line>
+      <Line cap="прогресс"><Progress label="Загрузка" value={40} style={{ width: 220 }} /><Progress label="Готово" value={100} style={{ width: 120 }} /></Line>
+      <Line cap="ошибка"><Progress label="Ошибка загрузки" value={65} error style={{ width: 220 }} /></Line>
+      <Line cap="неизвестно"><Progress label="Подготовка" style={{ width: 220 }} /></Line>
     </>
   )
 }
@@ -404,6 +419,7 @@ export const stories: Story[] = [
   { name: 'Checkbox', title: 'Флажок и подписи', group: 'Формы', height: 335, subtitle: 'Включён, выключен, частично, недоступен, с подписью; подпись с описанием и строка под формой', Demo: CheckboxDemo },
   { name: 'ChoiceCards', title: 'Карточки-выбор', group: 'Формы', height: 130, subtitle: 'Один вариант из нескольких с описанием', Demo: ChoiceDemo },
   { name: 'ColorHotkey', title: 'Поле цвета и запись сочетания', group: 'Формы', height: 235, subtitle: 'Образец в поле; сочетание клавиш кнопкой: не задано, задано, запись, занято', Demo: ColorHotkeyDemo },
+  { name: 'Slider', title: 'Ползунок и полоса прогресса', group: 'Формы', height: 290, subtitle: 'Бегунок-пластина; прогресс со штриховкой: доля, ошибка, размер неизвестен', Demo: SliderDemo },
   { name: 'Select', title: 'Выпадающий список', group: 'Формы', height: 260, subtitle: 'Кнопка-поле и список с клавиатурой', Demo: SelectDemo },
   { name: 'Segmented', title: 'Сегменты', group: 'Формы', height: 235, subtitle: 'Один выбор из нескольких кнопок', Demo: SegmentedDemo },
   { name: 'Switch', title: 'Переключатель', group: 'Формы', height: 180, subtitle: 'Три размера, включён, выключен, недоступен', Demo: SwitchDemo },

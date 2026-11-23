@@ -262,6 +262,36 @@
 .bw-switch:disabled { cursor: not-allowed; --sw-track: repeating-linear-gradient(135deg, var(--hatch-a) 0 4px, var(--hatch-b) 4px 8px); --sw-edge: 0 0 0 0 transparent; --sw-knob: var(--text-dim); }
 .bw-switch:disabled::after { top: 2px; }
 
+/* ── ползунок ── некруглый: дорожка 6px со срезанными концами, бегунок — пластина 16px со срезами и кромкой.
+   Видимые части — блоки, поверх лежит прозрачный input type=range: мышь, клавиши и фокус — его. --sl-f — доля 0…1 */
+.bw-slider { --sl-f: 0; --sl-k: 16px; position: relative; display: inline-block; flex: none; width: 200px; height: 20px; vertical-align: middle; }
+.bw-slider input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+.bw-slider input:disabled { cursor: not-allowed; }
+.bw-slider__track, .bw-slider__fill { position: absolute; left: 0; top: 50%; height: 6px; transform: translateY(-50%); pointer-events: none; }
+.bw-slider__track { right: 0; background: var(--switch-off); clip-path: polygon(3px 0, 100% 0, 100% calc(100% - 3px), calc(100% - 3px) 100%, 0 100%, 0 3px); }
+.bw-slider__fill { width: calc((100% - var(--sl-k)) * var(--sl-f) + var(--sl-k) / 2); background: var(--plate); clip-path: polygon(3px 0, 100% 0, 100% 100%, 0 100%, 0 3px); }
+.bw-slider__knob { position: absolute; top: 50%; left: calc((100% - var(--sl-k)) * var(--sl-f)); width: var(--sl-k); height: var(--sl-k); transform: translateY(-50%); pointer-events: none;
+  background: var(--plate); box-shadow: inset 0 -3px 0 var(--plate-edge), inset 0 0 0 1px var(--plate-outline); clip-path: polygon(4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%, 0 4px);
+  transition: transform 150ms; }
+.bw-slider:hover .bw-slider__knob { transform: translateY(calc(-50% - 1px)); }
+/* кольцо фокуса — на невидимой рамке вокруг бегунка: сам бегунок обрезан срезами */
+.bw-slider__ring { position: absolute; top: 50%; left: calc((100% - var(--sl-k)) * var(--sl-f)); width: var(--sl-k); height: var(--sl-k); transform: translateY(-50%); pointer-events: none; }
+.bw-slider:has(input:focus-visible) .bw-slider__ring { outline: 2px solid var(--focus); outline-offset: 2px; }
+.bw-slider:has(input:disabled) .bw-slider__track, .bw-slider:has(input:disabled) .bw-slider__fill { background: repeating-linear-gradient(135deg, var(--hatch-a) 0 4px, var(--hatch-b) 4px 8px); }
+.bw-slider:has(input:disabled) .bw-slider__knob { background: var(--text-dim); box-shadow: none; transform: translateY(-50%); }
+
+/* ── полоса прогресса ── 8px: оставшаяся часть в диагональную штриховку, у заполнения скошенный край и кромка */
+.bw-progress { --pg-f: 0; --pg-c: var(--plate); --pg-e: var(--plate-edge); display: block; position: relative; height: 8px; overflow: hidden;
+  background: repeating-linear-gradient(135deg, var(--hatch-a) 0 4px, var(--hatch-b) 4px 8px); }
+.bw-progress__fill { position: absolute; left: 0; top: 0; bottom: 0; width: calc(100% * var(--pg-f)); background: var(--pg-c); box-shadow: inset 0 -2px 0 var(--pg-e);
+  clip-path: polygon(0 0, 100% 0, calc(100% - 6px) 100%, 0 100%); transition: width 200ms; }
+.bw-progress[data-full] .bw-progress__fill { clip-path: none; }
+.bw-progress--error { --pg-c: var(--error); --pg-e: var(--error-edge); }
+/* размер неизвестен: скошенный отрезок бежит слева направо */
+.bw-progress--busy .bw-progress__fill { width: 35%; clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%); animation: bw-progress-run 1.4s linear infinite; }
+@keyframes bw-progress-run { from { left: -35%; } to { left: 100%; } }
+@media (prefers-reduced-motion: reduce) { .bw-progress--busy .bw-progress__fill { animation: none; left: 0; width: 100%; clip-path: none; opacity: .5; } }
+
 /* ── меню ── 8px, 12px, заголовок, клавиши; выбранный пункт — жёлтая полоса слева */
 .bw-menu { border: 1px solid var(--border-strong); border-radius: var(--radius-lg); background: var(--surface-2); overflow: hidden; font: 400 12px/16px var(--font-sans); box-shadow: var(--shadow-popover); min-width: 220px; }
 .bw-menu__head { padding: 6px var(--space-3) 4px; font: 500 10px/12px var(--font-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); border-bottom: 1px solid var(--border); }
