@@ -89,35 +89,47 @@ const hexOf = (v) => resolve(cssVar(v));
 /* ───── 2. шрифты ───── */
 const word = (text, { font = 'Menlo, "DejaVu Sans Mono", monospace', weight = 700, size = 120, stroke = 13, fill = '#FFDE5D', x = 40, y = 150, rot = 0, ls = 0 } = {}) =>
   `<text x="${x}" y="${y}" transform="rotate(${rot} ${x} ${y})" font-family='${font}' font-weight="${weight}" font-size="${size}" letter-spacing="${ls}" fill="${fill}" stroke="${fill}" stroke-width="${stroke}" stroke-linejoin="round" stroke-linecap="round">${text}</text>`;
+/* То же слово, но контурами Menlo (assets/glyphs.js): не зависит от шрифтов и браузера.
+   stroke — полная толщина обводки в долях кегля (наружу уходит половина). */
+const outline = (text, { face = 'bold', size = 120, stroke = 0.06, fill = '#FFDE5D', x = 40, y = 150, rot = 0, ls = 0 } = {}) => {
+  const f = window.BW_GLYPHS[face], k = size / f.upm;
+  const paths = [...text].map((ch, i) => (f.glyphs[ch] ? `<path transform="translate(${i * (f.adv + ls * f.upm)} 0)" d="${f.glyphs[ch]}"/>` : '')).join('');
+  return `<g transform="translate(${x} ${y}) rotate(${rot}) scale(${k} ${-k})" fill="${fill}" stroke="${fill}" stroke-width="${stroke * f.upm}" stroke-linejoin="round" stroke-linecap="round">${paths}</g>`;
+};
+const SW = 0.065, LS = 0.02; // подобрано по вырезкам: обводка 6.5% кегля (по 3.25% наружу), разрядка 2%
 $('#proof').innerHTML = `
   <figure><img src="assets/img/logo-word.png" alt=""><figcaption>Исходник: вырезка из inputs/logo.png</figcaption></figure>
-  <figure><svg viewBox="0 0 740 340">${word('bedware', { size: 152, stroke: 15, x: 22, y: 180, rot: -3.2 })}
-    <text x="400" y="178" transform="rotate(7 400 178)" font-family="Menlo, 'DejaVu Sans Mono', monospace" font-size="27" fill="#fff">WRITE C0DE!</text>
-    ${word('software', { size: 92, stroke: 9, fill: '#FFBF68', x: 322, y: 262, rot: 6.5 })}</svg><figcaption>Набрано: Menlo Bold + обводка 10% кегля, наклон −3° / +7°</figcaption></figure>
+  <figure><svg viewBox="0 0 740 340">${outline('bedware', { size: 150, stroke: SW, x: 24, y: 180, rot: -3.2, ls: LS })}
+    ${outline('WRITE C0DE!', { face: 'regular', size: 27, stroke: 0, fill: '#fff', x: 400, y: 178, rot: 7 })}
+    ${outline('software', { size: 90, stroke: SW, fill: '#FFBF68', x: 322, y: 262, rot: 6.5, ls: LS })}</svg><figcaption>Набрано контурами Menlo Bold: обводка 6.5% кегля, разрядка 2%, наклон −3° / +7°</figcaption></figure>
   <figure><img src="assets/img/mybang.jpg" alt=""><figcaption>Исходник: inputs/mybang.jpg</figcaption></figure>
-  <figure><svg viewBox="0 0 700 233">${word('MyBang!', { size: 150, stroke: 15, x: 30, y: 172, rot: -2.2 })}</svg><figcaption>Набрано: Menlo Bold + обводка</figcaption></figure>`;
+  <figure><svg viewBox="0 0 700 233">${outline('MyBang!', { size: 146, stroke: SW, x: 34, y: 170, rot: -2.2, ls: LS })}</svg><figcaption>Набрано контурами Menlo Bold, те же значения</figcaption></figure>`;
 const WM = [
-  ['A · DejaVu Sans Mono Bold / Menlo Bold', 'Menlo, "DejaVu Sans Mono", monospace', 700, 0, 'Оригинал. DejaVu свободный (лицензия Bitstream Vera), полная кириллица. На Mac совпадает с Menlo.'],
-  ['B · JetBrains Mono ExtraBold', '"JetBrains Mono", monospace', 800, 0, 'Свободный (OFL), кириллица. Современнее и уже; буквы «a», «r» проще — знак станет чуть суше.'],
-  ['C · Martian Mono ExtraBold', '"Martian Mono", monospace', 800, -6, 'Свободный (OFL), кириллица. Шире и «квадратнее», сильнее отходит от нынешнего логотипа.'],
+  ['A · DejaVu Sans Mono Bold / Menlo Bold', null, 700, SW, LS, 'Оригинал, нарисован контурами — выглядит одинаково в любом браузере. DejaVu свободный (лицензия Bitstream Vera), полная кириллица.'],
+  ['B · JetBrains Mono ExtraBold', '"JetBrains Mono", monospace', 800, 0.035, 0.02, 'Свободный (OFL), кириллица. Современнее и уже; буквы «a», «r» проще — знак станет чуть суше.'],
+  ['C · Martian Mono ExtraBold', '"Martian Mono", monospace', 800, 0.02, 0, 'Свободный (OFL), кириллица. Шире и «квадратнее», сам по себе очень жирный — обводка почти не нужна.'],
 ];
-$('#wm').append(...WM.map(([name, font, w, ls, note]) => el(`<div class="wm"><svg viewBox="0 0 560 300">
-  ${word('bedware', { font, weight: w, size: 104, stroke: 11, x: 26, y: 142, rot: -3.2, ls })}
-  <text x="300" y="150" transform="rotate(7 300 150)" font-family='${font}' font-size="19" fill="#fff">WRITE C0DE!</text>
-  ${word('software', { font, weight: w, size: 64, stroke: 7, fill: '#FFBF68', x: 232, y: 208, rot: 6.5, ls: ls * 0.6 })}
-  ${word('Runwa', { font, weight: w, size: 30, stroke: 3.4, x: 28, y: 268, rot: -3, ls: ls * 0.3 })}
-  ${word('Vimperium', { font, weight: w, size: 30, stroke: 3.4, x: 170, y: 262, rot: -3, ls: ls * 0.3 })}
+const wmWord = (text, font, w, sw, ls, o) => font
+  ? word(text, { font, weight: w, size: o.size, stroke: o.size * sw, fill: o.fill, x: o.x, y: o.y, rot: o.rot, ls: o.size * ls })
+  : outline(text, { size: o.size, stroke: sw, fill: o.fill, x: o.x, y: o.y, rot: o.rot, ls });
+$('#wm').append(...WM.map(([name, font, w, sw, ls, note]) => el(`<div class="wm"><svg viewBox="0 0 560 300">
+  ${wmWord('bedware', font, w, sw, ls, { size: font && font.includes('Martian') ? 84 : 100, x: 26, y: 140, rot: -3.2 })}
+  ${font ? `<text x="300" y="150" transform="rotate(7 300 150)" font-family='${font}' font-size="18" fill="#fff">WRITE C0DE!</text>` : outline('WRITE C0DE!', { face: 'regular', size: 18, stroke: 0, fill: '#fff', x: 300, y: 150, rot: 7 })}
+  ${wmWord('software', font, w, sw, ls, { size: font && font.includes('Martian') ? 52 : 60, fill: '#FFBF68', x: 232, y: 208, rot: 6.5 })}
+  ${wmWord('Runwa', font, w, sw, ls, { size: 28, x: 28, y: 268, rot: -3 })}
+  ${wmWord('Vimperium', font, w, sw, ls, { size: 28, x: 170, y: 262, rot: -3 })}
   </svg><div class="cap"><b class="mono">${name}</b><br><span class="muted">${note}</span></div></div>`)));
-const UIF = [
-  ['1 · Системный + моно для акцентов', 'var(--bw-font-sans)', 'var(--bw-font-mono)', 'Как сейчас в обоих приложениях. Ничего не съезжает, выглядит родным в каждой ОС.'],
-  ['2 · Inter + моно для акцентов', 'Inter, sans-serif', 'var(--bw-font-mono)', 'Одинаковый вид везде. Свободный, кириллица. Хорош для сайта.'],
-  ['3 · Моноширинный везде', 'var(--bw-font-mono)', 'var(--bw-font-mono)', 'Максимально «по логотипу», но длинные описания читаются хуже, а строки шире на ~15%.'],
-];
-$('#ui-fonts').append(...UIF.map(([name, body, head, note]) => el(`<div class="spec"><h4>${name}</h4>
+
+const sample = (body, head) => `
   <div class="t1" style="font-family:${head}">Запуск по клавише</div>
-  <div class="t2" style="font-family:${body}">Откройте палитру команд, введите первые буквы и нажмите Enter. Open the command palette and type to search — 0123456789.</div>
-  <div class="t3" style="font-family:${body}">Сочетание можно изменить в настройках · <span style="font-family:${head};color:var(--bw-yellow)">⌘ K</span></div>
-  <p class="small dim" style="margin:12px 0 0">${note}</p></div>`)));
+  <div class="t2" style="font-family:${body}">Откройте палитру команд, введите первые буквы и нажмите Enter. Список сузится по мере набора: 3 из 128 команд.</div>
+  <div class="uirow" style="font-family:${body}"><div><b>Запускать при входе</b><span>Стартовать автоматически вместе с системой.</span></div><span style="font-family:${head};color:var(--bw-yellow)">⌘ K</span></div>
+  <div class="uirow" style="font-family:${body}"><div><b>Исполняемый файл</b><span>Например, ktalk.exe — оставьте пустым для любого.</span></div><span style="font-family:${head};color:var(--bw-text-muted)">v1.4.0</span></div>`;
+$('#ui-fonts').append(
+  el(`<div class="spec"><h4>А · Гротеск для текста, моноширинный для акцентов</h4>${sample('var(--bw-font-sans)', 'var(--bw-font-mono)')}<p class="small dim" style="margin:12px 0 0">Как сейчас в приложениях: текст обычным шрифтом, моноширинный — в заголовках, клавишах, версиях, метках.</p></div>`),
+  el(`<div class="spec"><h4>Б · Моноширинный везде</h4>${sample('var(--bw-font-mono)', 'var(--bw-font-mono)')}<p class="small dim" style="margin:12px 0 0">Максимально «по логотипу». Строки шире примерно на 15%, длинные описания читаются тяжелее.</p></div>`),
+);
+$('#ui-sans').append(...[['Системный (на Mac — SF Pro)', 'var(--bw-font-sans)'], ['Inter', 'Inter, sans-serif']].map(([n, f]) => el(`<div class="spec"><h4>${n}</h4><div class="big" style="font-family:${f}">Rag 1Il 369 Ждл</div><div class="t2" style="font-family:${f};margin-top:8px">Откройте палитру команд и нажмите Enter — 0123456789.</div></div>`)));
 
 /* ───── 3. направления ───── */
 if (window.renderDirections) window.renderDirections($('#dir'));

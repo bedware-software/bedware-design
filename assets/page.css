@@ -63,7 +63,7 @@ section { padding-top: 56px; }
 
 table { border-collapse: collapse; width: 100%; font-size: 13px; }
 th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--bw-border); vertical-align: top; }
-th { font: 500 11.5px var(--bw-font-mono); color: var(--bw-text-muted); text-transform: uppercase; letter-spacing: .06em; position: sticky; top: 46px; background: var(--bw-bg); z-index: 2; }
+th { font: 500 11.5px var(--bw-font-mono); color: var(--bw-text-muted); text-transform: uppercase; letter-spacing: .06em; }
 .tablewrap { overflow-x: auto; }
 .cr { font: 12px var(--bw-font-mono); border-radius: 5px; padding: 5px 8px; display: flex; justify-content: space-between; gap: 8px; min-width: 112px; }
 .cr u { text-decoration: none; opacity: .75; font-size: 11px; }
@@ -109,3 +109,8 @@ textarea#out { width: 100%; min-height: 220px; background: var(--bw-surface-1); 
 .catnote { font-size: 13px; color: var(--bw-text-muted); margin: 0 0 26px; max-width: none; }
 .catnote code { color: var(--bw-text); }
 .toolbar { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; margin: 6px 0 4px; }
+
+.spec .big { font-size: 44px; line-height: 1.15; color: var(--bw-text-strong); letter-spacing: -.01em; }
+.uirow { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 10px 0; border-top: 1px solid var(--bw-border); font-size: 14px; }
+.uirow b { display: block; font-weight: 500; color: var(--bw-text); }
+.uirow div span { display: block; font-size: 12px; color: var(--bw-text-muted); margin-top: 2px; }

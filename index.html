@@ -7,9 +7,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700;800&family=Martian+Mono:wght@400;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/brand.css">
-<link rel="stylesheet" href="assets/page.css">
-<link rel="stylesheet" href="assets/directions.css">
+<link rel="stylesheet" href="assets/brand.css?v=3">
+<link rel="stylesheet" href="assets/page.css?v=3">
+<link rel="stylesheet" href="assets/directions.css?v=3">
 </head>
 <body>
 <nav class="topnav">
@@ -65,8 +65,8 @@
 <!-- ───────────────────────── 2. ШРИФТЫ ───────────────────────── -->
 <section id="fonts">
   <div class="sec-head"><span class="n">2</span><h2>Шрифты</h2></div>
-  <p><b>Шрифт логотипа — Menlo Bold</b> (системный моноширинный macOS; его свободный «родитель» — <b>DejaVu Sans Mono Bold</b>, рисунок букв практически тот же). Скруглённым и «толстым» слово стало не из-за шрифта, а из-за <b>обводки тем же цветом со скруглёнными стыками</b> — примерно 5–6% от кегля в каждую сторону. Подпись «WRITE C0DE!» — Menlo Regular (перечёркнутый ноль — его примета), «дождь» кода — Menlo Bold Italic.</p>
-  <p class="muted small">Уверенность: высокая, ~90%. Проверено наложением: ниже слева — вырезки из ваших файлов, справа — то же слово, набранное Menlo Bold с обводкой прямо в браузере. Совпадают хвост «y», двухэтажная «a», одноэтажная «g», засечка у «r», ширина букв. Оставшиеся 10% — на то, что исходник мог быть DejaVu Sans Mono (отличается в основном нулём) и что точная толщина обводки подобрана на глаз.</p>
+  <p><b>Шрифт логотипа — Menlo Bold</b> (системный моноширинный macOS; его свободный «родитель» — <b>DejaVu Sans Mono Bold</b>, рисунок букв практически тот же). Скруглённым и «толстым» слово стало не из-за шрифта, а из-за <b>обводки тем же цветом со скруглёнными стыками</b> — около 3% кегля в каждую сторону, плюс лёгкая разрядка букв (2%). Подпись «WRITE C0DE!» — Menlo Regular (перечёркнутый ноль — его примета), «дождь» кода — Menlo Bold Italic.</p>
+  <p class="muted small">Уверенность: высокая, ~90%. Проверено наложением: ниже слева — вырезки из ваших файлов, справа — то же слово, собранное из контуров Menlo Bold с обводкой. Совпадают хвост «y», двухэтажная «a», одноэтажная «g», засечка у «r», ширина букв. Оставшиеся 10% — на то, что исходник мог быть DejaVu Sans Mono (отличается в основном нулём) и что точная толщина обводки подобрана на глаз.</p>
 
   <div class="proof" id="proof"></div>
 
@@ -80,26 +80,34 @@
     <span class="rec">совет: A</span> <span class="muted small">— это буквально ваш логотип, лицензия свободная, есть кириллица.</span></p>
 
   <h3>Шрифт текста интерфейса</h3>
-  <p class="muted small">Сейчас оба приложения используют системный шрифт (<code>-apple-system, Segoe UI, Roboto</code>), моноширинный — только в клавишах и коде.</p>
-  <div class="grid cols-3" id="ui-fonts"></div>
-  <p style="margin-top:10px"><span class="pick" data-q="Шрифт текста интерфейса" data-rec="1">
-    <label><input type="radio" name="q-ui" value="1 — системный шрифт для текста + моноширинный для заголовков, клавиш и меток">1</label>
-    <label><input type="radio" name="q-ui" value="2 — Inter для текста + моноширинный для заголовков и меток">2</label>
-    <label><input type="radio" name="q-ui" value="3 — моноширинный везде (JetBrains Mono)">3</label></span>
-    <span class="rec">совет: 1 в приложениях, 2 на сайте</span> <span class="muted small">— в приложениях всё отлажено под системный шрифт; на сайте нужен одинаковый вид на всех ОС.</span></p>
+  <p class="muted small">Сейчас оба приложения используют системный шрифт (<code>-apple-system, Segoe UI, Roboto</code>), моноширинный — только в клавишах и коде. Настоящий выбор здесь один: обычный шрифт для текста или моноширинный везде.</p>
+  <div class="grid cols-2" id="ui-fonts"></div>
+  <p style="margin-top:10px"><span class="pick" data-q="Шрифт текста интерфейса">
+    <label><input type="radio" name="q-ui" value="А — гротеск для текста, моноширинный для заголовков, клавиш и меток">А</label>
+    <label><input type="radio" name="q-ui" value="Б — моноширинный везде (JetBrains Mono)">Б</label></span>
+    <span class="rec">совет: А</span> <span class="muted small">— в приложениях всё отлажено под обычный шрифт, а характер бренда дают заголовки и метки.</span></p>
+
+  <h3>Если гротеск — то какой</h3>
+  <p class="muted small">На Mac системный шрифт (SF Pro) и Inter почти близнецы — Inter и рисовали по его образцу, поэтому в прошлой версии страницы разницы не было видно. Крупно она заметна в цифрах и в «1 I l». По-настоящему они расходятся на Windows: там «системный» — это Segoe UI, более округлый и широкий. То есть вопрос не про внешний вид на вашем Mac, а про то, должен ли интерфейс выглядеть одинаково на всех ОС.</p>
+  <div class="grid cols-2" id="ui-sans"></div>
+  <p style="margin-top:10px"><span class="pick" data-q="Какой гротеск">
+    <label><input type="radio" name="q-sans" value="системный в приложениях, Inter на сайте">системный в приложениях, Inter на сайте</label>
+    <label><input type="radio" name="q-sans" value="Inter везде (одинаково на всех ОС, +300 КБ в приложениях)">Inter везде</label>
+    <label><input type="radio" name="q-sans" value="системный везде">системный везде</label></span>
+    <span class="rec">совет: системный в приложениях, Inter на сайте</span></p>
 </section>
 
 <!-- ───────────────────────── 3. НАПРАВЛЕНИЯ ───────────────────────── -->
 <section id="directions">
-  <div class="sec-head"><span class="n">3</span><h2>Три направления</h2></div>
+  <div class="sec-head"><span class="n">3</span><h2>Четыре направления</h2></div>
   <p>Кнопка, поле ввода и панель в новой палитре. Размеры, отступы, скругления и анимации взяты из приложений как есть (откуда именно — подписано), меняется только цвет и то, как используется жёлтый. Состояния показаны статично все сразу; правая колонка в каждом блоке — живая, её можно трогать мышью и клавиатурой.</p>
   <div id="dir"></div>
   <p style="margin-top:14px"><b>Какое направление берём?</b> <span class="pick" data-q="Направление">
     <label><input type="radio" name="q-dir" value="A — жёлтый только как акцент">A · Акцент</label>
     <label><input type="radio" name="q-dir" value="B — жёлтая заливка основных кнопок">B · Заливка</label>
     <label><input type="radio" name="q-dir" value="C — пластины">C · Пластины</label>
-    <label><input type="radio" name="q-dir" value="B в целом + пластины из C только для редких акцентных элементов">B + пластины точечно</label></span>
-    <span class="rec">совет: B + пластины точечно</span></p>
+    <label><input type="radio" name="q-dir" value="D — кнопки и поля как в B, от C только плашка, метка и кромка">D · Заливка + пластины</label></span>
+    <span class="rec">совет: D · Заливка + пластины</span></p>
 </section>
 
 <!-- ───────────────────────── 4. КАТАЛОГ ───────────────────────── -->
@@ -159,8 +167,9 @@
   <span class="muted small" id="count"></span>
 </div>
 </main>
-<script src="assets/data.js"></script>
-<script src="assets/directions.js"></script>
-<script src="assets/page.js"></script>
+<script src="assets/glyphs.js?v=3"></script>
+<script src="assets/data.js?v=3"></script>
+<script src="assets/directions.js?v=3"></script>
+<script src="assets/page.js?v=3"></script>
 </body>
 </html>
