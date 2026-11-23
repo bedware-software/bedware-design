@@ -41,25 +41,12 @@
   .grow { flex: 1; min-width: 0; }
   .frame { border: 1px solid var(--bw-border); border-radius: 8px; overflow: hidden; }
 
-  .variants { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
-  .variant { background: var(--bw-surface-1); border: 1px solid var(--bw-border); border-radius: 10px; padding: 14px 16px; }
-  .variant__head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; font: 500 13px var(--bw-font-mono); color: var(--bw-text-strong); }
-  .variant__head b { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 4px; background: var(--bw-plate); color: var(--bw-on-plate); }
-  .variant__head i { margin-left: auto; font: 11px var(--bw-font-mono); color: var(--bw-link); }
-  .variant__body { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; min-height: 36px; }
-  .variant__note { margin: 14px 0 0; font-size: 12px; line-height: 1.45; color: var(--bw-text-muted); }
-
-  /* ── варианты спорных мест: только для этой страницы, в пакет не входят ── */
-  .alt-btn-one .bw-btn--secondary::before, .alt-btn-one .bw-btn--secondary::after, .alt-btn-one .bw-btn--ghost::before { clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--bw-cut)), calc(100% - var(--bw-cut)) 100%, 0 100%); }
-  .alt-btn-round .bw-btn--secondary, .alt-btn-round .bw-btn--ghost { border-radius: var(--bw-radius-md); }
-  .alt-btn-round .bw-btn--secondary::before, .alt-btn-round .bw-btn--secondary::after, .alt-btn-round .bw-btn--ghost::before { clip-path: none; border-radius: inherit; }
-  .alt-btn-round .bw-btn--secondary::after { border-radius: 5px; }
 </style>
 </head>
 <body>
 <nav class="topnav">
   <b>bedware</b>
-  <a href="#components">Компоненты</a><a href="#decisions">Нужно решение</a>
+  <a href="#components">Компоненты</a>
   <a href="system.html">← Итог: бренд</a>
   <span class="pick" id="theme-pick"><label><input type="radio" name="th" value="dark" checked>тёмная тема</label><label><input type="radio" name="th" value="light">светлая тема</label></span>
 </nav>
