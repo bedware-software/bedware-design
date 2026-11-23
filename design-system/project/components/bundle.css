@@ -105,6 +105,7 @@
 .bw-menu__item:hover { background: var(--surface-3); }
 .bw-menu__item[aria-selected="true"], .bw-menu__item[data-active], .bw-menu__item:focus-visible { background: var(--surface-4); box-shadow: inset 3px 0 0 var(--plate); }
 .bw-menu__label { display: flex; align-items: center; gap: var(--space-2); min-width: 0; }
+.bw-menu__label > span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .bw-menu__icon { display: inline-flex; flex: none; color: var(--text-muted); }
 .bw-menu__keys { display: inline-flex; flex: none; align-items: center; gap: 2px; }
 .bw-menu__item--danger, .bw-menu__item--danger .bw-menu__icon { color: var(--error); }
