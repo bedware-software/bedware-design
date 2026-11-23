@@ -22,11 +22,14 @@
 .bw-btn--primary:active::before { background: var(--bw-plate-pressed); box-shadow: inset 0 2px 0 var(--bw-plate-edge), inset 0 0 0 1px var(--bw-plate-outline); }
 .bw-btn--danger:active::before { box-shadow: inset 0 2px 0 var(--bw-error-edge); }
 
-.bw-btn--secondary { border-color: var(--bw-border-strong); }
-.bw-btn--secondary::before { inset: 0; border-radius: 5px; background: var(--bw-surface-3); }
-.bw-btn--secondary:hover { border-color: var(--bw-border-hover); }
-.bw-btn--secondary:hover::before { background: var(--bw-surface-4); }
-.bw-btn--secondary:active::before { background: var(--bw-surface-2); }
+/* вторичная и текстовая: та же форма со срезами, что у пластины, но без кромки. Рамка вторичной — слой ::before, заливка — ::after на 1px внутри */
+.bw-btn--secondary, .bw-btn--ghost { border-radius: var(--bw-radius-plate); }
+.bw-btn--secondary::before, .bw-btn--secondary::after, .bw-btn--ghost::before { clip-path: polygon(var(--bw-cut) 0, 100% 0, 100% calc(100% - var(--bw-cut)), calc(100% - var(--bw-cut)) 100%, 0 100%, 0 var(--bw-cut)); }
+.bw-btn--secondary::before { background: var(--bw-border-strong); }
+.bw-btn--secondary::after { content: ''; position: absolute; inset: 0; z-index: -1; background: var(--bw-surface-3); transition: background-color var(--bw-duration-fast); }
+.bw-btn--secondary:hover::before { background: var(--bw-border-hover); }
+.bw-btn--secondary:hover::after { background: var(--bw-surface-4); }
+.bw-btn--secondary:active::after { background: var(--bw-surface-2); }
 .bw-btn--ghost { color: var(--bw-text-muted); }
 .bw-btn--ghost:hover { color: var(--bw-text); }
 .bw-btn--ghost:hover::before { background: var(--bw-surface-3); }
@@ -35,6 +38,7 @@
 /* выключено: штриховка */
 .bw-btn:disabled { cursor: not-allowed; transform: none; color: var(--bw-text-dim); border-color: transparent; }
 .bw-btn:disabled::before { background: repeating-linear-gradient(135deg, var(--bw-hatch-a) 0 4px, var(--bw-hatch-b) 4px 8px); box-shadow: none; }
+.bw-btn:disabled::after { display: none; }
 
 .bw-kbd { font: 400 11px/1 var(--bw-font-mono); padding: 3px 5px; border-radius: 4px; border: 1px solid var(--bw-border-strong); background: var(--bw-surface-3); color: var(--bw-text); }
 .bw-btn .bw-kbd, .bw-kbd--on-button { border-color: color-mix(in srgb, currentColor 30%, transparent); background: color-mix(in srgb, currentColor 12%, transparent); color: inherit; }
@@ -107,16 +111,16 @@
 .bw-menu__item:disabled, .bw-menu__item[aria-disabled="true"] { color: var(--bw-text-dim); cursor: not-allowed; background: none; box-shadow: none; }
 .bw-menu__sep { height: 1px; background: var(--bw-border); }
 
-/* ── сегменты ── один выбор из нескольких: общая дорожка 32px, выбранный — пластина со срезом и кромкой */
-.bw-seg { display: flex; width: fit-content; gap: 2px; padding: 2px; border: 1px solid var(--bw-border-strong); border-radius: var(--bw-radius-md); background: var(--bw-field-bg); }
+/* ── сегменты ── один выбор из нескольких: общая дорожка 32px, выбранная ячейка — пластина во всю ячейку со срезами и кромкой */
+.bw-seg { display: flex; width: fit-content; overflow: hidden; border: 1px solid var(--bw-border-strong); border-radius: var(--bw-radius-plate); background: var(--bw-field-bg); }
 .bw-seg--wrap { flex-wrap: wrap; }
-.bw-seg__opt { position: relative; isolation: isolate; display: inline-flex; align-items: center; gap: var(--bw-space-1-5); height: 26px; padding: 0 var(--bw-space-3); border: 0; border-radius: 4px; background: none; outline: none; cursor: pointer; white-space: nowrap;
+.bw-seg__opt { position: relative; isolation: isolate; display: inline-flex; align-items: center; gap: var(--bw-space-1-5); height: 30px; padding: 0 var(--bw-space-3); border: 0; border-radius: 0; background: none; outline: none; cursor: pointer; white-space: nowrap;
   font: 500 12px/16px var(--bw-font-sans); color: var(--bw-text-muted); transition: color var(--bw-duration-fast), background-color var(--bw-duration-fast); }
 .bw-seg__opt:hover { color: var(--bw-text); background: var(--bw-surface-3); }
-.bw-seg__opt:focus-visible { outline: 2px solid var(--bw-focus); outline-offset: 2px; }
-.bw-seg__opt[aria-checked="true"] { color: var(--bw-on-plate); background: none; border-radius: var(--bw-radius-plate); }
+.bw-seg__opt:focus-visible { outline: 2px solid var(--bw-focus); outline-offset: -2px; }
+.bw-seg__opt[aria-checked="true"] { color: var(--bw-on-plate); background: none; }
 .bw-seg__opt[aria-checked="true"]::before { content: ''; position: absolute; inset: 0; z-index: -1; background: var(--bw-plate); box-shadow: inset 0 -3px 0 var(--bw-plate-edge), inset 0 0 0 1px var(--bw-plate-outline);
-  clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px); }
+  clip-path: polygon(var(--bw-cut) 0, 100% 0, 100% calc(100% - var(--bw-cut)), calc(100% - var(--bw-cut)) 100%, 0 100%, 0 var(--bw-cut)); }
 
 /* ── выпадающий список ── кнопка 32px в виде поля; список — как меню, пункты 28px */
 .bw-select { display: inline-flex; align-items: center; justify-content: space-between; gap: var(--bw-space-2); min-width: 0; height: var(--bw-control-sm); padding: 0 10px; text-align: left;

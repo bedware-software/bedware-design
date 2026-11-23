@@ -50,11 +50,10 @@
   .variant__note { margin: 14px 0 0; font-size: 12px; line-height: 1.45; color: var(--bw-text-muted); }
 
   /* ── варианты спорных мест: только для этой страницы, в пакет не входят ── */
-  .alt-seg-flush .bw-seg { gap: 0; padding: 0; overflow: hidden; }
-  .alt-seg-flush .bw-seg__opt { height: 30px; border-radius: 0; }
-  .alt-seg-flush .bw-seg__opt[aria-checked="true"]::before { clip-path: none; }
-  .alt-btn-outline .bw-btn--secondary::before { background: none; }
-  .alt-btn-outline .bw-btn--secondary:hover::before { background: var(--bw-surface-3); }
+  .alt-btn-one .bw-btn--secondary::before, .alt-btn-one .bw-btn--secondary::after, .alt-btn-one .bw-btn--ghost::before { clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--bw-cut)), calc(100% - var(--bw-cut)) 100%, 0 100%); }
+  .alt-btn-round .bw-btn--secondary, .alt-btn-round .bw-btn--ghost { border-radius: var(--bw-radius-md); }
+  .alt-btn-round .bw-btn--secondary::before, .alt-btn-round .bw-btn--secondary::after, .alt-btn-round .bw-btn--ghost::before { clip-path: none; border-radius: inherit; }
+  .alt-btn-round .bw-btn--secondary::after { border-radius: 5px; }
 </style>
 </head>
 <body>

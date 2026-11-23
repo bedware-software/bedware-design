@@ -3,8 +3,8 @@ React: `<Button variant="primary" keys="↵">` из `@bedware/ui`.
 
 ## Когда какую
 - `primary` (`bw-btn--primary`) — одно главное действие на экран или диалог. Пластина `plate`, текст `on-plate`.
-- `secondary` (`bw-btn--secondary`) — обычные действия. Рамка `border-strong`, ровная заливка `surface-3` (без градиента), скругление `radius-md`.
-- `ghost` (`bw-btn--ghost`) — «Отмена» и второстепенное. Без рамки, hover `surface-3`.
+- `secondary` (`bw-btn--secondary`) — обычные действия. Рамка `border-strong`, ровная заливка `surface-3` (без градиента), форма как у пластины: углы `radius-plate` и два среза, без кромки.
+- `ghost` (`bw-btn--ghost`) — «Отмена» и второстепенное. Без рамки, hover `surface-3` той же формы со срезами.
 - `danger` (`bw-btn--danger`) — необратимое действие. Пластина `error` с кромкой `error-edge`.
 
 ## Правила
