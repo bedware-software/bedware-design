@@ -5,7 +5,9 @@
   "description": "Bedware Software — brand foundation and component catalog",
   "scripts": {
     "catalog:css": "node tools/build-catalog-css.mjs",
-    "serve": "python3 -m http.server 4173"
+    "serve": "python3 -m http.server 4173",
+    "tokens": "node tools/build-tokens.mjs",
+    "logo": "node tools/build-logo.mjs"
   },
   "devDependencies": {
     "@fontsource/inter": "^5.3.0",

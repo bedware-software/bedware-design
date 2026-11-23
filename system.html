@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bedware — итог: токены, логотип, компоненты</title>
+<link rel="stylesheet" href="node_modules/@fontsource/inter/400.css">
+<link rel="stylesheet" href="node_modules/@fontsource/inter/500.css">
+<link rel="stylesheet" href="node_modules/@fontsource/inter/600.css">
+<link rel="stylesheet" href="node_modules/@fontsource/inter/700.css">
+<link rel="stylesheet" href="node_modules/@fontsource/jetbrains-mono/400.css">
+<link rel="stylesheet" href="node_modules/@fontsource/jetbrains-mono/500.css">
+<link rel="stylesheet" href="node_modules/@fontsource/jetbrains-mono/700.css">
+<link rel="stylesheet" href="tokens/tokens.css?v=1">
+<link rel="stylesheet" href="assets/page.css?v=5">
+<link rel="stylesheet" href="components/components.css?v=1">
+<style>
+  .logos { display: grid; grid-template-columns: 1.4fr 1fr; gap: 12px; }
+  .logos figure { margin: 0; border: 1px solid var(--bw-border); border-radius: 10px; overflow: hidden; background: #000; }
+  .logos img { display: block; width: 100%; }
+  .logos figcaption { font: 12px var(--bw-font-mono); color: var(--bw-text-muted); padding: 8px 10px; border-top: 1px solid var(--bw-border); background: var(--bw-surface-1); }
+  .names { display: grid; gap: 0; align-content: center; padding: 8px 14px; }
+  .names img { width: auto; height: 62px; max-width: 100%; }
+  .demo { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+  .stack { display: grid; gap: 14px; }
+  .rowline { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  @media (max-width: 900px) { .logos, .demo { grid-template-columns: 1fr; } }
+  .tok { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 8px; }
+  .tok div { display: flex; gap: 10px; align-items: center; font: 12px var(--bw-font-mono); color: var(--bw-text-muted); border: 1px solid var(--bw-border); border-radius: 8px; padding: 6px 8px; }
+  .tok i { width: 26px; height: 26px; border-radius: 5px; border: 1px solid rgb(255 255 255 / .14); flex: none; }
+  .tok b { display: block; color: var(--bw-text-strong); font-weight: 500; }
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <b>bedware</b>
+  <a href="#logo">Логотип</a><a href="#components">Компоненты</a><a href="#tokens">Токены</a><a href="#files">Что где лежит</a>
+  <a href="c.html">← Доводка C</a><a href="index.html">← Этап 1</a>
+</nav>
+<main>
+<div class="hero" style="grid-template-columns:1fr"><div>
+  <h1>Итог: <em>бренд Bedware</em> в чистовом виде</h1>
+  <p style="margin-top:14px">Здесь уже ничего не нужно выбирать. Всё на странице собрано из одного файла <code>tokens/tokens.json</code> и ваших решений: направление C, подписи Inter в обычном регистре, кнопка приподнимается при наведении, выключенное — штриховкой, жёлтое кольцо фокуса, поле со срезом, панели и меню со скруглением 8px.</p>
+</div></div>
+
+<section id="logo">
+  <div class="sec-head"><span class="n">1</span><h2>Логотип</h2></div>
+  <p class="muted small">JetBrains Mono ExtraBold в контурах, обводка 5% кегля со скруглёнными стыками, разрядка 2%, наклон −3° и +6.5°. Файлы SVG в <code>brand/logo/</code>, собираются командой <code>npm run logo</code>.</p>
+  <div class="logos">
+    <figure><img src="brand/logo/bedware-software-on-black.svg" alt="bedware software"><figcaption>bedware-software.svg · есть вариант с прозрачным фоном</figcaption></figure>
+    <figure><div class="names"><img src="brand/logo/bedware.svg" alt="bedware"><img src="brand/logo/runwa.svg" alt="Runwa"><img src="brand/logo/vimperium.svg" alt="Vimperium"><img src="brand/logo/nota.svg" alt="Nota"></div><figcaption>bedware.svg · runwa.svg · vimperium.svg · nota.svg</figcaption></figure>
+  </div>
+</section>
+
+<section id="components">
+  <div class="sec-head"><span class="n">2</span><h2>Компоненты</h2></div>
+  <p class="muted small">Живые: наводите, нажимайте, ходите Tab. Код — <code>components/components.css</code>.</p>
+  <div class="demo">
+    <div class="bw-panel">
+      <div class="bw-panel__head" data-n="01"><div><b class="bw-panel__title">Запуск</b><span class="bw-panel__desc">Как приложение стартует вместе с системой.</span></div></div>
+      <div class="bw-row"><div><b class="bw-row__title">Запускать при входе</b><span class="bw-row__desc">Стартовать автоматически.</span></div><button class="bw-switch" role="switch" aria-checked="true" onclick="this.setAttribute('aria-checked', this.getAttribute('aria-checked') !== 'true')"></button></div>
+      <div class="bw-row" aria-selected="true"><div><b class="bw-row__title">Выбранная строка <span class="bw-tag">new</span></b><span class="bw-row__desc">Так выглядит выделение в списке.</span></div><button class="bw-btn bw-btn--secondary">Изменить</button></div>
+      <div class="bw-row"><div style="flex:1"><label class="bw-label">Исполняемый файл</label><input class="bw-field bw-field--mono" placeholder="например, ktalk.exe"></div></div>
+      <div class="bw-row"><div style="flex:1"><label class="bw-label">Название</label><input class="bw-field" aria-invalid="true" value="Открыть проект"><div class="bw-error-text">Команда с таким названием уже есть.</div></div></div>
+      <div class="bw-panel__foot"><button class="bw-btn bw-btn--danger" style="margin-right:auto">Удалить</button><button class="bw-btn bw-btn--ghost">Отмена <span class="bw-kbd">esc</span></button><button class="bw-btn bw-btn--primary">Сохранить <span class="bw-kbd">↵</span></button></div>
+    </div>
+    <div class="stack">
+      <div class="box"><h4>Кнопки</h4><div class="rowline"><button class="bw-btn bw-btn--primary">Сохранить</button><button class="bw-btn bw-btn--secondary">Изменить</button><button class="bw-btn bw-btn--ghost">Отмена</button><button class="bw-btn bw-btn--danger">Удалить</button></div>
+        <div class="rowline" style="margin-top:12px"><button class="bw-btn bw-btn--primary" disabled>Сохранить</button><button class="bw-btn bw-btn--secondary" disabled>Изменить</button><button class="bw-btn bw-btn--ghost" disabled>Отмена</button><span class="muted small">выключены</span></div></div>
+      <div class="box"><h4>Поле: 32 / 36 / 40 и выключенное</h4><div class="stack" style="gap:8px"><input class="bw-field bw-field--sm" placeholder="Поиск на странице"><input class="bw-field" value="ktalk.exe"><input class="bw-field bw-field--lg" placeholder="Введите команду…"><input class="bw-field" value="недоступно" disabled></div></div>
+      <div class="bw-menu"><div class="bw-menu__head">Рабочие области</div><div class="bw-menu__item" aria-selected="true"><span>Работа</span><span class="bw-kbd">1</span></div><div class="bw-menu__item"><span>Личное</span><span class="bw-kbd">2</span></div><div class="bw-menu__item"><span>Настройки</span><span class="bw-kbd">⌘ ,</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="tokens">
+  <div class="sec-head"><span class="n">3</span><h2>Токены</h2></div>
+  <p class="muted small">Читаются прямо из <code>tokens/tokens.json</code>. Тёмная тема; светлая — на следующем этапе.</p>
+  <h3>Цвета</h3><div class="tok" id="t-color"></div>
+  <h3>Размеры, отступы, скругления, движение</h3><div class="tok" id="t-other"></div>
+  <h3>Текстовые стили</h3><div class="grid cols-2" id="t-type"></div>
+</section>
+
+<section id="files">
+  <div class="sec-head"><span class="n">4</span><h2>Что где лежит</h2></div>
+  <div class="grid cols-2">
+    <div class="box"><h4>Источник истины</h4><p class="small"><code>tokens/tokens.json</code> — правится только он.<br><code>npm run tokens</code> → <code>tokens/tokens.css</code> (переменные <code>--bw-*</code>) и <code>tokens/tailwind-theme.css</code> — те же значения под именами, которые уже есть в <code>globals.css</code> Runwa и Vimperium (<code>--color-primary</code>, <code>--color-card</code>…). Перекраска приложения = подставить этот блок.</p></div>
+    <div class="box"><h4>Остальное</h4><p class="small"><code>brand/logo/*.svg</code> — логотип и названия продуктов.<br><code>components/components.css</code> — эталон кнопки, поля, панели, метки, переключателя, меню.<br><code>DECISIONS.md</code> — все ваши решения.<br><code>index.html</code>, <code>c.html</code> — страницы выбора (история).</p></div>
+  </div>
+</section>
+</main>
+<script>
+fetch('tokens/tokens.json').then((r) => r.json()).then((t) => {
+  const col = Object.fromEntries(t.color.tokens.map((c) => [c.name, c.value]));
+  const res = (v) => { const m = /^\{(.+)\}$/.exec(v); return m ? res(col[m[1]]) : v; };
+  document.querySelector('#t-color').innerHTML = t.color.tokens.map((c) => `<div title="${c.usage}"><i style="background:${res(c.value)}"></i><span><b>${c.name}</b>${c.value.toUpperCase()}</span></div>`).join('');
+  document.querySelector('#t-other').innerHTML = [...t.spacing.tokens, ...t.radius.tokens, ...t.motion.tokens].map((c) => `<div title="${c.usage}"><span><b>${c.name}</b>${c.value}</span></div>`).join('');
+  document.querySelector('#t-type').innerHTML = t.type.groups.map((g) => `<div class="box"><h4>${g.name}</h4>${g.styles.map((s) => `<div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:6px 0;border-top:1px solid var(--bw-border)"><span style="font:${s.fontWeight} ${Math.min(parseInt(s.fontSize), 34)}px/1.2 ${t.type.families[g.family]};color:var(--bw-text-strong);white-space:nowrap;overflow:hidden">${s.name === 'wordmark' ? 'bedware' : 'Запуск по клавише'}</span><span class="mono dim" style="white-space:nowrap">${s.name} · ${s.fontSize}/${s.lineHeight} · ${s.fontWeight}</span></div>`).join('')}</div>`).join('');
+});
+</script>
+</body>
+</html>

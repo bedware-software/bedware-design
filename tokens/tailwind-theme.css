@@ -1,0 +1,37 @@
+/* Bedware — сгенерировано из tokens/tokens.json командой «npm run tokens». Руками не править. */
+/* Тёмная тема бренда под имена, которые уже есть в globals.css обоих приложений.
+   Подключение (этап миграции): заменить значения в @theme { … } на эти. */
+@theme {
+  --color-background: #000000;
+  --color-foreground: #f4f1e8;
+  --color-card: #0e0d0c;
+  --color-card-foreground: #f4f1e8;
+  --color-popover: #171513;
+  --color-popover-foreground: #f4f1e8;
+  --color-primary: #ffde5d;
+  --color-primary-foreground: #000000;
+  --color-secondary: #22201d;
+  --color-secondary-foreground: #f4f1e8;
+  --color-muted: #2e2b27;
+  --color-muted-foreground: #a8a49a;
+  --color-accent: #22201d;
+  --color-accent-foreground: #ffffff;
+  --color-destructive: #ff6b5e;
+  --color-destructive-foreground: #000000;
+  --color-border: #3a3732;
+  --color-input: #5a564f;
+  --color-ring: #ffde5d;
+  --color-toolbar: #0e0d0c;
+  --color-field: #0b0a09;
+  --color-vim-command: #ffde5d;
+  --color-vim-command-text: #ffde5d;
+  --color-vim-insert: #ffbf68;
+  --color-vim-insert-text: #ffbf68;
+  --color-desktop-hint: #171513;
+  --color-desktop-hint-foreground: #ffffff;
+  --color-desktop-hint-border: #5a564f;
+  --color-desktop-hint-muted: #a8a49a;
+  --radius: 6px;
+  --font-sans: Inter, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", Menlo, "DejaVu Sans Mono", monospace;
+}
