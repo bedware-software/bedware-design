@@ -1,3 +1,3 @@
-# @bedware/ui 0.1.0
+# @bedware/ui 0.1.1
 
-Собранный пакет. Собран из коммита 426b18c381f1ac8bd05ff853fb7bcee529603d01 ветки main; руками не править — источник в packages/ui и components/components.css.
+Собранный пакет. Собран из коммита c925b4ab4743cfa43f64b5147c9bf678b032fb40 ветки main; руками не править — источник в packages/ui и components/components.css.

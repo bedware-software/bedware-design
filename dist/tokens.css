@@ -78,6 +78,43 @@
   --bw-shadow-popover: 0 10px 30px rgb(0 0 0 / 0.16);
 }
 
+@media (prefers-color-scheme: light) {
+  [data-theme="system"] {
+    /* цвета и тени · light */
+    --bw-bg: #f4f1e8;
+    --bw-surface-1: #faf8f2;
+    --bw-surface-2: #ffffff;
+    --bw-surface-3: #ebe7dc;
+    --bw-surface-4: #e0dbcd;
+    --bw-field-bg: #ffffff;
+    --bw-border: #d9d4c6;
+    --bw-border-strong: #8a8475;
+    --bw-border-hover: #5a564f;
+    --bw-plate: #000000;
+    --bw-plate-edge: var(--bw-yellow);
+    --bw-plate-outline: #000000;
+    --bw-plate-pressed: #2e2b27;
+    --bw-on-plate: var(--bw-yellow);
+    --bw-on-error: #ffffff;
+    --bw-text-strong: #000000;
+    --bw-text: #1d1b18;
+    --bw-text-muted: #5a564f;
+    --bw-text-dim: #6f6a60;
+    --bw-error: #c8372b;
+    --bw-error-edge: #8f2219;
+    --bw-success: #2f7d32;
+    --bw-warning: #9c5200;
+    --bw-link: #9c5200;
+    --bw-focus: #000000;
+    --bw-hatch-a: #d9d4c6;
+    --bw-hatch-b: #ebe7dc;
+    --bw-disabled-bg: #ebe7dc;
+    --bw-disabled-text: #9a9588;
+    --bw-switch-off: #b8b2a4;
+    --bw-shadow-popover: 0 10px 30px rgb(0 0 0 / 0.16);
+  }
+}
+
 :root {
   /* шрифты */
   --bw-font-sans: Inter, -apple-system, "Segoe UI", sans-serif;
