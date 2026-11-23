@@ -4,3 +4,4 @@ React: `<Segmented value options onChange label>`; у варианта есть 
 - Это `radiogroup` из `radio`: выбранная — `aria-checked="true"`.
 - Два–пять вариантов; если не помещаются в строку — `wrap`. Больше пяти — `Select`.
 - Ширина варианта не меняется при выборе.
+- `size="sm"` — дорожка 28px: в шапках страниц и поповерах.

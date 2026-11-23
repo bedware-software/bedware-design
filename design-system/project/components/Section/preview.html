@@ -1,0 +1,13 @@
+<!-- @dsCard group="Контейнеры" height=330 subtitle="Над панелью без номера: раздел, подраздел, опасный" -->
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><style>
+  html, body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font-sans); }
+  body { padding: 20px; }
+  .line { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 14px; }
+  .line:last-child { margin-bottom: 0; }
+  .cap { font: 11px var(--font-mono); color: var(--text-dim); width: 84px; flex: none; }
+  .grow { flex: 1; min-width: 0; }
+  .frame { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+</style></head><body>
+<div style="max-width:440px"><div class="bw-section-title"><h3 class="bw-section-title__text">Переключение окон</h3><p class="bw-section-title__desc">Какие окна показывать и в каком порядке.</p></div><div class="bw-panel"><div class="bw-row"><div><span class="bw-row__title">Только текущий рабочий стол</span><span class="bw-row__desc">Окна с других столов скрыты.</span></div><button type="button" role="switch" aria-checked="true" aria-label="Только текущий рабочий стол" class="bw-switch"></button></div></div><div class="bw-section-title bw-section-title--sub" style="margin-top:20px"><h4 class="bw-section-title__text">Исключения</h4></div><div class="bw-panel"><div class="bw-row"><div><span class="bw-row__title">ktalk.exe</span></div><button type="button" aria-label="Убрать" title="Убрать" class="bw-iconbtn bw-iconbtn--danger"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"></path></svg></button></div></div><div class="bw-section-title bw-section-title--danger" style="margin-top:20px"><h3 class="bw-section-title__text">Опасная зона</h3><p class="bw-section-title__desc">Эти действия нельзя отменить.</p></div></div>
+</body></html>

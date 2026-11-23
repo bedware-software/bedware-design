@@ -4,8 +4,9 @@
 import { useState } from 'react'
 import type { ReactNode } from 'react'
 import {
-  Badge, Button, CommandRow, ConfirmDialog, Field, Hint, HintBar, InputField, Kbd, Menu, MenuHeader, MenuItem, MenuSeparator,
-  Panel, PanelFooter, PanelHeader, PanelRow, ResultRow, Segmented, Select, SelectList, Switch, Tag,
+  Badge, Button, Checkbox, ChoiceCards, ColorField, CommandRow, ConfirmDialog, Field, FormDialog, GroupTitle, Hint, HintBar, HotkeyButton, IconButton, InputField, Kbd, LinkButton,
+  ListRow, Menu, MenuHeader, MenuItem, MenuSeparator, Nav, NavGroup, NavItem, Notice, Panel, PanelFooter, PanelHeader, PanelRow, ResultRow, SectionTitle, Segmented, Select, SelectList,
+  Switch, Tag, Textarea, Tip, Tooltip,
 } from '../src'
 
 const Line = ({ cap, children }: { cap: string; children: ReactNode }) => (
@@ -26,6 +27,13 @@ const icons = {
   plus: (s?: number) => svg(<path d="M12 5v14M5 12h14" />, s),
   sun: (s?: number) => svg(<><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M5 19l1.5-1.5M17.5 6.5 19 5" /></>, s),
   moon: (s?: number) => svg(<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z" />, s),
+  x: (s?: number) => svg(<path d="M18 6 6 18M6 6l12 12" />, s),
+  back: (s?: number) => svg(<path d="m15 18-6-6 6-6" />, s),
+  reload: (s?: number) => svg(<path d="M21 12a9 9 0 1 1-3-6.7M21 4v5h-5" />, s),
+  pin: (s?: number) => svg(<path d="M12 17v5M8 3h8l-1 6 3 4H6l3-4Z" />, s),
+  alert: (s?: number) => svg(<><path d="M12 9v4M12 17h.01" /><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" /></>, s),
+  gear: (s?: number) => svg(<><circle cx="12" cy="12" r="3" /><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2" /></>, s),
+  keys: (s?: number) => svg(<><rect x="2" y="6" width="20" height="12" rx="2" /><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10" /></>, s),
   monitor: (s?: number) => svg(<><rect x="3" y="4" width="18" height="12" rx="2" /><path d="M8 20h8M12 16v4" /></>, s),
 }
 
@@ -35,7 +43,158 @@ function ButtonDemo() {
       <Line cap="обычные"><Button variant="primary">Сохранить</Button><Button>Изменить</Button><Button variant="ghost">Отмена</Button><Button variant="danger">Удалить</Button></Line>
       <Line cap="с клавишей"><Button variant="primary" keys="↵">Сохранить</Button><Button variant="ghost" keys="esc">Отмена</Button><Button icon={icons.plus(13)}>Добавить</Button><Button variant="danger" icon={icons.trash(13)} keys="d">Удалить</Button></Line>
       <Line cap="выключены"><Button variant="primary" disabled>Сохранить</Button><Button disabled>Изменить</Button><Button variant="ghost" disabled>Отмена</Button><Button variant="danger" disabled>Удалить</Button></Line>
+      <Line cap="малые · 24"><Button size="sm" variant="primary">Сохранить</Button><Button size="sm">Изменить</Button><Button size="sm" variant="ghost">Отмена</Button><Button size="sm" variant="danger">Удалить</Button><Button size="sm" disabled>Недоступно</Button></Line>
+      <Line cap="тихая красная"><Button>Изменить</Button><Button variant="quiet-danger">Удалить</Button><Button variant="quiet-danger" icon={icons.trash(13)}>Очистить всё</Button><Button size="sm" variant="quiet-danger">Удалить</Button></Line>
+      <Line cap="ссылка"><LinkButton>Вернуть по умолчанию</LinkButton><LinkButton mono>~/Library/Application Support/Runwa</LinkButton><LinkButton disabled>Недоступно</LinkButton></Line>
     </>
+  )
+}
+
+function IconButtonDemo() {
+  const [pinned, setPinned] = useState(true)
+  return (
+    <>
+      <Line cap="28 · обычные"><IconButton label="Изменить">{icons.pencil()}</IconButton><IconButton label="Закрепить" pressed={pinned} onClick={() => setPinned(!pinned)}>{icons.pin()}</IconButton><IconButton label="Удалить" danger>{icons.trash()}</IconButton><IconButton label="Обновить" disabled>{icons.reload()}</IconButton></Line>
+      <Line cap="32 · панель"><span style={{ display: 'inline-flex', gap: 2 }}><IconButton size={32} label="Назад">{icons.back(16)}</IconButton><IconButton size={32} label="Обновить">{icons.reload(16)}</IconButton><IconButton size={32} label="Закрепить" pressed>{icons.pin(16)}</IconButton></span></Line>
+      <Line cap="24 и 20"><IconButton size={24} label="Изменить">{icons.pencil(13)}</IconButton><IconButton size={24} label="Закрыть" danger>{icons.x(13)}</IconButton><IconButton size={20} label="Изменить">{icons.pencil(12)}</IconButton><IconButton size={20} label="Удалить" danger>{icons.trash(12)}</IconButton></Line>
+      <Line cap="в строке"><span className="bw-row__title" style={{ display: 'flex', gap: 8, alignItems: 'center' }}>ktalk.exe <IconButton label="Убрать из списка" danger>{icons.x()}</IconButton></span></Line>
+    </>
+  )
+}
+
+function CheckboxDemo() {
+  const [a, setA] = useState(true)
+  const [b, setB] = useState<boolean | 'mixed'>('mixed')
+  return (
+    <>
+      <Line cap="состояния"><Checkbox aria-label="Выключен" checked={false} onChange={() => {}} /><Checkbox aria-label="Включён" checked onChange={() => {}} /><Checkbox aria-label="Частично" checked="mixed" onChange={() => {}} /></Line>
+      <Line cap="недоступен"><Checkbox aria-label="Недоступен" checked={false} onChange={() => {}} disabled /><Checkbox aria-label="Недоступен, включён" checked onChange={() => {}} disabled /></Line>
+      <Line cap="с подписью"><Checkbox checked={a} onChange={setA} label="Запускать при входе" description="Стартовать вместе с системой." /></Line>
+      <Line cap="частично"><Checkbox checked={b} onChange={setB} label="Все модули" /></Line>
+    </>
+  )
+}
+
+function TextareaDemo() {
+  const [text, setText] = useState('- keys: [e]\n  shell: open ~')
+  return (
+    <div style={{ maxWidth: 440 }}>
+      <Line cap="обычное"><Textarea placeholder="Заметка к команде" className="grow" /></Line>
+      <Line cap="моно"><Textarea mono value={text} onChange={(e) => setText(e.target.value)} className="grow" /></Line>
+      <Line cap="ошибка"><Textarea mono invalid defaultValue={'- keys: [capslok]'} className="grow" /></Line>
+      <Line cap="выключено"><Textarea disabled defaultValue="Недоступно" className="grow" /></Line>
+    </div>
+  )
+}
+
+function ColorHotkeyDemo() {
+  const [color, setColor] = useState('#ffde5d')
+  const [rec, setRec] = useState(false)
+  return (
+    <>
+      <Line cap="цвет"><ColorField value={color} onChange={setColor} boxClassName="grow" aria-label="Цвет" /><ColorField value="#ffde" onChange={() => {}} boxClassName="grow" aria-label="Цвет с ошибкой" /></Line>
+      <Line cap="сочетание"><HotkeyButton emptyLabel="Задать…" /><HotkeyButton keys={['⌥', 'Space']} setLabel="Изменить" /></Line>
+      <Line cap="запись"><HotkeyButton recording recordingLabel="Нажмите сочетание…" /><HotkeyButton invalid keys={['⌘', 'Q']} invalidLabel="Занято" /></Line>
+      <Line cap="живое"><HotkeyButton keys={['⌥', 'Space']} recording={rec} onClick={() => setRec(!rec)} setLabel="Изменить" recordingLabel="Нажмите сочетание…" /><IconButton label="Очистить" danger>{icons.x()}</IconButton></Line>
+    </>
+  )
+}
+
+function NoticeDemo() {
+  return (
+    <div style={{ maxWidth: 480, display: 'grid', gap: 12 }}>
+      <Notice icon={icons.alert(15)} title="Не удалось прочитать правила">Строка 14: неизвестная клавиша «capslok».</Notice>
+      <Notice tone="warning" icon={icons.alert(15)} title="Нужно разрешение" side={<Button size="sm">Открыть настройки</Button>}>Разрешите Runwa управлять компьютером.</Notice>
+      <Panel>
+        <PanelRow title="Список исключений" description="Окна этих приложений не показываются." />
+        <Notice flush icon={icons.alert(15)} side={<Button size="sm">Повторить</Button>}>Не удалось сохранить список.</Notice>
+      </Panel>
+    </div>
+  )
+}
+
+function SectionDemo() {
+  return (
+    <div style={{ maxWidth: 440 }}>
+      <SectionTitle title="Переключение окон" description="Какие окна показывать и в каком порядке." />
+      <Panel><PanelRow title="Только текущий рабочий стол" description="Окна с других столов скрыты."><Switch checked onChange={() => {}} label="Только текущий рабочий стол" /></PanelRow></Panel>
+      <SectionTitle level={2} title="Исключения" style={{ marginTop: 20 }} />
+      <Panel><PanelRow title="ktalk.exe"><IconButton label="Убрать" danger>{icons.x()}</IconButton></PanelRow></Panel>
+      <SectionTitle danger title="Опасная зона" description="Эти действия нельзя отменить." style={{ marginTop: 20 }} />
+    </div>
+  )
+}
+
+function ChoiceDemo() {
+  const [mode, setMode] = useState('sun')
+  return (
+    <ChoiceCards label="Режим тёмной темы" value={mode} onChange={setMode} style={{ maxWidth: 560 }} options={[
+      { value: 'time', title: 'По расписанию', description: 'С 21:00 до 7:00' },
+      { value: 'sun', title: 'По солнцу', description: 'От заката до рассвета' },
+      { value: 'manual', title: 'Вручную', description: 'Только по клавише' },
+      { value: 'off', title: 'Недоступно', description: 'Нет разрешения', disabled: true },
+    ]} />
+  )
+}
+
+function NavDemo() {
+  const [at, setAt] = useState('windows')
+  const [on, setOn] = useState<Record<string, boolean>>({ windows: true, keys: false })
+  const sw = (id: string) => <Switch size="xs" checked={on[id]} onChange={(v) => setOn({ ...on, [id]: v })} onClick={(e) => { e.stopPropagation(); setOn({ ...on, [id]: !on[id] }) }} label="Модуль включён" />
+  return (
+    <Nav style={{ width: 220 }} aria-label="Разделы настроек">
+      <NavGroup>Общее</NavGroup>
+      <NavItem icon={icons.gear()} current={at === 'general'} onClick={() => setAt('general')}>Основные</NavItem>
+      <NavItem icon={icons.moon()} current={at === 'look'} onClick={() => setAt('look')}>Оформление</NavItem>
+      <NavGroup>Модули</NavGroup>
+      <NavItem icon={icons.window()} current={at === 'windows'} onClick={() => setAt('windows')} side={sw('windows')}>Переключение окон</NavItem>
+      <NavItem icon={icons.keys()} current={at === 'keys'} onClick={() => setAt('keys')} side={sw('keys')} off={!on.keys}>Клавиатура</NavItem>
+    </Nav>
+  )
+}
+
+function TooltipDemo() {
+  return (
+    <>
+      <Line cap="вид"><Tip keys={['r']}>Обновить страницу</Tip><Tip>Закрепить вкладку</Tip></Line>
+      <Line cap="длинная"><Tip style={{ whiteSpace: 'normal' }}>Окна этого приложения не показываются в переключателе, пока оно в списке исключений.</Tip></Line>
+      <Line cap="живая"><Tooltip content="Обновить страницу" keys={['r']}><IconButton label="Обновить" title="">{icons.reload()}</IconButton></Tooltip><Tooltip content="Сверху, если есть место" side="top"><Button>Наведите</Button></Tooltip></Line>
+    </>
+  )
+}
+
+function ListRowDemo() {
+  const [at, setAt] = useState(1)
+  const rows = [
+    { icon: icons.window(16), label: 'bedware — пакет компонентов', note: 'localhost' },
+    { icon: icons.folder(16), label: 'Загрузки', note: '12 файлов' },
+    { icon: icons.terminal(16), label: 'Очень длинное название вкладки, которое не помещается в строку', note: 'вчера' },
+  ]
+  return (
+    <div className="bw-menu" role="listbox" aria-label="Список" style={{ width: 340 }}>
+      <GroupTitle>Вкладки</GroupTitle>
+      {rows.map((row, i) => <ListRow key={row.label} icon={row.icon} note={row.note} selected={at === i} onClick={() => setAt(i)}>{row.label}</ListRow>)}
+      <GroupTitle>Команды</GroupTitle>
+      <ListRow icon={icons.command(16)} side={<IconButton size={24} label="Убрать" danger>{icons.x(13)}</IconButton>}>Открыть проект</ListRow>
+    </div>
+  )
+}
+
+function FormDialogDemo() {
+  const nothing = () => {}
+  return (
+    <div className="line" style={{ alignItems: 'flex-start' }}>
+      <FormDialog open placement="inline" width={380} title="Новая команда" description="Команды пользователя" onSubmit={nothing} onCancel={nothing}
+        actions={<><Button variant="ghost">Отмена</Button><Button variant="primary" type="submit" keys="↵">Создать</Button></>}
+        hints={<><Hint label="Создать" keys={['↵']} /><Hint label="Отмена" keys={['Esc']} /></>}>
+        <Field label="Название" defaultValue="Открыть проект" />
+        <Field label="Команда" mono defaultValue="code ~/Development" />
+      </FormDialog>
+      <FormDialog open placement="inline" width={380} mark="@" title="Алиас" description="Терминал" note="Такой алиас уже есть" noteError onSubmit={nothing} onCancel={nothing}
+        actions={<><Button variant="ghost">Отмена</Button><Button variant="primary" type="submit" disabled>Сохранить</Button></>}>
+        <Field label="Короткое имя" mono defaultValue="term" invalid />
+      </FormDialog>
+    </div>
   )
 }
 
@@ -83,6 +242,7 @@ function BadgeDemo() {
     <>
       <Line cap="тона"><Badge>local</Badge><Badge tone="accent">global</Badge><Badge tone="success">granted</Badge><Badge tone="warning">overridden</Badge><Badge tone="error">not granted</Badge></Line>
       <Line cap="в строке"><span className="bw-row__title" style={{ display: 'flex', gap: 8, alignItems: 'center' }}>Открыть палитру <Badge tone="accent">global</Badge></span></Line>
+      <Line cap="как написано"><Badge plain>it-search</Badge><Badge plain tone="accent">open_module</Badge></Line>
     </>
   )
 }
@@ -94,6 +254,7 @@ function SwitchDemo() {
   const [d, setD] = useState(false)
   return (
     <>
+      <Line cap="28×16"><Switch size="xs" checked={a} onChange={setA} label="Включён, малый" /><Switch size="xs" checked={b} onChange={setB} label="Выключен, малый" /></Line>
       <Line cap="36×20"><Switch checked={a} onChange={setA} label="Включён" /><Switch checked={b} onChange={setB} label="Выключен" /></Line>
       <Line cap="44×24"><Switch size="md" checked={c} onChange={setC} label="Включён, большой" /><Switch size="md" checked={d} onChange={setD} label="Выключен, большой" /></Line>
       <Line cap="недоступен"><Switch checked onChange={() => {}} label="Недоступен, включён" disabled /><Switch checked={false} onChange={() => {}} label="Недоступен, выключен" disabled /></Line>
@@ -120,6 +281,7 @@ function SegmentedDemo() {
     <>
       <Line cap="текст"><Segmented label="Плотность" value={density} onChange={setDensity} options={[{ value: 'compact', label: 'Плотно' }, { value: 'normal', label: 'Обычно' }, { value: 'roomy', label: 'Свободно' }]} /></Line>
       <Line cap="со значком"><Segmented label="Тема" value={theme} onChange={setTheme} options={[{ value: 'dark', label: 'Тёмная', icon: icons.moon() }, { value: 'light', label: 'Светлая', icon: icons.sun() }, { value: 'system', label: 'Как в системе', icon: icons.monitor() }]} /></Line>
+      <Line cap="малые · 28"><Segmented size="sm" label="Сортировка" value={density} onChange={setDensity} options={[{ value: 'compact', label: 'Имя' }, { value: 'normal', label: 'Дата' }, { value: 'roomy', label: 'Размер' }]} /></Line>
       <Line cap="с переносом"><div style={{ maxWidth: 300 }}><Segmented wrap label="Поиск" value={engine} onChange={setEngine} options={['ddg:DuckDuckGo', 'google:Google', 'kagi:Kagi', 'brave:Brave', 'yandex:Яндекс'].map((s) => ({ value: s.split(':')[0], label: s.split(':')[1] }))} /></div></Line>
     </>
   )
@@ -158,6 +320,14 @@ function MenuDemo() {
         <MenuItem icon={icons.terminal()} disabled>Открыть в терминале</MenuItem>
         <MenuSeparator />
         <MenuItem icon={icons.trash()} keys={['d']} danger>Удалить</MenuItem>
+      </Menu>
+      <Menu style={{ width: 240 }}>
+        <MenuHeader>Профили</MenuHeader>
+        <MenuItem icon={icons.folder()} current>Работа</MenuItem>
+        <MenuItem icon={icons.folder()} selected actions={<><IconButton size={20} label="Переименовать">{icons.pencil(12)}</IconButton><IconButton size={20} label="Удалить" danger>{icons.trash(12)}</IconButton></>}>Личное</MenuItem>
+        <MenuItem icon={icons.folder()} submenu>Перенести в…</MenuItem>
+        <MenuSeparator />
+        <MenuItem icon={icons.plus()} keys={['n']} accent>Новый профиль…</MenuItem>
       </Menu>
     </div>
   )
@@ -226,16 +396,27 @@ export interface Story {
 }
 
 export const stories: Story[] = [
-  { name: 'Button', title: 'Кнопка', group: 'Действия', height: 170, subtitle: 'Основная, вторичная, текстовая, опасная; с клавишей и значком; выключенные', Demo: ButtonDemo },
+  { name: 'Button', title: 'Кнопка', group: 'Действия', height: 320, subtitle: 'Основная, вторичная, текстовая, опасная; с клавишей и значком; малая, тихая красная, ссылка', Demo: ButtonDemo },
+  { name: 'IconButton', title: 'Кнопка-значок', group: 'Действия', height: 230, subtitle: 'Четыре размера, включённая, удаление, выключенная', Demo: IconButtonDemo },
   { name: 'Field', title: 'Поле ввода', group: 'Формы', height: 440, subtitle: 'Три высоты, моноширинное, ошибка, выключенное, значок и клавиша', Demo: FieldDemo },
+  { name: 'Textarea', title: 'Многострочное поле', group: 'Формы', height: 420, subtitle: 'Растёт по содержимому; моноширинное, ошибка, выключенное', Demo: TextareaDemo },
+  { name: 'Checkbox', title: 'Флажок', group: 'Формы', height: 215, subtitle: 'Включён, выключен, частично, недоступен, с подписью', Demo: CheckboxDemo },
+  { name: 'ChoiceCards', title: 'Карточки-выбор', group: 'Формы', height: 130, subtitle: 'Один вариант из нескольких с описанием', Demo: ChoiceDemo },
+  { name: 'ColorHotkey', title: 'Поле цвета и запись сочетания', group: 'Формы', height: 235, subtitle: 'Образец в поле; сочетание клавиш кнопкой: не задано, задано, запись, занято', Demo: ColorHotkeyDemo },
   { name: 'Select', title: 'Выпадающий список', group: 'Формы', height: 260, subtitle: 'Кнопка-поле и список с клавиатурой', Demo: SelectDemo },
-  { name: 'Segmented', title: 'Сегменты', group: 'Формы', height: 190, subtitle: 'Один выбор из нескольких кнопок', Demo: SegmentedDemo },
-  { name: 'Switch', title: 'Переключатель', group: 'Формы', height: 135, subtitle: 'Два размера, включён, выключен, недоступен', Demo: SwitchDemo },
+  { name: 'Segmented', title: 'Сегменты', group: 'Формы', height: 235, subtitle: 'Один выбор из нескольких кнопок', Demo: SegmentedDemo },
+  { name: 'Switch', title: 'Переключатель', group: 'Формы', height: 180, subtitle: 'Три размера, включён, выключен, недоступен', Demo: SwitchDemo },
   { name: 'Panel', title: 'Панель', group: 'Контейнеры', height: 350, subtitle: 'Шапка с плашкой, строки, выбранная строка, подвал', Demo: PanelDemo },
-  { name: 'Menu', title: 'Меню', group: 'Контейнеры', height: 195, subtitle: 'Заголовок, значки, клавиши, разделитель, опасный и выключенный пункт', Demo: MenuDemo },
+  { name: 'Menu', title: 'Меню', group: 'Контейнеры', height: 195, subtitle: 'Заголовок, значки, клавиши, разделитель, опасный и выключенный пункт; текущий, с действиями, подменю, акцентный', Demo: MenuDemo },
+  { name: 'Nav', title: 'Боковая навигация', group: 'Контейнеры', height: 240, subtitle: 'Пункты настроек, подписи групп, переключатель модуля', Demo: NavDemo },
+  { name: 'Section', title: 'Заголовок раздела', group: 'Контейнеры', height: 330, subtitle: 'Над панелью без номера: раздел, подраздел, опасный', Demo: SectionDemo },
+  { name: 'Notice', title: 'Уведомление', group: 'Контейнеры', height: 290, subtitle: 'Ошибка, предупреждение, вплотную к панели', Demo: NoticeDemo },
+  { name: 'FormDialog', title: 'Диалог с формой', group: 'Контейнеры', height: 330, subtitle: 'Шапка с плашкой, поля, кнопки, полоса подсказок', Demo: FormDialogDemo },
+  { name: 'ListRow', title: 'Плотная строка и заголовок группы', group: 'Контейнеры', height: 250, subtitle: 'Строка 32px со значком и пояснением; ярлык группы', Demo: ListRowDemo },
+  { name: 'Tooltip', title: 'Подсказка при наведении', group: 'Метки', height: 180, subtitle: 'Маленькая пластина, с клавишей и без', Demo: TooltipDemo },
   { name: 'ConfirmDialog', title: 'Диалог подтверждения', group: 'Контейнеры', height: 410, subtitle: 'Сообщение 14px, кнопки, полоса подсказок', Demo: DialogDemo },
   { name: 'PaletteRows', title: 'Строки палитры', group: 'Контейнеры', height: 330, subtitle: 'Высокая со значком и плотная с клавишей', Demo: PaletteDemo },
   { name: 'Kbd', title: 'Клавиша и полоса подсказок', group: 'Метки', height: 215, subtitle: 'Обычная, на поле, на кнопке; полоса подсказок', Demo: KbdDemo },
-  { name: 'Badge', title: 'Бейдж', group: 'Метки', height: 92, subtitle: 'Статусы: пять тонов', Demo: BadgeDemo },
+  { name: 'Badge', title: 'Бейдж', group: 'Метки', height: 135, subtitle: 'Статусы: пять тонов', Demo: BadgeDemo },
   { name: 'Tag', title: 'Метка', group: 'Метки', height: 80, subtitle: 'Наклонная метка-пластина', Demo: TagDemo },
 ]

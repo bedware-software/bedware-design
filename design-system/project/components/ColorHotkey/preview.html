@@ -1,0 +1,13 @@
+<!-- @dsCard group="Формы" height=235 subtitle="Образец в поле; сочетание клавиш кнопкой: не задано, задано, запись, занято" -->
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><style>
+  html, body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font-sans); }
+  body { padding: 20px; }
+  .line { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 14px; }
+  .line:last-child { margin-bottom: 0; }
+  .cap { font: 11px var(--font-mono); color: var(--text-dim); width: 84px; flex: none; }
+  .grow { flex: 1; min-width: 0; }
+  .frame { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+</style></head><body>
+<div class="line"><span class="cap">цвет</span><div class="bw-field bw-field--box bw-field--sm bw-field--mono grow"><span class="bw-field__side"><span class="bw-swatch" style="background:#ffde5d"><input type="color" tabindex="-1" aria-label="Выбрать цвет" value="#ffde5d"/></span></span><input class="bw-field__input" spellCheck="false" aria-label="Цвет" value="#ffde5d"/></div><div class="bw-field bw-field--box bw-field--sm bw-field--mono grow" data-invalid=""><span class="bw-field__side"><span class="bw-swatch" style="background:transparent"><input type="color" tabindex="-1" aria-label="Выбрать цвет" value="#000000"/></span></span><input class="bw-field__input" aria-invalid="true" spellCheck="false" aria-label="Цвет с ошибкой" value="#ffde"/></div></div><div class="line"><span class="cap">сочетание</span><button type="button" class="bw-btn bw-btn--secondary bw-hotkey">Задать…</button><button type="button" class="bw-btn bw-btn--secondary bw-hotkey">Изменить<kbd class="bw-kbd">⌥</kbd><kbd class="bw-kbd">Space</kbd></button></div><div class="line"><span class="cap">запись</span><button type="button" class="bw-btn bw-btn--primary bw-hotkey">Нажмите сочетание…</button><button type="button" class="bw-btn bw-btn--danger-outline bw-hotkey">Занято<kbd class="bw-kbd">⌘</kbd><kbd class="bw-kbd">Q</kbd></button></div><div class="line"><span class="cap">живое</span><button type="button" class="bw-btn bw-btn--secondary bw-hotkey">Изменить<kbd class="bw-kbd">⌥</kbd><kbd class="bw-kbd">Space</kbd></button><button type="button" aria-label="Очистить" title="Очистить" class="bw-iconbtn bw-iconbtn--danger"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"></path></svg></button></div>
+</body></html>

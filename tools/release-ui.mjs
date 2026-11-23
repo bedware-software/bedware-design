@@ -24,8 +24,10 @@ if (has(`refs/tags/${tag}`)) {
   console.error(`Тег ${tag} уже есть. Поднимите "version" в packages/ui/package.json и запустите снова.`);
   process.exit(1);
 }
-if (git(['status', '--porcelain'])) {
-  console.error('Есть незакоммиченные изменения: выпуск делается только из закоммиченного состояния.');
+// Смотрим только на то, из чего собирается пакет: посторонние незакоммиченные файлы (страницы, черновики бренда) выпуску не мешают.
+const SOURCES = ['packages/ui', 'components', 'tokens', 'fonts'];
+if (git(['status', '--porcelain', '--', ...SOURCES])) {
+  console.error(`Есть незакоммиченные изменения в источниках пакета (${SOURCES.join(', ')}): выпуск делается только из закоммиченного состояния.`);
   process.exit(1);
 }
 

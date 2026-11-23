@@ -2,7 +2,7 @@
 // Варианты для выбора владельцем добавляются сюда же отдельным разделом и убираются после решения.
 import { useState } from 'react'
 import { createRoot } from 'react-dom/client'
-import { Button, ConfirmDialog, Hint } from '../src'
+import { Button, ConfirmDialog, Field, FormDialog, Hint } from '../src'
 import { stories } from './stories'
 
 
@@ -31,6 +31,23 @@ function LiveDialog() {
   )
 }
 
+
+function LiveFormDialog() {
+  const [open, setOpen] = useState(false)
+  const [name, setName] = useState('')
+  return (
+    <div className="line">
+      <span className="cap">поверх окна</span>
+      <Button onClick={() => setOpen(true)}>Открыть диалог</Button>
+      <FormDialog open={open} title="Новая команда" description="Команды пользователя" onSubmit={() => setOpen(false)} onCancel={() => setOpen(false)}
+        actions={<><Button variant="ghost" onClick={() => setOpen(false)}>Отмена</Button><Button variant="primary" type="submit" keys="↵" disabled={!name}>Создать</Button></>}
+        hints={<><Hint label="Создать" keys={['↵']} /><Hint label="Отмена" keys={['Esc']} /></>}>
+        <Field label="Название" value={name} onChange={(e) => setName(e.target.value)} placeholder="Открыть проект" />
+      </FormDialog>
+    </div>
+  )
+}
+
 function App() {
   return (
     <>
@@ -41,7 +58,7 @@ function App() {
           {stories.map(({ name, title, subtitle, Demo }) => (
             <article className="card" id={name} key={name}>
               <header><h3>{title}</h3><code>{name}</code><span>{subtitle}</span></header>
-              <div className="card__body"><Demo />{name === 'ConfirmDialog' && <LiveDialog />}</div>
+              <div className="card__body"><Demo />{name === 'ConfirmDialog' && <LiveDialog />}{name === 'FormDialog' && <LiveFormDialog />}</div>
             </article>
           ))}
         </div>

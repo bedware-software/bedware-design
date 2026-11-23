@@ -8,9 +8,11 @@ export function Tag({ className, ...rest }: HTMLAttributes<HTMLSpanElement>) {
 
 export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
   tone?: 'neutral' | 'accent' | 'success' | 'warning' | 'error'
+  /** Как написано, без заглавных: идентификаторы вроде it-search. */
+  plain?: boolean
 }
 
 /** Бейдж-статус: прямоугольный, 10px заглавными. */
-export function Badge({ tone = 'neutral', className, ...rest }: BadgeProps) {
-  return <span className={cx('bw-badge', `bw-badge--${tone}`, className)} {...rest} />
+export function Badge({ tone = 'neutral', plain, className, ...rest }: BadgeProps) {
+  return <span className={cx('bw-badge', `bw-badge--${tone}`, plain && 'bw-badge--plain', className)} {...rest} />
 }

@@ -1,0 +1,13 @@
+<!-- @dsCard group="Формы" height=130 subtitle="Один вариант из нескольких с описанием" -->
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><style>
+  html, body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font-sans); }
+  body { padding: 20px; }
+  .line { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 14px; }
+  .line:last-child { margin-bottom: 0; }
+  .cap { font: 11px var(--font-mono); color: var(--text-dim); width: 84px; flex: none; }
+  .grow { flex: 1; min-width: 0; }
+  .frame { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+</style></head><body>
+<div role="radiogroup" aria-label="Режим тёмной темы" class="bw-choices" style="max-width:560px"><button type="button" role="radio" aria-checked="false" tabindex="-1" data-value="time" class="bw-choice"><span class="bw-choice__title">По расписанию</span>С 21:00 до 7:00</button><button type="button" role="radio" aria-checked="true" tabindex="0" data-value="sun" class="bw-choice"><span class="bw-choice__title">По солнцу</span>От заката до рассвета</button><button type="button" role="radio" aria-checked="false" tabindex="-1" data-value="manual" class="bw-choice"><span class="bw-choice__title">Вручную</span>Только по клавише</button><button type="button" role="radio" aria-checked="false" tabindex="-1" disabled="" data-value="off" class="bw-choice"><span class="bw-choice__title">Недоступно</span>Нет разрешения</button></div>
+</body></html>

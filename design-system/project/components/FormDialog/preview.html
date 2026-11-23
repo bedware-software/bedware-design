@@ -1,0 +1,13 @@
+<!-- @dsCard group="Контейнеры" height=330 subtitle="Шапка с плашкой, поля, кнопки, полоса подсказок" -->
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><style>
+  html, body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font-sans); }
+  body { padding: 20px; }
+  .line { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 14px; }
+  .line:last-child { margin-bottom: 0; }
+  .cap { font: 11px var(--font-mono); color: var(--text-dim); width: 84px; flex: none; }
+  .grow { flex: 1; min-width: 0; }
+  .frame { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+</style></head><body>
+<div class="line" style="align-items:flex-start"><form role="dialog" aria-labelledby="_R_1_" noValidate="" class="bw-dialog" style="width:380px"><div class="bw-panel__head bw-dialog__head" data-n="+"><div><span id="_R_1_" class="bw-panel__title">Новая команда</span><span class="bw-panel__desc">Команды пользователя</span></div></div><div class="bw-dialog__form"><div><label class="bw-label" for="_R_5l_">Название</label><div class="bw-field bw-field--box"><input class="bw-field__input" id="_R_5l_" value="Открыть проект"/></div></div><div><label class="bw-label" for="_R_9l_">Команда</label><div class="bw-field bw-field--box bw-field--mono"><input class="bw-field__input" id="_R_9l_" value="code ~/Development"/></div></div><div class="bw-dialog__actions"><button type="button" class="bw-btn bw-btn--ghost">Отмена</button><button type="submit" class="bw-btn bw-btn--primary">Создать<kbd class="bw-kbd">↵</kbd></button></div></div><div class="bw-hintbar"><span class="bw-hint">Создать<kbd class="bw-kbd">↵</kbd></span><span class="bw-hint">Отмена<kbd class="bw-kbd">Esc</kbd></span></div></form><form role="dialog" aria-labelledby="_R_2_" noValidate="" class="bw-dialog" style="width:380px"><div class="bw-panel__head bw-dialog__head" data-n="@"><div><span id="_R_2_" class="bw-panel__title">Алиас</span><span class="bw-panel__desc">Терминал</span></div></div><div class="bw-dialog__form"><div><label class="bw-label" for="_R_1m_">Короткое имя</label><div class="bw-field bw-field--box bw-field--mono" data-invalid=""><input class="bw-field__input" aria-invalid="true" id="_R_1m_" value="term"/></div></div><div class="bw-dialog__actions"><span class="bw-dialog__note bw-dialog__note--error">Такой алиас уже есть</span><button type="button" class="bw-btn bw-btn--ghost">Отмена</button><button type="submit" class="bw-btn bw-btn--primary" disabled="">Сохранить</button></div></div></form></div>
+</body></html>

@@ -75,3 +75,31 @@ export function CommandRow({ rowKey, rowKeyQuiet, keys, selected = false, classN
     </div>
   )
 }
+
+export interface ListRowProps extends HTMLAttributes<HTMLDivElement> {
+  /** Значок 16px слева. */
+  icon?: ReactNode
+  /** Пояснение у правого края. */
+  note?: ReactNode
+  /** Элементы управления справа (IconButton size={24}). */
+  side?: ReactNode
+  selected?: boolean
+  ref?: Ref<HTMLDivElement>
+}
+
+/** Плотная строка списка 32px: значок, подпись в одну строку с обрезкой, пояснение справа. */
+export function ListRow({ icon, note, side, selected = false, className, children, ...rest }: ListRowProps) {
+  return (
+    <div role="option" aria-selected={selected} className={cx('bw-listrow', className)} {...rest}>
+      {icon && <span className="bw-listrow__icon">{icon}</span>}
+      <span className="bw-listrow__label">{children}</span>
+      {note && <span className="bw-listrow__note">{note}</span>}
+      {side && <span className="bw-listrow__side">{side}</span>}
+    </div>
+  )
+}
+
+/** Заголовок группы над строками списка: ярлык-пластина. */
+export function GroupTitle({ className, children, ...rest }: HTMLAttributes<HTMLDivElement>) {
+  return <div role="presentation" className={cx('bw-group-title', className)} {...rest}><span>{children}</span></div>
+}
