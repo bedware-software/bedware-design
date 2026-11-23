@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bedware — доводка направления C</title>
+<!-- Шрифты лежат в проекте (пакеты @fontsource), сеть не нужна. -->
+<link rel="stylesheet" href="node_modules/@fontsource/inter/400.css">
+<link rel="stylesheet" href="node_modules/@fontsource/inter/500.css">
+<link rel="stylesheet" href="node_modules/@fontsource/inter/600.css">
+<link rel="stylesheet" href="node_modules/@fontsource/inter/700.css">
+<link rel="stylesheet" href="node_modules/@fontsource/jetbrains-mono/400.css">
+<link rel="stylesheet" href="node_modules/@fontsource/jetbrains-mono/500.css">
+<link rel="stylesheet" href="node_modules/@fontsource/jetbrains-mono/700.css">
+<link rel="stylesheet" href="assets/brand.css?v=4">
+<link rel="stylesheet" href="assets/page.css?v=4">
+<link rel="stylesheet" href="assets/c.css?v=4">
+<style>
+  :root { --bw-font-sans: Inter, -apple-system, "Segoe UI", sans-serif; --bw-font-mono: "JetBrains Mono", Menlo, monospace; --bw-font-display: "JetBrains Mono", Menlo, monospace; }
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <b>bedware</b>
+  <a href="index.html">← Этап 1: обзор и каталог</a>
+  <a href="#qs">Варианты</a>
+  <a href="#result">Итог вживую</a>
+</nav>
+<main>
+<div class="hero" style="grid-template-columns:1fr">
+  <div>
+    <h1>Доводка направления <em>C · Пластины</em></h1>
+    <p style="margin-top:14px">Семь вопросов, которые остались после вашего выбора. В каждом — два-три варианта рядом, во всём остальном колонки одинаковые. Страница уже набрана выбранными шрифтами: текст — Inter, заголовки и метки — JetBrains Mono.</p>
+    <p class="muted small">Выбирайте переключателями под каждым блоком. Внизу — «Итог вживую»: панель, поля, кнопки, меню и логотип сразу перестраиваются под ваш выбор. Пока ничего не выбрано, там показаны мои советы.</p>
+  </div>
+</div>
+
+<div id="qs"></div>
+
+<section id="result">
+  <div class="sec-head"><span class="n">→</span><h2>Итог вживую</h2></div>
+  <p class="muted small">Всё здесь настоящее: наводите, нажимайте, ходите клавишей Tab.</p>
+  <div id="final" class="final"></div>
+  <h3>Текст для чата</h3>
+  <textarea id="out" readonly style="min-height:190px"></textarea>
+</section>
+
+<div class="decide">
+  <button id="copy">Скопировать решения</button>
+  <button class="ghost" id="recs">Отметить все советы</button>
+  <button class="ghost" id="reset">Сбросить</button>
+  <span class="muted small" id="count"></span>
+</div>
+</main>
+<script src="assets/glyphs.js?v=4"></script>
+<script src="assets/c.js?v=5"></script>
+</body>
+</html>
