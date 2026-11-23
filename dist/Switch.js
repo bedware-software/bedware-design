@@ -1,6 +1,7 @@
 import { jsx as _jsx } from "react/jsx-runtime";
 import { cx } from './util';
-/** Переключатель «вкл / выкл», применяется сразу. Внутри <label> переключается и по нажатию на подпись. */
+/** Переключатель «вкл / выкл», применяется сразу. Некруглый: дорожка и бегунок со срезанными углами.
+ *  Внутри <label> переключается и по нажатию на подпись. */
 export function Switch({ checked, onChange, label, size = 'sm', className, onClick, ...rest }) {
     return (_jsx("button", { type: "button", role: "switch", "aria-checked": checked, "aria-label": label, 
         // Свой onClick потребителя идёт первым и переключение не заменяет; отменить его — preventDefault().
