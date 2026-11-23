@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="ru" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>bedware — Vimperium на токенах: что решить</title>
+<link rel="stylesheet" href="node_modules/@fontsource/inter/400.css">
+<link rel="stylesheet" href="node_modules/@fontsource/inter/500.css">
+<link rel="stylesheet" href="node_modules/@fontsource/inter/600.css">
+<link rel="stylesheet" href="node_modules/@fontsource/jetbrains-mono/400.css">
+<link rel="stylesheet" href="node_modules/@fontsource/jetbrains-mono/700.css">
+<link rel="stylesheet" href="tokens/tokens.css">
+<link rel="stylesheet" href="components/components.css">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bw-bg); color: var(--bw-text); font: 14px/1.5 var(--bw-font-sans); }
+  main { max-width: 1120px; margin: 0 auto; padding: 28px 16px 80px; }
+  h1 { font: 700 24px/1.2 var(--bw-font-mono); color: var(--bw-text-strong); margin: 0 0 6px; }
+  h2 { font: 700 18px/1.2 var(--bw-font-mono); color: var(--bw-text-strong); margin: 44px 0 6px; }
+  h2 i { font-style: normal; color: var(--bw-link); margin-right: 8px; }
+  p { margin: 0 0 10px; color: var(--bw-text-muted); max-width: 760px; }
+  .top { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; }
+  .opt { border: 1px solid var(--bw-border); border-radius: 8px; margin: 14px 0; overflow: hidden; }
+  .opt > header { display: flex; flex-wrap: wrap; gap: 10px; align-items: baseline; padding: 10px 14px; background: var(--bw-surface-1); border-bottom: 1px solid var(--bw-border); }
+  .opt > header b { font: 700 14px var(--bw-font-mono); color: var(--bw-text-strong); }
+  .opt > header span { font-size: 13px; color: var(--bw-text-muted); }
+  .opt > header em { font: 500 10px var(--bw-font-mono); font-style: normal; text-transform: uppercase; letter-spacing: .06em; padding: 2px 6px; background: var(--bw-plate); color: var(--bw-on-plate); }
+  .opt > div { padding: 14px; display: flex; flex-wrap: wrap; gap: 14px; align-items: flex-start; }
+  .cap { font: 500 11px var(--bw-font-mono); color: var(--bw-text-muted); margin: 6px 0 0; }
+
+  /* макет окна Vimperium: цвета — переменные --c-* на самом макете */
+  .win { width: 250px; flex: none; border: 1px solid var(--bw-border-strong); border-radius: 8px; overflow: hidden; background: var(--c-bg); color: var(--c-fg); font-size: 12px; }
+  .win .tb { display: flex; gap: 6px; align-items: center; padding: 6px; background: var(--c-toolbar); border-bottom: 1px solid var(--c-border); }
+  .win .addr { flex: 1; height: 24px; border-radius: 8px; background: var(--c-field); box-shadow: 0 0 0 .5px color-mix(in oklab, var(--c-fg) 22%, transparent); display: flex; align-items: center; padding: 0 8px; color: var(--c-muted); font-size: 11px; }
+  .win .btn { width: 24px; height: 24px; border-radius: 6px; background: var(--c-secondary); }
+  .win .cols { display: grid; grid-template-columns: 92px 1fr; min-height: 118px; }
+  .win .side { background: var(--c-card); border-right: 1px solid var(--c-border); padding: 6px; display: grid; gap: 4px; align-content: start; }
+  .win .row { height: 20px; border-radius: 6px; padding: 0 6px; display: flex; align-items: center; color: var(--c-muted); font-size: 11px; }
+  .win .row.on { background: var(--c-secondary); color: var(--c-fg); }
+  .win .page { padding: 10px; display: grid; gap: 6px; align-content: start; }
+  .win .page b { color: var(--c-fg); font-weight: 600; }
+  .win .page span { color: var(--c-muted); }
+  .win .page u { display: inline-block; text-decoration: none; padding: 2px 8px; background: var(--c-primary); color: var(--c-primary-fg); font-weight: 600; justify-self: start; }
+
+  .d0 { --c-bg: #000; --c-card: #0e0d0c; --c-toolbar: #0e0d0c; --c-secondary: #22201d; --c-border: #3a3732; --c-field: #0b0a09; --c-fg: #f4f1e8; --c-muted: #a8a49a; --c-primary: #ffde5d; --c-primary-fg: #000; }
+  .d-deep { --c-bg: oklch(0.14 0 0); --c-card: oklch(0.10 0 0); --c-toolbar: oklch(0.12 0 0); --c-secondary: oklch(0.22 0 0); --c-border: oklch(0.22 0 0); --c-field: oklch(0.18 0 0); }
+  .d-soft { --c-bg: oklch(0.28 0 0); --c-card: oklch(0.23 0 0); --c-toolbar: oklch(0.27 0 0); --c-secondary: oklch(0.36 0 0); --c-border: oklch(0.36 0 0); --c-field: oklch(0.32 0 0); }
+  .d-warm { --c-bg: #171513; --c-card: #22201d; --c-toolbar: #22201d; --c-secondary: #2e2b27; --c-border: #5a564f; --c-field: #0e0d0c; }
+  .l0 { --c-bg: #f4f1e8; --c-card: #faf8f2; --c-toolbar: #faf8f2; --c-secondary: #ebe7dc; --c-border: #d9d4c6; --c-field: #fff; --c-fg: #1d1b18; --c-muted: #5a564f; --c-primary: #000; --c-primary-fg: #ffde5d; }
+  .l-bright { --c-bg: oklch(0.985 0 0); --c-card: oklch(1 0 0); --c-toolbar: oklch(0.99 0 0); --c-secondary: oklch(0.975 0 0); --c-border: oklch(0.94 0 0); }
+  .l-soft { --c-bg: oklch(0.92 0 0); --c-card: oklch(0.955 0 0); --c-toolbar: oklch(0.935 0 0); --c-secondary: oklch(0.905 0 0); --c-border: oklch(0.87 0 0); --c-field: oklch(0.975 0 0); }
+  .l-warm { --c-bg: #ebe7dc; --c-card: #f4f1e8; --c-toolbar: #f4f1e8; --c-secondary: #e0dbcd; --c-border: #c9c3b3; --c-field: #faf8f2; }
+
+  /* поле */
+  .stage { background: var(--bw-surface-1); padding: 18px; border-radius: 8px; width: 340px; }
+  .old-field { height: 36px; width: 100%; border: 0; outline: 0; border-radius: 12px; padding: 0 12px; font: 14px var(--bw-font-sans); color: var(--bw-text); background: var(--bw-field-bg);
+    box-shadow: 0 .25rem 1.25rem rgb(0 0 0 / .2), 0 0 0 .5px color-mix(in oklab, var(--bw-text) 15%, transparent); }
+  .old-field:hover, .old-field:focus { box-shadow: 0 .25rem 1.25rem rgb(0 0 0 / .4), 0 0 0 .5px color-mix(in oklab, var(--bw-text) 30%, transparent); }
+
+  /* группы */
+  .pills { display: flex; flex-wrap: wrap; gap: 6px; padding: 12px; border-radius: 8px; width: 330px; }
+  .pills.dk { background: #0e0d0c; } .pills.lt { background: #faf8f2; }
+  .pill { font: 600 11px var(--bw-font-sans); padding: 3px 9px; border-radius: 999px; background: var(--gc); color: #1a1a1a; }
+  .pills.lt .pill { background: oklch(from var(--gc) calc(l + 0.10) calc(c * 1.45) h); color: #fff; }
+
+  /* кромка режима */
+  .edge { width: 300px; padding: 2px; border-radius: 10px; background: linear-gradient(90deg, var(--e1), var(--e2), var(--e3), var(--e1)); box-shadow: 0 0 14px -2px color-mix(in oklab, var(--e1) 55%, transparent); }
+  .edge > div { height: 30px; border-radius: 8px; background: var(--bw-field-bg); display: flex; align-items: center; gap: 8px; padding: 0 10px; font-size: 12px; color: var(--bw-text-muted); }
+  .edge kbd { font: 600 10px var(--bw-font-sans); letter-spacing: .04em; padding: 3px 6px; border-radius: 6px; border: 1.5px solid var(--e1); color: var(--et); background: var(--bw-surface-3); }
+  .edges { display: grid; gap: 12px; }
+</style>
+</head>
+<body>
+<main>
+  <div class="top">
+    <h1>Vimperium на токенах bedware: что решить</h1>
+    <div class="bw-seg" role="radiogroup" aria-label="Тема страницы">
+      <button class="bw-seg__opt" role="radio" aria-checked="true" data-t="dark">Тёмная</button>
+      <button class="bw-seg__opt" role="radio" aria-checked="false" data-t="light">Светлая</button>
+    </div>
+  </div>
+  <p>Цвета и шрифты Vimperium уже берутся из дизайн-системы (ветка <code>bedware-design</code>). Ниже четыре места, которых в дизайн-системе нет: по каждому нужен выбор. Вариант с меткой «сейчас» — то, что уже лежит в ветке.</p>
+
+  <h2><i>1</i>Яркость темы: Default / Deep / Soft / Bright</h2>
+  <p>В настройках Vimperium у каждой темы три ступени яркости. В дизайн-системе их нет: тёмная тема одна (чёрный фон), светлая одна. Старые ступени — нейтрально-серые, без тёплого оттенка бренда.</p>
+
+  <section class="opt">
+    <header><b>A</b><span>Убрать ступени: остаются только тёмная и светлая темы бренда. Совпадает с решением «фон чистый чёрный везде».</span></header>
+    <div>
+      <div><div class="win d0"><div class="tb"><i class="btn"></i><div class="addr">bedware.software</div><i class="btn"></i></div><div class="cols"><div class="side"><div class="row on">Почта</div><div class="row">Документы</div><div class="row">GitHub</div></div><div class="page"><b>Тёмная</b><span>Чёрный фон бренда</span><u>Открыть</u></div></div></div><p class="cap">Тёмная</p></div>
+      <div><div class="win l0"><div class="tb"><i class="btn"></i><div class="addr">bedware.software</div><i class="btn"></i></div><div class="cols"><div class="side"><div class="row on">Почта</div><div class="row">Документы</div><div class="row">GitHub</div></div><div class="page"><b>Светлая</b><span>Тёплая бумага</span><u>Открыть</u></div></div></div><p class="cap">Светлая</p></div>
+    </div>
+  </section>
+
+  <section class="opt">
+    <header><b>B</b><em>сейчас</em><span>Оставить как есть: Default — темы бренда, остальные ступени — старые серые.</span></header>
+    <div>
+      <div><div class="win d0 d-deep"><div class="tb"><i class="btn"></i><div class="addr">bedware.software</div><i class="btn"></i></div><div class="cols"><div class="side"><div class="row on">Почта</div><div class="row">Документы</div><div class="row">GitHub</div></div><div class="page"><b>Dark · Deep</b><span>Серый, светлее чёрного Default</span><u>Открыть</u></div></div></div><p class="cap">Тёмная · Deep</p></div>
+      <div><div class="win d0 d-soft"><div class="tb"><i class="btn"></i><div class="addr">bedware.software</div><i class="btn"></i></div><div class="cols"><div class="side"><div class="row on">Почта</div><div class="row">Документы</div><div class="row">GitHub</div></div><div class="page"><b>Dark · Soft</b><span>Светло-серый</span><u>Открыть</u></div></div></div><p class="cap">Тёмная · Soft</p></div>
+      <div><div class="win l0 l-bright"><div class="tb"><i class="btn"></i><div class="addr">bedware.software</div><i class="btn"></i></div><div class="cols"><div class="side"><div class="row on">Почта</div><div class="row">Документы</div><div class="row">GitHub</div></div><div class="page"><b>Light · Bright</b><span>Белый без тёплого оттенка</span><u>Открыть</u></div></div></div><p class="cap">Светлая · Bright</p></div>
+      <div><div class="win l0 l-soft"><div class="tb"><i class="btn"></i><div class="addr">bedware.software</div><i class="btn"></i></div><div class="cols"><div class="side"><div class="row on">Почта</div><div class="row">Документы</div><div class="row">GitHub</div></div><div class="page"><b>Light · Soft</b><span>Серый</span><u>Открыть</u></div></div></div><p class="cap">Светлая · Soft</p></div>
+    </div>
+  </section>
+
+  <section class="opt">
+    <header><b>C</b><span>Оставить выбор яркости, но пересчитать ступени в тёплые тона бренда (по одной «мягкой» на тему; значения добавляются в дизайн-систему).</span></header>
+    <div>
+      <div><div class="win d0 d-warm"><div class="tb"><i class="btn"></i><div class="addr">bedware.software</div><i class="btn"></i></div><div class="cols"><div class="side"><div class="row on">Почта</div><div class="row">Документы</div><div class="row">GitHub</div></div><div class="page"><b>Тёмная · мягкая</b><span>Фон не чёрный, а тёплый тёмный</span><u>Открыть</u></div></div></div><p class="cap">Тёмная · мягкая (набросок)</p></div>
+      <div><div class="win l0 l-warm"><div class="tb"><i class="btn"></i><div class="addr">bedware.software</div><i class="btn"></i></div><div class="cols"><div class="side"><div class="row on">Почта</div><div class="row">Документы</div><div class="row">GitHub</div></div><div class="page"><b>Светлая · мягкая</b><span>Бумага на тон темнее</span><u>Открыть</u></div></div></div><p class="cap">Светлая · мягкая (набросок)</p></div>
+    </div>
+  </section>
+
+  <h2><i>2</i>Поле ввода</h2>
+  <p>Поле Vimperium (адресная строка, поиск, формы) нарисовано по-своему: без рамки, с мягкой тенью и скруглением. Поле бренда — с рамкой и срезанным углом — уже выбрано, вопрос только когда менять.</p>
+  <section class="opt">
+    <header><b>A</b><em>сейчас</em><span>Оставить нынешнее поле до шага «компоненты»; заменить его там целиком на поле пакета.</span></header>
+    <div><div class="stage"><input class="old-field" placeholder="Поиск или адрес"></div></div>
+  </section>
+  <section class="opt">
+    <header><b>B</b><span>Поменять вид поля уже сейчас, не дожидаясь шага «компоненты».</span></header>
+    <div><div class="stage"><input class="bw-field" placeholder="Поиск или адрес"></div></div>
+  </section>
+
+  <h2><i>3</i>Цвета групп вкладок</h2>
+  <p>Двенадцать цветов, которыми пользователь красит группы вкладок. Это не цвета интерфейса, а метки; выбранный цвет хранится в данных пользователя.</p>
+  <section class="opt">
+    <header><b>A</b><em>сейчас</em><span>Оставить палитру как есть.</span></header>
+    <div>
+      <div class="pills dk" id="p-a-dk"></div>
+      <div class="pills lt" id="p-a-lt"></div>
+    </div>
+  </section>
+  <section class="opt">
+    <header><b>B</b><span>Заменить два цвета на цвета бренда: Mustard → жёлтый логотипа, Peach → персиковый. Уже покрашенные группы поменяют оттенок.</span></header>
+    <div>
+      <div class="pills dk" id="p-b-dk"></div>
+      <div class="pills lt" id="p-b-lt"></div>
+    </div>
+  </section>
+
+  <h2><i>4</i>Кромка режима Vim вокруг адресной строки</h2>
+  <p>Решение «командный — жёлтый, ввод — персиковый» применено к метке режима и к светящейся кромке поля. Кромке нужны три оттенка на режим; взял их из токенов. Здесь кромка неподвижна, в приложении она движется.</p>
+  <section class="opt">
+    <header><b>A</b><em>сейчас</em><span>Командный: жёлтый с тёмной кромкой пластины. Ввод: персиковый, светлее и краснее.</span></header>
+    <div><div class="edges">
+      <div class="edge" style="--e1: var(--bw-plate); --e2: var(--bw-plate-edge); --e3: var(--bw-plate-pressed); --et: var(--bw-text-strong)"><div><kbd>CMD</kbd>bedware.software</div></div>
+      <div class="edge" style="--e1: var(--bw-link); --e2: color-mix(in oklab, var(--bw-link) 70%, var(--bw-text-strong)); --e3: color-mix(in oklab, var(--bw-link) 70%, var(--bw-error)); --et: var(--bw-link)"><div><kbd>INS</kbd>bedware.software</div></div>
+    </div></div>
+  </section>
+  <section class="opt">
+    <header><b>B</b><span>Как было до миграции: командный — синий, фиолетовый, голубой; ввод — зелёный, лаймовый, бирюзовый.</span></header>
+    <div><div class="edges">
+      <div class="edge" style="--e1: oklch(0.74 0.14 240); --e2: oklch(0.66 0.19 292); --e3: oklch(0.83 0.12 205); --et: oklch(0.78 0.10 230)"><div><kbd>CMD</kbd>bedware.software</div></div>
+      <div class="edge" style="--e1: oklch(0.80 0.18 142); --e2: oklch(0.89 0.16 110); --e3: oklch(0.77 0.13 182); --et: oklch(0.82 0.16 135)"><div><kbd>INS</kbd>bedware.software</div></div>
+    </div></div>
+  </section>
+</main>
+<script>
+  const base = [['Teal','#7AAFAF'],['Gray','#9C9C9C'],['Blue','#5681B8'],['Coral','#D08866'],['Mustard','#C4A140'],['Pink','#B488C9'],['Lavender','#8E81C9'],['Magenta','#BD5E94'],['Green','#7FB87F'],['Peach','#D6A87F'],['Red','#C46161'],['Sky','#7FA8D6']];
+  const brand = base.map(([n, c]) => n === 'Mustard' ? [n, '#ffde5d'] : n === 'Peach' ? [n, '#ffbf68'] : [n, c]);
+  const fill = (id, list) => { document.getElementById(id).innerHTML = list.map(([n, c]) => `<span class="pill" style="--gc:${c}">${n}</span>`).join(''); };
+  fill('p-a-dk', base); fill('p-a-lt', base); fill('p-b-dk', brand); fill('p-b-lt', brand);
+  document.querySelectorAll('[data-t]').forEach((b) => b.addEventListener('click', () => {
+    document.documentElement.dataset.theme = b.dataset.t;
+    document.querySelectorAll('[data-t]').forEach((x) => x.setAttribute('aria-checked', String(x === b)));
+  }));
+</script>
+</body>
+</html>
