@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="node_modules/@fontsource/jetbrains-mono/400.css">
 <link rel="stylesheet" href="node_modules/@fontsource/jetbrains-mono/500.css">
 <link rel="stylesheet" href="node_modules/@fontsource/jetbrains-mono/700.css">
-<link rel="stylesheet" href="tokens/tokens.css?v=3">
+<link rel="stylesheet" href="tokens/tokens.css?v=4">
 <link rel="stylesheet" href="assets/page.css?v=5">
 <link rel="stylesheet" href="components/components.css?v=3">
 <style>
@@ -25,7 +25,12 @@
   .stack { display: grid; gap: 14px; }
   .rowline { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
   @media (max-width: 900px) { .logos, .demo { grid-template-columns: 1fr; } }
-  .tok { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 8px; }
+  .themed { background: var(--bw-bg); color: var(--bw-text); border: 1px solid var(--bw-border); border-radius: 12px; padding: 20px; transition: background-color .2s; }
+  .tbox { background: var(--bw-surface-1); border: 1px solid var(--bw-border); border-radius: 10px; padding: 16px; }
+  .tbox h4 { color: var(--bw-text-muted); margin-bottom: 12px; }
+  .themed .muted { color: var(--bw-text-muted); }
+  .tok i.two { background: linear-gradient(135deg, var(--a) 50%, var(--b) 50%); }
+  .tok { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 8px; }
   .tok div { display: flex; gap: 10px; align-items: center; font: 12px var(--bw-font-mono); color: var(--bw-text-muted); border: 1px solid var(--bw-border); border-radius: 8px; padding: 6px 8px; }
   .tok i { width: 26px; height: 26px; border-radius: 5px; border: 1px solid rgb(255 255 255 / .14); flex: none; }
   .tok b { display: block; color: var(--bw-text-strong); font-weight: 500; }
@@ -60,6 +65,9 @@
 <section id="components">
   <div class="sec-head"><span class="n">2</span><h2>Компоненты</h2></div>
   <p class="muted small">Живые: наводите, нажимайте, ходите Tab. Код — <code>components/components.css</code>.</p>
+  <p><span class="pick" id="theme-pick"><label><input type="radio" name="th" value="dark" checked>тёмная тема</label><label><input type="radio" name="th" value="light">светлая тема</label></span>
+    <span class="muted small" style="margin-left:8px">Тема включается атрибутом <code>data-theme</code> на любом предке.</span></p>
+  <div class="themed" id="themed" data-theme="dark">
   <div class="demo">
     <div class="bw-panel">
       <div class="bw-panel__head" data-n="01"><div><b class="bw-panel__title">Запуск</b><span class="bw-panel__desc">Как приложение стартует вместе с системой.</span></div></div>
@@ -70,17 +78,18 @@
       <div class="bw-panel__foot"><button class="bw-btn bw-btn--danger" style="margin-right:auto">Удалить</button><button class="bw-btn bw-btn--ghost">Отмена <span class="bw-kbd">esc</span></button><button class="bw-btn bw-btn--primary">Сохранить <span class="bw-kbd">↵</span></button></div>
     </div>
     <div class="stack">
-      <div class="box"><h4>Кнопки</h4><div class="rowline"><button class="bw-btn bw-btn--primary">Сохранить</button><button class="bw-btn bw-btn--secondary">Изменить</button><button class="bw-btn bw-btn--ghost">Отмена</button><button class="bw-btn bw-btn--danger">Удалить</button></div>
+      <div class="tbox"><h4>Кнопки</h4><div class="rowline"><button class="bw-btn bw-btn--primary">Сохранить</button><button class="bw-btn bw-btn--secondary">Изменить</button><button class="bw-btn bw-btn--ghost">Отмена</button><button class="bw-btn bw-btn--danger">Удалить</button></div>
         <div class="rowline" style="margin-top:12px"><button class="bw-btn bw-btn--primary" disabled>Сохранить</button><button class="bw-btn bw-btn--secondary" disabled>Изменить</button><button class="bw-btn bw-btn--ghost" disabled>Отмена</button><span class="muted small">выключены</span></div></div>
-      <div class="box"><h4>Поле: 32 / 36 / 40 и выключенное</h4><div class="stack" style="gap:8px"><input class="bw-field bw-field--sm" placeholder="Поиск на странице"><input class="bw-field" value="ktalk.exe"><input class="bw-field bw-field--lg" placeholder="Введите команду…"><input class="bw-field" value="недоступно" disabled></div></div>
+      <div class="tbox"><h4>Поле: 32 / 36 / 40 и выключенное</h4><div class="stack" style="gap:8px"><input class="bw-field bw-field--sm" placeholder="Поиск на странице"><input class="bw-field" value="ktalk.exe"><input class="bw-field bw-field--lg" placeholder="Введите команду…"><input class="bw-field" value="недоступно" disabled></div></div>
       <div class="bw-menu"><div class="bw-menu__head">Рабочие области</div><div class="bw-menu__item" aria-selected="true"><span>Работа</span><span class="bw-kbd">1</span></div><div class="bw-menu__item"><span>Личное</span><span class="bw-kbd">2</span></div><div class="bw-menu__item"><span>Настройки</span><span class="bw-kbd">⌘ ,</span></div></div>
     </div>
+  </div>
   </div>
 </section>
 
 <section id="tokens">
   <div class="sec-head"><span class="n">3</span><h2>Токены</h2></div>
-  <p class="muted small">Читаются прямо из <code>tokens/tokens.json</code>. Тёмная тема; светлая — на следующем этапе.</p>
+  <p class="muted small">Читаются прямо из <code>tokens/tokens.json</code>. Образец разделён по диагонали: слева вверху тёмная тема, справа внизу светлая.</p>
   <h3>Цвета</h3><div class="tok" id="t-color"></div>
   <h3>Размеры, отступы, скругления, движение</h3><div class="tok" id="t-other"></div>
   <h3>Текстовые стили</h3><div class="grid cols-2" id="t-type"></div>
@@ -95,10 +104,12 @@
 </section>
 </main>
 <script>
+document.querySelectorAll('#theme-pick input').forEach((i) => (i.onchange = () => (document.querySelector('#themed').dataset.theme = i.value)));
 fetch('tokens/tokens.json').then((r) => r.json()).then((t) => {
-  const col = Object.fromEntries(t.color.tokens.map((c) => [c.name, c.value]));
-  const res = (v) => { const m = /^\{(.+)\}$/.exec(v); return m ? res(col[m[1]]) : v; };
-  document.querySelector('#t-color').innerHTML = t.color.tokens.map((c) => `<div title="${c.usage}"><i style="background:${res(c.value)}"></i><span><b>${c.name}</b>${c.value.toUpperCase()}</span></div>`).join('');
+  const themes = t.color.themes.map((x) => x.id);
+  const of = (c, th) => (typeof c.value === 'string' ? c.value : c.value[th] ?? c.value[themes[0]]);
+  const res = (name, th) => { const v = of(t.color.tokens.find((c) => c.name === name), th); const m = /^\{(.+)\}$/.exec(v); return m ? res(m[1], th) : v; };
+  document.querySelector('#t-color').innerHTML = t.color.tokens.map((c) => { const [d, l] = themes.map((th) => res(c.name, th)); return `<div title="${c.usage}"><i class="two" style="--a:${d};--b:${l}"></i><span><b>${c.name}</b>${d === l ? d.toUpperCase() : d.toUpperCase() + ' · ' + l.toUpperCase()}</span></div>`; }).join('');
   document.querySelector('#t-other').innerHTML = [...t.spacing.tokens, ...t.radius.tokens, ...t.motion.tokens].map((c) => `<div title="${c.usage}"><span><b>${c.name}</b>${c.value}</span></div>`).join('');
   document.querySelector('#t-type').innerHTML = t.type.groups.map((g) => `<div class="box"><h4>${g.name}</h4>${g.styles.map((s) => `<div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:6px 0;border-top:1px solid var(--bw-border)"><span style="font:${s.fontWeight} ${Math.min(parseInt(s.fontSize), 34)}px/1.2 ${t.type.families[g.family]};color:var(--bw-text-strong);white-space:nowrap;overflow:hidden">${s.name === 'wordmark' ? 'bedware' : 'Запуск по клавише'}</span><span class="mono dim" style="white-space:nowrap">${s.name} · ${s.fontSize}/${s.lineHeight} · ${s.fontWeight}</span></div>`).join('')}</div>`).join('');
 });
