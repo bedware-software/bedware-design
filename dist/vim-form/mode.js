@@ -159,6 +159,8 @@ export function useVimFormMode({ keymap, popup, box, initial = 'command', open =
     // click in it since it took the keyboard. Not yet, the text the popup
     // selected as it opened goes with the first Ctrl+C rather than copying.
     const userSelectedRef = useRef(false);
+    // When the pointer last went down: focus right after it came from a click.
+    const pointerDownAtRef = useRef(0);
     // Ahead of the render, so a key right after a field took (or let go of)
     // the keyboard already finds the new mode.
     const switchMode = useCallback((next) => {
@@ -214,7 +216,9 @@ export function useVimFormMode({ keymap, popup, box, initial = 'command', open =
             if (!isTypingElement(e.target))
                 return;
             reset();
-            userSelectedRef.current = false;
+            // A click that brought the keyboard here is the user's own: what it
+            // selects (a read-only field selecting itself whole) copies at once.
+            userSelectedRef.current = Date.now() - pointerDownAtRef.current < 500;
             switchMode('insert');
         };
         const onFocusOut = (e) => {
@@ -268,7 +272,10 @@ export function useVimFormMode({ keymap, popup, box, initial = 'command', open =
                     // Any other key the user presses here may make a selection.
                     if (!leave && !close && !MODIFIER_KEYS.has(e.key))
                         userSelectedRef.current = true;
-                    if (field && userSelectedRef.current && isCopyKey(e, field)) {
+                    // A read-only field has nothing to type: a selection in it is
+                    // there to be copied, whoever made it.
+                    const readOnly = field?.readOnly === true;
+                    if (field && (userSelectedRef.current || readOnly) && isCopyKey(e, field)) {
                         // Copy, as Windows and Linux have it; the selection goes with
                         // it, so Ctrl+C again leaves the field.
                         dropSelectionAfterCopy(field);
@@ -338,7 +345,10 @@ export function useVimFormMode({ keymap, popup, box, initial = 'command', open =
                 onEscapeRef.current('command');
         };
         // A click may select text too.
-        const onMouseDown = () => { userSelectedRef.current = true; };
+        const onMouseDown = () => {
+            userSelectedRef.current = true;
+            pointerDownAtRef.current = Date.now();
+        };
         popup.addEventListener('keydown', onKeyDown, true);
         popup.addEventListener('mousedown', onMouseDown, true);
         return () => {
