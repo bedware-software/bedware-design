@@ -147,6 +147,8 @@
 .bw-field__input { flex: 1; min-width: 0; height: 100%; padding: 0; border: 0; outline: none; background: none; color: inherit; font: inherit; }
 .bw-field__input::placeholder { color: var(--text-dim); }
 .bw-field__input:disabled { cursor: not-allowed; }
+/* поле-коробка выключено, если выключен его input — в том числе через fieldset:disabled */
+.bw-field--box:has(.bw-field__input:disabled) { --field-fill: var(--disabled-bg); --field-frame: var(--border); color: var(--disabled-text); cursor: not-allowed; }
 .bw-field__side { display: inline-flex; flex: none; align-items: center; gap: var(--space-1); color: var(--text-muted); }
 .bw-label { display: block; font: 500 12px/16px var(--font-sans); color: var(--text); margin-bottom: var(--space-1-5); }
 .bw-error-text { font: 400 12px/16px var(--font-sans); color: var(--error); margin-top: var(--space-1); }
@@ -184,6 +186,54 @@
   font: 400 12px/16px var(--font-sans); color: var(--text); background: var(--surface-3); border: 1px solid var(--border-strong); border-radius: var(--radius-md); }
 .bw-notice::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--notice-c); }
 .bw-notice--warning { --notice-c: var(--warning); }
+.bw-notice--neutral { --notice-c: var(--border-hover); }
+
+/* ── всплывающее уведомление ── плашка поверх рабочего стола или окна; четыре вида (plate по умолчанию), тона success и error; кругов нет */
+.bw-toast { --toast-c: var(--plate); --toast-cut: 8px;
+  --toast-clip2: polygon(var(--toast-cut) 0, 100% 0, 100% calc(100% - var(--toast-cut)), calc(100% - var(--toast-cut)) 100%, 0 100%, 0 var(--toast-cut));
+  --toast-clip1: polygon(0 0, 100% 0, 100% calc(100% - var(--toast-cut)), calc(100% - var(--toast-cut)) 100%, 0 100%);
+  position: relative; isolation: isolate; display: inline-flex; align-items: center; gap: 10px; box-sizing: border-box; min-width: 160px; max-width: 300px; min-height: 48px; padding: 10px 16px;
+  font: 400 14px/20px var(--font-sans); color: var(--text); animation: bw-toast-in 120ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+@keyframes bw-toast-in { from { opacity: 0; transform: translateY(4px); } }
+@media (prefers-reduced-motion: reduce) { .bw-toast { animation: none; } .bw-toast__icon--rec::before, .bw-toast__wait i { animation: none; } }
+.bw-toast--success { --toast-c: var(--success); }
+.bw-toast--error { --toast-c: var(--error); }
+.bw-toast::before, .bw-toast::after { position: absolute; }
+.bw-toast__body { min-width: 0; overflow-wrap: anywhere; }
+.bw-toast__title { display: block; font: 700 10px/14px var(--font-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); }
+.bw-toast__icon { position: relative; display: inline-flex; flex: none; align-items: center; justify-content: center; color: var(--text-muted); }
+.bw-toast__icon--rec { width: 22px; height: 22px; color: var(--error); }
+.bw-toast__icon--rec::before { content: ''; position: absolute; inset: 0; background: currentColor; opacity: .25; animation: bw-toast-pulse 1.2s ease-out infinite; }
+@keyframes bw-toast-pulse { from { transform: scale(.6); opacity: .5; } to { transform: scale(1.25); opacity: 0; } }
+.bw-toast__wait { display: inline-flex; flex: none; gap: 3px; color: var(--text-muted); }
+.bw-toast__wait i { width: 5px; height: 5px; background: currentColor; opacity: .25; animation: bw-toast-step 1s steps(1) infinite; }
+.bw-toast__wait i:nth-child(2) { animation-delay: .2s; }
+.bw-toast__wait i:nth-child(3) { animation-delay: .4s; }
+@keyframes bw-toast-step { 0%, 60% { opacity: .25; } 20%, 40% { opacity: 1; } }
+/* plate: пластина с кромкой; текст на ней — on-plate, на красной и зелёной — on-error */
+.bw-toast--plate { padding-bottom: 12px; font-weight: 600; color: var(--on-plate); }
+.bw-toast--plate::before { content: ''; inset: 0; z-index: -1; background: var(--plate); box-shadow: inset 0 -3px 0 var(--plate-edge); clip-path: var(--toast-clip2); }
+.bw-toast--plate.bw-toast--error, .bw-toast--plate.bw-toast--success { color: var(--on-error); }
+.bw-toast--plate.bw-toast--error::before { background: var(--error); box-shadow: inset 0 -3px 0 var(--error-edge); }
+.bw-toast--plate.bw-toast--success::before { background: var(--success); box-shadow: inset 0 -3px 0 var(--success-edge); }
+.bw-toast--plate :is(.bw-toast__title, .bw-toast__icon, .bw-toast__wait) { color: inherit; }
+.bw-toast--plate .bw-toast__title { opacity: .7; }
+/* bar: тёмная панель со срезом справа снизу, слева полоса тона 4px */
+.bw-toast--bar { padding-left: 20px; }
+.bw-toast--bar::before, .bw-toast--tag::before { content: ''; inset: 0; z-index: -2; background: var(--border-strong); }
+.bw-toast--bar::after, .bw-toast--tag::after { content: ''; inset: 1px; z-index: -1; background: var(--surface-2); }
+.bw-toast--bar::before, .bw-toast--bar::after { clip-path: var(--toast-clip1); }
+.bw-toast--bar::after { background: linear-gradient(90deg, var(--toast-c) 0 4px, var(--surface-2) 4px); }
+/* tag: тёмная панель с двумя срезами; заголовок — ярлык-пластина на верхней кромке */
+.bw-toast--tag::before, .bw-toast--tag::after { clip-path: var(--toast-clip2); }
+.bw-toast--tag.bw-toast--titled { padding-top: 16px; }
+.bw-toast--tag .bw-toast__title { position: absolute; left: 14px; top: -7px; padding: 1px 6px; background: var(--toast-c); color: var(--on-plate); box-shadow: inset 0 -2px 0 var(--plate-edge); }
+.bw-toast--tag:is(.bw-toast--error, .bw-toast--success) .bw-toast__title { color: var(--on-error); }
+.bw-toast--tag.bw-toast--error .bw-toast__title { box-shadow: inset 0 -2px 0 var(--error-edge); }
+.bw-toast--tag.bw-toast--success .bw-toast__title { box-shadow: inset 0 -2px 0 var(--success-edge); }
+/* line: тихая тёмная полоса без рамки, снизу черта тона (без тона и заголовка — серая) */
+.bw-toast--line { background: color-mix(in srgb, var(--surface-1) 94%, transparent); box-shadow: inset 0 -2px 0 var(--toast-c); backdrop-filter: blur(12px); }
+.bw-toast--line:not(.bw-toast--titled, .bw-toast--error, .bw-toast--success) { --toast-c: var(--border-strong); }
 .bw-notice__icon { display: inline-flex; flex: none; margin-top: 1px; color: var(--notice-c); }
 .bw-notice__body { flex: 1; min-width: 0; }
 .bw-notice__title { display: block; font-weight: 600; color: var(--text-strong); }
@@ -360,6 +410,10 @@
   clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut)); }
 /* sm — дорожка 28px: в шапках страниц и поповерах */
 .bw-seg--sm .bw-seg__opt { height: 26px; padding: 0 10px; }
+/* выключено: варианты не нажимаются, выбранный — в штриховку, как выключенная кнопка */
+.bw-seg__opt:disabled { cursor: not-allowed; color: var(--text-dim); background: none; }
+.bw-seg__opt:disabled[aria-checked="true"] { color: var(--text-dim); }
+.bw-seg__opt:disabled[aria-checked="true"]::before { background: repeating-linear-gradient(135deg, var(--hatch-a) 0 4px, var(--hatch-b) 4px 8px); box-shadow: none; }
 
 /* ── выпадающий список ── кнопка 32px в виде поля; список — как меню, пункты 28px */
 .bw-select { display: inline-flex; align-items: center; justify-content: space-between; gap: var(--space-2); min-width: 0; height: var(--control-sm); padding: 0 10px; text-align: left;
@@ -446,6 +500,39 @@
 .bw-command__cap::after { content: ''; align-self: stretch; width: 1px; margin-left: var(--space-2); background: var(--border); }
 .bw-command__label { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .bw-command__keys { display: flex; flex: none; align-items: center; gap: 2px; margin-left: var(--space-4); font-size: 12px; color: var(--text-muted); }
+
+/* ── клавиатурная навигация по форме ── вход @bedware/ui/vim-form. Форма помечена data-vim-form, её элементы — data-vim-item.
+   Курсор — кольцо цвета фокуса 2px вокруг элемента; у строки списка (data-vim-kind="row") — тонкое внутри строки, а яркое — на её кнопке под курсором */
+[data-vim-form] [data-vim-cursor] { outline: 2px solid var(--focus) !important; outline-offset: 2px; }
+[data-vim-form] [data-vim-cursor][data-vim-kind="row"] { outline: 1px solid color-mix(in srgb, var(--focus) 55%, transparent) !important; outline-offset: -1px; }
+[data-vim-form] [data-vim-cell-cursor] { outline: 2px solid var(--focus) !important; outline-offset: 1px; }
+/* поле обрезано срезом, кольцо вокруг него не видно: курсор на поле — рамка цвета фокуса (у самого фокуса к ней добавляется нижняя полоса) */
+[data-vim-form] .bw-field[data-vim-cursor], [data-vim-form] .bw-field__input[data-vim-cursor] { outline: none !important; }
+[data-vim-form] .bw-field[data-vim-cursor], [data-vim-form] .bw-field:has(> .bw-field__input[data-vim-cursor]) { --field-frame: var(--focus); }
+/* у ползунка настоящий input прозрачен: кольцо — вокруг всего ползунка */
+[data-vim-form] .bw-slider:has(> input[data-vim-cursor]) { outline: 2px solid var(--focus); outline-offset: 2px; }
+/* метки: слой поверх окна и слой внутри прокручиваемой области формы (она position: relative); метка — клавиша строки у левого верхнего угла элемента,
+   со сдвигом наружу на 6 и 7px, но не за край слоя. Координаты угла даёт компонент (--vl-x, --vl-y) */
+.bw-vimlabels { position: fixed; inset: 0; z-index: 40; pointer-events: none; }
+.bw-vimlabels--scrolled { position: absolute; inset: auto; left: 0; top: 0; width: 0; height: 0; }
+.bw-rowkey.bw-vimlabel { position: absolute; z-index: 10; left: max(0px, calc(var(--vl-x, 0px) - 6px)); top: max(0px, calc(var(--vl-y, 0px) - 7px)); transition: opacity 150ms; }
+.bw-vimlabel[data-faded] { opacity: .3; }
+.bw-vimlabel__typed { align-self: stretch; display: inline-flex; align-items: center; margin-left: -1px; padding-left: 1px; background: var(--plate); color: var(--on-plate); }
+/* таблица всех клавиш по «?»: карточка поверх формы (--fixed — поверх окна), одна или две колонки «клавиши — что делают» */
+.bw-keyshelp { position: absolute; inset: 0; z-index: 50; display: flex; align-items: center; justify-content: center; background: color-mix(in srgb, var(--bg) 70%, transparent); }
+.bw-keyshelp--fixed { position: fixed; }
+.bw-keyshelp__card { display: flex; flex-direction: column; width: 440px; max-width: 92%; max-height: 90%; padding: var(--space-4); color: var(--text);
+  background: var(--surface-2); border: 1px solid var(--border-strong); border-radius: var(--radius-lg); box-shadow: var(--shadow-popover); }
+.bw-keyshelp__card--wide { width: 760px; }
+.bw-keyshelp__head { display: flex; flex: none; align-items: center; justify-content: space-between; gap: var(--space-3); margin-bottom: var(--space-3); }
+.bw-keyshelp__title { margin: 0; font: 600 14px/20px var(--font-sans); color: var(--text-strong); }
+.bw-keyshelp__body { min-height: 0; overflow-y: auto; }
+.bw-keyshelp__tables { display: grid; column-gap: var(--space-6); }
+.bw-keyshelp__tables--2 { grid-template-columns: 1fr 1fr; }
+.bw-keyshelp__table { display: grid; grid-template-columns: auto 1fr; align-content: start; column-gap: var(--space-4); row-gap: var(--space-1-5); margin: 0; font: 400 12px/16px var(--font-sans); }
+.bw-keyshelp__row { display: contents; }
+.bw-keyshelp__row dt { white-space: nowrap; font-family: var(--font-mono); color: var(--text); }
+.bw-keyshelp__row dd { margin: 0; color: var(--text-muted); }
 
 /* ══ мелкие формы без кругов ══ */
 /* ── счётчик на кнопке ── число или отметка со срезами; внутри IconButton встаёт на правый верхний угол */

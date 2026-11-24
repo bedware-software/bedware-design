@@ -23,12 +23,14 @@ export interface SegmentedProps<T> extends Omit<HTMLAttributes<HTMLDivElement>, 
   size?: 'md' | 'sm'
   /** false — варианты вне порядка Tab (tabindex=-1): когда клавиатуру ведёт само приложение. */
   tabbable?: boolean
+  /** Весь выбор выключен: варианты не нажимаются, выбранный — в штриховку. */
+  disabled?: boolean
 }
 
 /** Один выбор из нескольких в общей дорожке: radiogroup, выбранный — пластина. */
-export function Segmented<T extends string | boolean>({ value, options, onChange, label, wrap = false, size = 'md', tabbable = true, className, ...rest }: SegmentedProps<T>) {
+export function Segmented<T extends string | boolean>({ value, options, onChange, label, wrap = false, size = 'md', tabbable = true, disabled, className, ...rest }: SegmentedProps<T>) {
   return (
-    <div role="radiogroup" aria-label={label} className={cx('bw-seg', wrap && 'bw-seg--wrap', size === 'sm' && 'bw-seg--sm', className)} {...rest}>
+    <div role="radiogroup" aria-label={label} aria-disabled={disabled || undefined} className={cx('bw-seg', wrap && 'bw-seg--wrap', size === 'sm' && 'bw-seg--sm', className)} {...rest}>
       {options.map(({ value: option, label: text, icon, title, attrs }) => {
         const chosen = option === value
         return (
@@ -38,6 +40,7 @@ export function Segmented<T extends string | boolean>({ value, options, onChange
             role="radio"
             aria-checked={chosen}
             title={title}
+            disabled={disabled}
             tabIndex={tabbable ? undefined : -1}
             {...attrs}
             onClick={() => onChange(option)}

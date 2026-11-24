@@ -31,12 +31,14 @@ export interface PanelRowProps extends Omit<HTMLAttributes<HTMLDivElement>, 'tit
   description?: ReactNode
   /** Выбранная строка списка: фон и кромка слева. */
   selected?: boolean
+  /** Всплывающая подпись всей строки (нативный title): само свойство title занято заголовком. */
+  tip?: string
 }
 
 /** Строка «заголовок + описание + элемент управления». Без title — произвольное содержимое. */
-export function PanelRow({ title, description, selected, className, children, ...rest }: PanelRowProps) {
+export function PanelRow({ title, description, selected, tip, className, children, ...rest }: PanelRowProps) {
   return (
-    <div className={cx('bw-row', className)} aria-selected={selected || undefined} {...rest}>
+    <div className={cx('bw-row', className)} aria-selected={selected || undefined} title={tip} {...rest}>
       {title !== undefined && (
         <div>
           <span className="bw-row__title">{title}</span>

@@ -2,12 +2,13 @@
 // и превью дизайн-системы (те же образцы, отрисованные в статичный HTML).
 // Вёрстка образцов — классы .line и .cap, их даёт страница.
 import { useState } from 'react'
-import type { ReactNode } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
 import {
-  Badge, Button, Checkbox, ColorSwatch, Count, Dot, HelpText, IconPlate, Label, ChoiceCards, ColorField, CommandRow, ConfirmDialog, Field, FormDialog, GroupTitle, Hint, HintBar, HotkeyButton, IconButton, InputField, Kbd, LinkButton,
+  Badge, Button, Checkbox, Toast, ColorSwatch, Count, Dot, HelpText, IconPlate, Label, ChoiceCards, ColorField, CommandRow, ConfirmDialog, Field, FormDialog, GroupTitle, Hint, HintBar, HotkeyButton, IconButton, InputField, Kbd, LinkButton,
   ListRow, Menu, MenuHeader, MenuItem, MenuSeparator, Nav, NavGroup, NavItem, Notice, Panel, PanelFooter, PanelHeader, PanelRow, ResultRow, SectionTitle, Segmented, Select, SelectList,
   Progress, Slider, Switch, Tag, Textarea, Tip, Tooltip,
 } from '../src'
+import { VimFormContext, VimFormHintBar, VimFormKeysHelp, VimFormLabels, VimSelect, useVimFormKeys, vimFormKeymap, type VimFormTexts } from '../src/vim-form'
 
 const Line = ({ cap, children }: { cap: string; children: ReactNode }) => (
   <div className="line"><span className="cap">{cap}</span>{children}</div>
@@ -130,6 +131,25 @@ function MarksDemo() {
       <Line cap="точки"><span style={{ display: 'grid', gap: 4, font: '12px/16px var(--bw-font-sans)' }}>{['Читать историю', 'Менять вкладки'].map((t) => <span key={t} style={{ display: 'flex', alignItems: 'center', gap: 8 }}><Dot />{t}</span>)}</span><Kbd style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}><Dot size="md" tone="accent" />CMD</Kbd></Line>
       <Line cap="прокрутка"><div className="bw-scrollbars frame" style={{ width: 200, height: 96, overflowY: 'scroll', padding: '6px 10px', font: '12px/20px var(--bw-font-sans)', color: 'var(--bw-text-muted)' }}>{['Работа', 'Личное', 'Учёба', 'Архив', 'Черновики', 'Заметки', 'Проекты', 'Прочее'].map((t) => <div key={t}>{t}</div>)}</div></Line>
     </>
+  )
+}
+
+function ToastDemo() {
+  const mic = <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="1" /><path d="M5 11a7 7 0 0 0 14 0M12 18v3" /></svg>
+  const looks = [['plate', 'пластина'], ['bar', 'полоса'], ['tag', 'ярлык'], ['line', 'черта']] as const
+  return (
+    <div style={{ display: 'grid', gap: 18 }}>
+      {looks.map(([look, cap]) => (
+        <Line key={look} cap={cap}>
+          <Toast look={look}>Work · Coding</Toast>
+          <Toast look={look} icon={mic} state="recording">Listening…</Toast>
+          <Toast look={look} state="waiting">Transcribing…</Toast>
+          <Toast look={look} title="Сборка">Готово за 74 с</Toast>
+          <Toast look={look} tone="success" title="Keyboard Remap">Rules reloaded</Toast>
+          <Toast look={look} tone="error" title="Groq">No API key</Toast>
+        </Line>
+      ))}
+    </div>
   )
 }
 
@@ -415,6 +435,98 @@ function PaletteDemo() {
   )
 }
 
+// Навигация по форме с клавиатуры (@bedware/ui/vim-form). Клавиши читаются со всего окна, поэтому
+// на витрине они включаются переключателем: иначе образец забирал бы клавиши у всей страницы.
+const VIM_KEYMAP = vimFormKeymap({ omit: ['filter', 'row-copy'] })
+const VIM_TEXTS: Partial<VimFormTexts> = {
+  navigate: 'Ходить', section: 'Раздел', goTo: 'Перейти', close: 'Выключить', keys: 'Клавиши', commandMode: 'Режим команд', pick: 'Выбрать',
+  switch: 'Переключить', choose: 'Выбрать', list: 'Список', slide: 'Двигать', byTen: 'На десять', type: 'Печатать', press: 'Нажать',
+  button: 'Кнопка', remove: 'Удалить', edit: 'Изменить', helpTitle: 'Клавиши формы', helpClose: 'Закрыть таблицу клавиш', goToLabel: 'Перейти к элементу по его метке',
+}
+const VIM_COMMAND_TEXTS: Record<string, string> = {
+  'cursor-down': 'Следующий элемент', 'cursor-up': 'Предыдущий элемент', 'cursor-first': 'Первый элемент', 'cursor-last': 'Последний элемент',
+  'half-page-down': 'Полстраницы вниз', 'half-page-up': 'Полстраницы вверх', 'section-next': 'Следующий раздел', 'section-prev': 'Предыдущий раздел',
+  'value-next': 'Следующий вариант · включить · ползунок вправо · следующая кнопка строки', 'value-prev': 'Предыдущий вариант · выключить · ползунок влево · предыдущая кнопка строки',
+  'value-next-big': 'Ползунок вправо на десять', 'value-prev-big': 'Ползунок влево на десять', activate: 'Нажать · открыть список · печатать в поле', toggle: 'Переключить или нажать',
+  'insert-mode': 'Печатать в поле', 'row-remove': 'Удалить строку', 'row-edit': 'Изменить строку', help: 'Все клавиши',
+}
+const VIM_SECTIONS = [{ id: 'general', label: 'Основные', icon: icons.gear }, { id: 'commands', label: 'Команды', icon: icons.terminal }] as const
+const vimRow: CSSProperties = { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, font: '13px/16px var(--bw-font-sans)', color: 'var(--bw-text)' }
+
+function VimFormDemo() {
+  const [on, setOn] = useState(false)
+  const [section, setSection] = useState<(typeof VIM_SECTIONS)[number]['id']>('general')
+  const [root, setRoot] = useState<HTMLDivElement | null>(null)
+  const [scroller, setScroller] = useState<HTMLDivElement | null>(null)
+  const [autostart, setAutostart] = useState(true)
+  const [theme, setTheme] = useState('dark')
+  const [engine, setEngine] = useState('ddg')
+  const [name, setName] = useState('Runwa')
+  const [opacity, setOpacity] = useState(80)
+  const [commands, setCommands] = useState(['Открыть проект', 'Новая заметка', 'Запустить сборку'])
+  const [last, setLast] = useState('')
+  const vim = useVimFormKeys({
+    enabled: on,
+    keymap: VIM_KEYMAP,
+    root,
+    scrollRoot: scroller,
+    resetKey: section,
+    onCommand: (command) => {
+      if (command !== 'section-next' && command !== 'section-prev') return false
+      const at = VIM_SECTIONS.findIndex((s) => s.id === section)
+      setSection(VIM_SECTIONS[(at + (command === 'section-next' ? 1 : VIM_SECTIONS.length - 1)) % VIM_SECTIONS.length].id)
+      return true
+    },
+    onEscape: () => setOn(false),
+  })
+  return (
+    <>
+      <Line cap="клавиши"><Switch checked={on} onChange={setOn} label="Клавиши Vim в форме" /><span className="cap" style={{ width: 'auto' }}>{on ? 'включены для всей страницы — Esc выключает' : 'включите и ходите: j k, J K, h l, Enter, i, буквы меток, ?'}</span>{last && <span className="cap" style={{ width: 'auto' }}>нажато: {last}</span>}</Line>
+      <VimFormContext.Provider value={on ? vim.form : null}>
+        <div data-vim-form className="frame" style={{ position: 'relative', display: 'flex', flexDirection: 'column', height: 330, maxWidth: 640, background: 'var(--bw-surface-2)' }}>
+          <div ref={setRoot} style={{ display: 'flex', flex: 1, minHeight: 0 }}>
+            <Nav aria-label="Разделы" style={{ width: 160, flex: 'none', padding: 8, borderRight: '1px solid var(--bw-border)' }}>
+              {VIM_SECTIONS.map((s) => (
+                <NavItem key={s.id} data-vim-item={`nav:${s.id}`} data-vim-nowalk icon={s.icon()} current={section === s.id} onClick={() => setSection(s.id)}>{s.label}</NavItem>
+              ))}
+            </Nav>
+            <div ref={setScroller} className="bw-scrollbars" style={{ position: 'relative', flex: 1, minWidth: 0, overflowY: 'auto', padding: 16, display: 'grid', gap: 14, alignContent: 'start' }}>
+              {section === 'general' ? (
+                <>
+                  <div style={vimRow}>Запускать при входе<Switch data-vim-item="general:autostart" checked={autostart} onChange={setAutostart} label="Запускать при входе" /></div>
+                  <div style={vimRow}>Тема<Segmented data-vim-item="general:theme" size="sm" label="Тема" value={theme} onChange={setTheme} options={[{ value: 'dark', label: 'Тёмная' }, { value: 'light', label: 'Светлая' }, { value: 'system', label: 'Как в системе' }]} /></div>
+                  <div style={vimRow}>Поиск<VimSelect vimItem="general:engine" label="Поисковая система" value={engine} onChange={setEngine} options={ENGINES} /></div>
+                  <div style={vimRow}>Имя<span style={{ width: 200 }}><InputField data-vim-item="general:name" size="sm" value={name} onChange={(e) => setName(e.target.value)} aria-label="Имя" /></span></div>
+                  <div style={vimRow}>Прозрачность<Slider data-vim-item="general:opacity" label="Прозрачность" value={opacity} onChange={setOpacity} /></div>
+                  <div style={vimRow}><span /><Button data-vim-item="general:reset" onClick={() => { setAutostart(true); setTheme('dark'); setEngine('ddg'); setName('Runwa'); setOpacity(80); setLast('вернуть по умолчанию') }}>Вернуть по умолчанию</Button></div>
+                </>
+              ) : (
+                <>
+                  {commands.map((command) => (
+                    <div key={command} data-vim-item={`command:${command}`} data-vim-kind="row" style={{ ...vimRow, padding: '4px 8px' }}>
+                      {command}
+                      <span style={{ display: 'inline-flex', gap: 4 }}>
+                        <IconButton size={24} data-vim-cell="edit" label="Изменить" onClick={() => setLast(`изменить «${command}»`)}>{icons.pencil(13)}</IconButton>
+                        <IconButton size={24} danger data-vim-cell="remove" label="Удалить" onClick={() => { setCommands(commands.filter((c) => c !== command)); setLast(`удалить «${command}»`) }}>{icons.trash(13)}</IconButton>
+                      </span>
+                    </div>
+                  ))}
+                  <div style={vimRow}><span /><Button data-vim-item="commands:add" icon={icons.plus(13)} onClick={() => { setCommands([...commands, `Команда ${commands.length + 1}`]); setLast('добавить') }}>Добавить</Button></div>
+                </>
+              )}
+            </div>
+          </div>
+          {vim.mode
+            ? <VimFormHintBar form={vim.form} keymap={vim.keymap} mode={vim.mode} firstLabel={vim.labels[0]} texts={VIM_TEXTS} />
+            : <HintBar><span>Клавиши выключены: форма как обычная, Tab ходит по элементам</span></HintBar>}
+          {vim.helpOpen && <VimFormKeysHelp keymap={vim.keymap} commands={Object.keys(VIM_COMMAND_TEXTS)} commandLabels={VIM_COMMAND_TEXTS} firstLabel={vim.labels[0]} texts={VIM_TEXTS} onClose={() => vim.setHelpOpen(false)} />}
+          <VimFormLabels form={vim.form} labels={vim.labels} mode={vim.mode} pending={vim.pending} />
+        </div>
+      </VimFormContext.Provider>
+    </>
+  )
+}
+
 export interface Story {
   /** Имя компонента и папки в дизайн-системе. */
   name: string
@@ -440,11 +552,13 @@ export const stories: Story[] = [
   { name: 'Select', title: 'Выпадающий список', group: 'Формы', height: 260, subtitle: 'Кнопка-поле и список с клавиатурой', Demo: SelectDemo },
   { name: 'Segmented', title: 'Сегменты', group: 'Формы', height: 235, subtitle: 'Один выбор из нескольких кнопок', Demo: SegmentedDemo },
   { name: 'Switch', title: 'Переключатель', group: 'Формы', height: 180, subtitle: 'Три размера, включён, выключен, недоступен', Demo: SwitchDemo },
+  { name: 'VimForm', title: 'Навигация по форме с клавиатуры', group: 'Формы', height: 440, subtitle: 'Клавиши Vim в настройках: курсор-кольцо, буквенные метки, режимы COMMAND и INSERT, полоса подсказок, таблица клавиш', Demo: VimFormDemo },
   { name: 'Panel', title: 'Панель', group: 'Контейнеры', height: 350, subtitle: 'Шапка с плашкой, строки, выбранная строка, подвал', Demo: PanelDemo },
   { name: 'Menu', title: 'Меню', group: 'Контейнеры', height: 195, subtitle: 'Заголовок, значки, клавиши, разделитель, опасный и выключенный пункт; текущий, с действиями, подменю, акцентный', Demo: MenuDemo },
   { name: 'Nav', title: 'Боковая навигация', group: 'Контейнеры', height: 240, subtitle: 'Пункты настроек, подписи групп, переключатель модуля', Demo: NavDemo },
   { name: 'Section', title: 'Заголовок раздела', group: 'Контейнеры', height: 330, subtitle: 'Над панелью без номера: раздел, подраздел, опасный', Demo: SectionDemo },
   { name: 'Notice', title: 'Уведомление', group: 'Контейнеры', height: 290, subtitle: 'Ошибка, предупреждение, вплотную к панели', Demo: NoticeDemo },
+  { name: 'Toast', title: 'Всплывающее уведомление', group: 'Контейнеры', height: 420, subtitle: 'Четыре вида: пластина, полоса, ярлык, черта; запись, ожидание, успех, ошибка', Demo: ToastDemo },
   { name: 'FormDialog', title: 'Диалог с формой', group: 'Контейнеры', height: 330, subtitle: 'Шапка с плашкой, поля, кнопки, полоса подсказок', Demo: FormDialogDemo },
   { name: 'ListRow', title: 'Плотная строка и заголовок группы', group: 'Контейнеры', height: 250, subtitle: 'Строка 32px со значком и пояснением; ярлык группы', Demo: ListRowDemo },
   { name: 'Tooltip', title: 'Подсказка при наведении', group: 'Метки', height: 180, subtitle: 'Маленькая пластина, с клавишей и без', Demo: TooltipDemo },

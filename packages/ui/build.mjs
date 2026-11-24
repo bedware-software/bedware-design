@@ -2,7 +2,7 @@
 // затем страница-витрина (demo/build/showcase.js) для ui.html в корне репозитория.
 // Запуск из корня: npm run ui
 import { execFileSync } from 'node:child_process'
-import { copyFileSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { copyFileSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import { basename, dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -15,6 +15,15 @@ const require = createRequire(import.meta.url)
 
 rmSync(dist, { recursive: true, force: true })
 execFileSync(process.execPath, [require.resolve('typescript/bin/tsc'), '-p', join(pkg, 'tsconfig.build.json')], { stdio: 'inherit' })
+
+// Входы пакета: tsc собирает src/ целиком, поэтому `@bedware/ui/vim-form` (src/vim-form/index.ts) и
+// `@bedware/ui/vim-keys` (src/vim-form/keys.ts) уже лежат в dist/. Основной вход (src/index.ts) их не
+// импортирует — приложение, которому навигация по формам не нужна, её код не получает.
+for (const [entry, target] of Object.entries(JSON.parse(readFileSync(join(pkg, 'package.json'), 'utf8')).exports)) {
+  const file = typeof target === 'string' ? target : target.default
+  if (!file.endsWith('.js')) continue
+  if (!existsSync(join(pkg, file))) throw new Error(`@bedware/ui: вход ${entry} не собран — нет ${file}`)
+}
 
 // Стили и токены — те же файлы, что и в корне репозитория: источник у них один.
 copyFileSync(join(root, 'components/components.css'), join(dist, 'styles.css'))
