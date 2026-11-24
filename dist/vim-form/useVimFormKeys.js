@@ -12,7 +12,7 @@ import { useVimFormMode } from './mode';
  * Команды: метка — переход к элементу; `help` — таблица клавиш; затем `onCommand` приложения;
  * остальное — контроллеру формы (курсор, значение, нажатие, вход в поле, клавиши строк).
  */
-export function useVimFormKeys({ enabled = true, keymap = DEFAULT_VIM_FORM_KEYMAP, win = typeof window === 'undefined' ? null : window, root, scrollRoot, resetKey, open = true, onCommand, onEscape, passThrough, warn, repeatable, countable, }) {
+export function useVimFormKeys({ enabled = true, keymap = DEFAULT_VIM_FORM_KEYMAP, win = typeof window === 'undefined' ? null : window, root, scrollRoot, resetKey, open = true, onCommand, onEscape, escapeLeavesField = false, passThrough, warn, repeatable, countable, }) {
     const base = enabled ? keymap : null;
     const form = useVimForm({ enabled: base !== null, root, scrollRoot, resetKey, warn });
     const labelCount = useVimFormLabelCount(form);
@@ -35,7 +35,9 @@ export function useVimFormKeys({ enabled = true, keymap = DEFAULT_VIM_FORM_KEYMA
             return;
         form.run(command);
     };
-    const escape = () => {
+    const escape = (from) => {
+        if (escapeLeavesField && from === 'insert')
+            return;
         if (form.escapeOverlay())
             return;
         if (helpOpenRef.current) {
@@ -49,7 +51,8 @@ export function useVimFormKeys({ enabled = true, keymap = DEFAULT_VIM_FORM_KEYMA
         popup: win,
         open,
         anyField: true,
-        passThrough,
+        // Модальный диалог пакета в том же документе и запись сочетания клавиш забирают клавиши себе.
+        passThrough: () => passThrough?.() === true || win?.document.querySelector('[aria-modal="true"], [data-recording]') != null,
         onCommand: run,
         onEscape: escape,
         repeatable,

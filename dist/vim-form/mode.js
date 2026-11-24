@@ -21,7 +21,7 @@ export const VIM_FORM_COUNTABLE = new Set([
     'cursor-down', 'cursor-up', 'half-page-down', 'half-page-up',
 ]);
 // Inputs whose keys type text — not a checkbox, a slider or a button.
-const TYPING_INPUT_TYPES = new Set(['', 'text', 'search', 'url', 'tel', 'email', 'password', 'number']);
+const TYPING_INPUT_TYPES = new Set(['', 'text', 'search', 'url', 'tel', 'email', 'password', 'number', 'time', 'date', 'datetime-local', 'month', 'week']);
 /** A field keys type into: a text input, a textarea, something editable.
  *  By its tag rather than instanceof, which fails for a popup's elements —
  *  a DetachedWindow's content belongs to that window's realm, whose
@@ -284,7 +284,7 @@ export function useVimFormMode({ keymap, popup, box, initial = 'command', open =
                         e.stopPropagation();
                         field?.blur();
                         if (close)
-                            onEscapeRef.current();
+                            onEscapeRef.current(field ? 'insert' : 'command');
                     }
                     return;
                 }
@@ -335,7 +335,7 @@ export function useVimFormMode({ keymap, popup, box, initial = 'command', open =
             e.preventDefault();
             e.stopPropagation();
             if (isEscapeKey(e))
-                onEscapeRef.current();
+                onEscapeRef.current('command');
         };
         // A click may select text too.
         const onMouseDown = () => { userSelectedRef.current = true; };

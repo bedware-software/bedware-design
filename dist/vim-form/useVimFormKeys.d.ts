@@ -21,6 +21,9 @@ export interface VimFormKeysOptions extends KeySequenceOptions {
     onCommand?: (command: string) => boolean | void;
     /** Esc, когда закрывать в форме уже нечего (список, таблица клавиш): обычно закрыть окно. */
     onEscape?: () => void;
+    /** true — Esc в текстовом поле только выходит из поля (в COMMAND), окно закрывает следующий Esc.
+     *  false (по умолчанию) — Esc из поля сразу идёт дальше, как в Vimperium. */
+    escapeLeavesField?: boolean;
     /** true, пока клавиши принадлежат самой форме, а не Vim (идёт запись сочетания клавиш). */
     passThrough?: () => boolean;
     /** Журнал приложения для предупреждений контроллера. */
@@ -45,4 +48,4 @@ export interface VimFormKeys {
  * Команды: метка — переход к элементу; `help` — таблица клавиш; затем `onCommand` приложения;
  * остальное — контроллеру формы (курсор, значение, нажатие, вход в поле, клавиши строк).
  */
-export declare function useVimFormKeys({ enabled, keymap, win, root, scrollRoot, resetKey, open, onCommand, onEscape, passThrough, warn, repeatable, countable, }: VimFormKeysOptions): VimFormKeys;
+export declare function useVimFormKeys({ enabled, keymap, win, root, scrollRoot, resetKey, open, onCommand, onEscape, escapeLeavesField, passThrough, warn, repeatable, countable, }: VimFormKeysOptions): VimFormKeys;

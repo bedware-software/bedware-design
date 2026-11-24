@@ -6,7 +6,7 @@ import { cx } from './util';
 export function HotkeyButton({ keys = [], recording = false, invalid = false, emptyLabel = 'Set…', setLabel = 'Change', recordingLabel = 'Press keys…', invalidLabel = 'Taken', size, className, ...rest }) {
     const has = keys.length > 0;
     if (recording)
-        return _jsx(Button, { size: size, variant: "primary", className: cx('bw-hotkey', className), ...rest, children: recordingLabel });
+        return _jsx(Button, { size: size, variant: "primary", "data-recording": "", className: cx('bw-hotkey', className), ...rest, children: recordingLabel });
     if (invalid)
         return _jsx(Button, { size: size, variant: "danger-outline", keys: keys, className: cx('bw-hotkey', className), ...rest, children: invalidLabel });
     return _jsx(Button, { size: size, keys: has ? keys : undefined, className: cx('bw-hotkey', className), ...rest, children: has ? setLabel : emptyLabel });

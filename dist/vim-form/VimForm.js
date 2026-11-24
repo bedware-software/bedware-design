@@ -147,14 +147,14 @@ export function VimFormCursorHints({ form, keymap, texts, rowHints = [] }) {
  *  (INSERT). Все клавиши — в таблице по «?», здесь только главные. Форме со своими состояниями
  *  (предупреждение о несохранённом, поиск) проще собрать полосу самой из HintBar, Hint и
  *  VimFormCursorHints. */
-export function VimFormHintBar({ form, keymap, mode, firstLabel, texts, rowHints, children, className }) {
+export function VimFormHintBar({ form, keymap, mode, firstLabel, texts, rowHints, escapeLeavesField, children, className }) {
     const { overlayOpen } = useVimFormSnapshot(form);
     const t = textsWith(texts);
     const caps = (...commands) => vimKeyCaps(keymap, ...commands);
     if (!mode)
         return null;
     if (mode === 'insert') {
-        return (_jsxs(HintBar, { wrap: true, className: className, children: [_jsx(Hint, { label: t.commandMode, keys: [LEAVE_INSERT_CAP] }), _jsx(Hint, { label: t.close, keys: ['Esc'] })] }));
+        return (_jsxs(HintBar, { wrap: true, className: className, children: [_jsx(Hint, { label: t.commandMode, keys: escapeLeavesField ? [LEAVE_INSERT_CAP, 'Esc'] : [LEAVE_INSERT_CAP] }), !escapeLeavesField && _jsx(Hint, { label: t.close, keys: ['Esc'] })] }));
     }
     if (overlayOpen) {
         return (_jsxs(HintBar, { wrap: true, className: className, children: [_jsx(Hint, { label: t.navigate, keys: caps('cursor-down', 'cursor-up') }), _jsx(Hint, { label: t.pick, keys: caps('activate') }), _jsx(Hint, { label: t.close, keys: ['Esc'] })] }));

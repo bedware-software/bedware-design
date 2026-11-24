@@ -75,7 +75,8 @@ export declare function useVimFormMode({ keymap, popup, box, initial, open, onCo
     onCommand: (command: string) => void;
     /** Esc, in COMMAND or INSERT: usually closes the popup — or first steps
      *  back out of what's open in it (Settings). */
-    onEscape: () => void;
+    /** rom: the mode Esc was pressed in — 'insert' means a field had the keyboard and has just let go of it. */
+    onEscape: (from: 'insert' | 'command') => void;
     /** Sees each COMMAND-mode key first; true when it took the key (the
      *  address editor's block key after c / r / y / p). */
     intercept?: (e: KeyboardEvent) => boolean;
