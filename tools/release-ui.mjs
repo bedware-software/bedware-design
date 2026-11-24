@@ -44,7 +44,10 @@ try {
   const env = { GIT_INDEX_FILE: join(tmp, 'index'), GIT_DIR: join(root, '.git'), GIT_WORK_TREE: tree };
   git(['add', '-A', '.'], env);
   const treeId = git(['write-tree'], env);
-  const parent = has('refs/heads/ui-dist') ? ['-p', git(['rev-parse', 'refs/heads/ui-dist'])] : [];
+  // На свежем клоне (другая машина) локальной ветки ui-dist нет: продолжаем ту, что на GitHub, иначе выйдет коммит без предка и пуш будет отклонён.
+  try { git(['fetch', '-q', 'origin', 'ui-dist']); } catch { /* нет сети или ветки: решит проверка ниже */ }
+  const base = ['refs/heads/ui-dist', 'refs/remotes/origin/ui-dist'].find(has);
+  const parent = base ? ['-p', git(['rev-parse', base])] : [];
   const commit = git(['commit-tree', treeId, ...parent, '-m', `@bedware/ui ${src.version}`]);
   git(['update-ref', 'refs/heads/ui-dist', commit]);
   git(['tag', tag, commit]);
@@ -52,7 +55,7 @@ try {
 
   if (process.argv.includes('--push')) {
     execFileSync('git', ['push', 'origin', 'refs/heads/ui-dist', `refs/tags/${tag}`], { cwd: root, stdio: 'inherit' });
-    const tgz = execFileSync('npm', ['pack', '--silent'], { cwd: tree, encoding: 'utf8' }).trim().split('\n').pop();
+    const tgz = execFileSync('npm', ['pack', '--silent'], { cwd: tree, encoding: 'utf8', shell: process.platform === 'win32' /* на Windows npm — это npm.cmd */ }).trim().split('\n').pop();
     execFileSync('gh', ['release', 'create', tag, join(tree, tgz), '--title', `@bedware/ui ${src.version}`, '--notes', 'Собранный пакет для приложений.'], { cwd: root, stdio: 'inherit' });
     console.log(`В приложении: npm install https://github.com/bedware-software/bedware-design/releases/download/${tag}/${tgz}`);
   } else {
