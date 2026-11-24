@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="ru" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Уведомления Runwa: варианты</title>
+<link rel="stylesheet" href="node_modules/@fontsource/inter/400.css">
+<link rel="stylesheet" href="node_modules/@fontsource/inter/500.css">
+<link rel="stylesheet" href="node_modules/@fontsource/inter/600.css">
+<link rel="stylesheet" href="node_modules/@fontsource/jetbrains-mono/400.css">
+<link rel="stylesheet" href="node_modules/@fontsource/jetbrains-mono/700.css">
+<link rel="stylesheet" href="tokens/tokens.css">
+<link rel="stylesheet" href="components/components.css">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bw-bg); color: var(--bw-text); font: 14px/1.5 var(--bw-font-sans); }
+  main { max-width: 1180px; margin: 0 auto; padding: 28px 16px 150px; }
+  h1 { font: 700 24px/1.2 var(--bw-font-mono); color: var(--bw-text-strong); margin: 0 0 6px; }
+  h2 { font: 700 18px/1.2 var(--bw-font-mono); color: var(--bw-text-strong); margin: 44px 0 6px; }
+  h2 i { font-style: normal; color: var(--bw-link); margin-right: 8px; }
+  p { margin: 0 0 10px; color: var(--bw-text-muted); max-width: 780px; }
+  .top { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; }
+  .opt { border: 1px solid var(--bw-border); border-radius: 8px; margin: 14px 0; overflow: hidden; }
+  .opt > header { display: flex; flex-wrap: wrap; gap: 10px; align-items: baseline; padding: 10px 14px; background: var(--bw-surface-1); border-bottom: 1px solid var(--bw-border); }
+  .opt > header b { font: 700 14px var(--bw-font-mono); color: var(--bw-text-strong); }
+  .opt > header span { font-size: 13px; color: var(--bw-text-muted); }
+  .opt > header .pick { margin-left: auto; display: inline-flex; align-items: center; gap: 14px; font: 600 12px var(--bw-font-sans); color: var(--bw-text); }
+  .opt > header .pick label { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+  .opt:has(input[type=radio]:checked) { border-color: var(--bw-plate); box-shadow: 0 0 0 1px var(--bw-plate); }
+  .opt:has(input:checked) > header b { background: var(--bw-plate); color: var(--bw-on-plate); padding: 0 6px; }
+  .note { width: 100%; max-width: 780px; margin-top: 6px; }
+  .answer { position: fixed; left: 0; right: 0; bottom: 0; z-index: 10; background: var(--bw-surface-2); border-top: 1px solid var(--bw-border-strong); }
+  .answer > div { max-width: 1180px; margin: 0 auto; padding: 10px 16px; display: flex; gap: 10px; align-items: center; }
+  .answer .bw-field { flex: 1; min-width: 0; }
+  .answer span { font: 500 11px var(--bw-font-mono); color: var(--bw-text-muted); flex: none; }
+
+  /* «рабочий стол»: уведомление висит поверх чужих окон, поэтому фон пёстрый — половина светлая, половина тёмная */
+  .desk { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 22px 16px; padding: 26px 18px; align-items: end; justify-items: center;
+    background: linear-gradient(115deg, #1b2430 0 34%, #3b4a5c 34% 52%, #c9c2b2 52% 74%, #f3efe6 74%); }
+  .desk figure { margin: 0; display: grid; gap: 8px; justify-items: center; }
+  .desk figcaption { font: 500 10px var(--bw-font-mono); text-transform: uppercase; letter-spacing: .06em; color: #fff; background: rgb(0 0 0 / .55); padding: 2px 6px; }
+
+  /* общее у вариантов: содержимое уведомления */
+  .n { --tone: var(--bw-plate); --cut: 8px; position: relative; isolation: isolate; display: flex; align-items: center; gap: 10px; min-width: 160px; max-width: 300px; min-height: 48px; padding: 10px 16px; font-size: 14px; line-height: 20px; color: var(--bw-text); }
+  .n.err { --tone: var(--bw-error); }
+  .n.ok { --tone: var(--bw-success); }
+  .n .t { display: block; font: 700 10px/14px var(--bw-font-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--bw-text-muted); }
+  .n .body { min-width: 0; }
+  .n svg { width: 15px; height: 15px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  /* запись: микрофон на пульсирующем квадрате; ожидание: три квадратика по очереди — кругов нет */
+  .rec { position: relative; display: grid; place-items: center; width: 22px; height: 22px; color: var(--bw-error); flex: none; }
+  .rec::before { content: ''; position: absolute; inset: 0; background: var(--bw-error); opacity: .25; animation: pulse 1.2s ease-out infinite; }
+  @keyframes pulse { from { transform: scale(.6); opacity: .5; } to { transform: scale(1.25); opacity: 0; } }
+  .wait { display: inline-flex; gap: 3px; flex: none; }
+  .wait i { width: 5px; height: 5px; background: currentColor; opacity: .25; animation: step 1s steps(1) infinite; }
+  .wait i:nth-child(2) { animation-delay: .2s; } .wait i:nth-child(3) { animation-delay: .4s; }
+  @keyframes step { 0%, 60% { opacity: .25; } 20%, 40% { opacity: 1; } }
+
+  /* A: тёмная панель со срезами, полоса тона слева — как Notice */
+  .va .n { padding-left: 20px; }
+  .va .n::before { content: ''; position: absolute; inset: 0; z-index: -2; background: var(--bw-border-strong); clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%); }
+  .va .n::after { content: ''; position: absolute; inset: 1px; z-index: -1; background: linear-gradient(90deg, var(--tone) 0 4px, var(--bw-surface-2) 4px); clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%); }
+
+  /* B: пластина — жёлтая с кромкой, чёрный текст; ошибка — красная пластина */
+  .vb .n { color: var(--bw-on-plate); font-weight: 600; padding-bottom: 12px; }
+  .vb .n::before { content: ''; position: absolute; inset: 0; z-index: -1; background: var(--bw-plate); box-shadow: inset 0 -3px 0 var(--bw-plate-edge);
+    clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut)); }
+  .vb .n.err { color: var(--bw-on-error); }
+  .vb .n.err::before { background: var(--bw-error); box-shadow: inset 0 -3px 0 var(--bw-error-edge); }
+  .vb .n .t { color: inherit; opacity: .7; }
+  .vb .n .rec { color: inherit; } .vb .n .rec::before { background: currentColor; }
+
+  /* C: тёмная панель с двумя срезами и ярлыком-пластиной сверху (источник или заголовок) */
+  .vc .n { padding-top: 16px; }
+  .vc .n::before { content: ''; position: absolute; inset: 0; z-index: -2; background: var(--bw-border-strong); clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut)); }
+  .vc .n::after { content: ''; position: absolute; inset: 1px; z-index: -1; background: var(--bw-surface-2); clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut)); }
+  .vc .n .t { position: absolute; left: 14px; top: -7px; padding: 1px 6px; background: var(--tone); color: var(--bw-on-plate); box-shadow: inset 0 -2px 0 color-mix(in srgb, #000 30%, var(--tone)); }
+  .vc .n.err .t { color: var(--bw-on-error); }
+  .vc .n:not(:has(.t)) { padding-top: 10px; }
+
+  /* D: тихая — тёмная полоса без рамки, под ней черта тона (как адресная строка Vimperium) */
+  .vd .n { background: color-mix(in srgb, var(--bw-surface-1) 94%, transparent); box-shadow: inset 0 -2px 0 var(--tone); backdrop-filter: blur(12px); }
+  .vd .n:not(.err):not(.ok):not(:has(.t)) { --tone: var(--bw-border-strong); }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="1"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></symbol>
+</svg>
+
+<template id="t-set">
+  <figure><div class="n"><span class="body">Work · Coding</span></div><figcaption>только текст · профиль Ulanzi</figcaption></figure>
+  <figure><div class="n"><span class="rec"><svg><use href="#i-mic"/></svg></span><span class="body">Listening…</span></div><figcaption>запись</figcaption></figure>
+  <figure><div class="n"><span class="wait"><i></i><i></i><i></i></span><span class="body">Transcribing…</span></div><figcaption>ожидание</figcaption></figure>
+  <figure><div class="n"><span class="body"><span class="t">Сборка</span>Готово за 74 с</span></div><figcaption>заголовок и текст · из консоли</figcaption></figure>
+  <figure><div class="n ok"><span class="body"><span class="t">Keyboard Remap</span>Keyboard rules reloaded</span></div><figcaption>тон «успех»</figcaption></figure>
+  <figure><div class="n err"><span class="body"><span class="t">Groq Transcription</span>No API key. Add one in Settings to start dictation.</span></div><figcaption>тон «ошибка» · длинный текст</figcaption></figure>
+</template>
+
+<main>
+  <div class="top">
+    <h1>Уведомления Runwa: вид плашки</h1>
+    <div class="bw-seg bw-seg--sm" role="radiogroup" aria-label="Тема страницы" id="theme">
+      <button class="bw-seg__opt" role="radio" aria-checked="true" data-t="dark">Тёмная</button>
+      <button class="bw-seg__opt" role="radio" aria-checked="false" data-t="light">Светлая</button>
+    </div>
+  </div>
+  <p>Плашка внизу экрана сейчас сделана «под подсказку Windows 11»: скруглённая, с размытием и тенью. Ниже четыре вида в стиле бренда. Фон под ними пёстрый нарочно: уведомление висит поверх чужих окон, светлых и тёмных. Круглых форм нет: запись — квадрат с пульсом, ожидание — три квадратика.</p>
+  <p>В настройках модуля будет выбор вида, поэтому можно отметить несколько: «По умолчанию» — один, «В настройки» — те, что останутся на выбор.</p>
+
+  <h2><i>1</i>Вид</h2>
+  <section class="opt va" data-v="A"><header><b>A</b><span>Тёмная панель, срез справа снизу, слева полоса тона — как у сообщений в настройках.</span></header></section>
+  <section class="opt vb" data-v="B"><header><b>B</b><span>Пластина: жёлтая с кромкой и чёрным текстом, ошибка — красная. Самая заметная.</span></header></section>
+  <section class="opt vc" data-v="C"><header><b>C</b><span>Тёмная панель с двумя срезами; заголовок — ярлык-пластина на верхней кромке. Без заголовка — просто панель.</span></header></section>
+  <section class="opt vd" data-v="D"><header><b>D</b><span>Тихая: тёмная полоса без рамки, под ней черта тона — как адресная строка Vimperium.</span></header></section>
+
+  <h2><i>2</i>Замечания</h2>
+  <textarea class="bw-field note" id="note" rows="3" style="height:auto;padding:8px 10px" placeholder="Необязательно: размер, шрифт, что смешать"></textarea>
+</main>
+
+<div class="answer"><div>
+  <span id="left"></span>
+  <input class="bw-field bw-field--sm bw-field--mono" id="out" readonly>
+  <button class="bw-btn bw-btn--primary" id="copy">Скопировать</button>
+</div></div>
+
+<script>
+  for (const s of document.querySelectorAll('.opt')) {
+    const desk = document.createElement('div');
+    desk.className = 'desk';
+    desk.append(document.getElementById('t-set').content.cloneNode(true));
+    s.append(desk);
+    const p = document.createElement('span');
+    p.className = 'pick';
+    p.innerHTML = `<label><input type="checkbox" name="keep" value="${s.dataset.v}">В настройки</label><label><input type="radio" name="def" value="${s.dataset.v}">По умолчанию</label>`;
+    s.querySelector('header').append(p);
+  }
+  const out = document.getElementById('out'), note = document.getElementById('note');
+  function refresh(e) {
+    // вид по умолчанию всегда есть и в настройках
+    if (e?.target?.name === 'def') document.querySelector(`input[name=keep][value="${e.target.value}"]`).checked = true;
+    const def = document.querySelector('input[name=def]:checked');
+    if (def) document.querySelector(`input[name=keep][value="${def.value}"]`).checked = true;
+    const keep = [...document.querySelectorAll('input[name=keep]:checked')].map((i) => i.value);
+    const parts = [`по умолчанию — ${def ? def.value : 'не выбрано'}`, `в настройках — ${keep.length ? keep.join(', ') : 'не выбрано'}`];
+    if (note.value.trim()) parts.push('замечания: ' + note.value.trim().replace(/\s+/g, ' '));
+    out.value = 'Уведомления Runwa: ' + parts.join('; ');
+    document.getElementById('left').textContent = def ? 'всё выбрано' : 'осталось выбрать: вид по умолчанию';
+  }
+  document.addEventListener('change', refresh); note.addEventListener('input', refresh); refresh();
+  document.getElementById('copy').onclick = (e) => {
+    const b = e.currentTarget;
+    out.select(); navigator.clipboard?.writeText(out.value);
+    b.textContent = 'Скопировано'; setTimeout(() => { b.textContent = 'Скопировать'; }, 1500);
+  };
+  document.getElementById('theme').addEventListener('click', (e) => {
+    const b = e.target.closest('button'); if (!b) return;
+    for (const o of b.parentNode.children) o.setAttribute('aria-checked', String(o === b));
+    document.documentElement.dataset.theme = b.dataset.t;
+  });
+</script>
+</body>
+</html>
