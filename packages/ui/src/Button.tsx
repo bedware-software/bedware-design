@@ -4,8 +4,9 @@ import { cx } from './util'
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /** primary — одно главное действие; secondary — обычные; ghost — «Отмена»; danger — необратимое;
-   *  quiet-danger — «Удалить» в строке списка: серая, краснеет при наведении; danger-outline — красная рамка (состояние «занято»). */
-  variant?: 'primary' | 'secondary' | 'ghost' | 'danger' | 'quiet-danger' | 'danger-outline'
+   *  quiet-danger — «Удалить» в строке списка: серая, краснеет при наведении; danger-outline — красная рамка (состояние «занято»);
+   *  bare — шапка окна и панель инструментов: без рамки, под курсором пластина; раскрытая (aria-expanded) или включённая (aria-pressed) — цвет пластины с чертой. */
+  variant?: 'primary' | 'secondary' | 'ghost' | 'danger' | 'quiet-danger' | 'danger-outline' | 'bare'
   /** md — 32px; sm — 24px, для строк списков и плотных панелей. */
   size?: 'md' | 'sm'
   /** Значок 12–14px слева от подписи. */
@@ -35,12 +36,14 @@ export interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement>
   danger?: boolean
   /** Кнопка-переключатель во включённом состоянии: пластина. undefined — обычная кнопка. */
   pressed?: boolean
+  /** Без рамки и заливки — для шапки окна и панели инструментов, где кнопок много: под курсором пластина, включённая — значок цвета пластины с чертой. */
+  bare?: boolean
   ref?: Ref<HTMLButtonElement>
 }
 
 /** Кнопка из одного значка: квадрат со срезами. Значок 12–16px передаётся детьми. */
-export function IconButton({ label, size = 28, danger, pressed, className, title, type = 'button', ...rest }: IconButtonProps) {
-  return <button type={type} aria-label={label} title={title ?? label} aria-pressed={pressed} className={cx('bw-iconbtn', size !== 28 && `bw-iconbtn--${size}`, danger && 'bw-iconbtn--danger', className)} {...rest} />
+export function IconButton({ label, size = 28, danger, pressed, bare, className, title, type = 'button', ...rest }: IconButtonProps) {
+  return <button type={type} aria-label={label} title={title ?? label} aria-pressed={pressed} className={cx('bw-iconbtn', size !== 28 && `bw-iconbtn--${size}`, danger && 'bw-iconbtn--danger', bare && 'bw-iconbtn--bare', className)} {...rest} />
 }
 
 export interface LinkButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {

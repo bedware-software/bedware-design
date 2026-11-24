@@ -56,6 +56,7 @@ function IconButtonDemo() {
     <>
       <Line cap="28 · обычные"><IconButton label="Изменить">{icons.pencil()}</IconButton><IconButton label="Закрепить" pressed={pinned} onClick={() => setPinned(!pinned)}>{icons.pin()}</IconButton><IconButton label="Удалить" danger>{icons.trash()}</IconButton><IconButton label="Обновить" disabled>{icons.reload()}</IconButton></Line>
       <Line cap="32 · панель"><span style={{ display: 'inline-flex', gap: 2 }}><IconButton size={32} label="Назад">{icons.back(16)}</IconButton><IconButton size={32} label="Обновить">{icons.reload(16)}</IconButton><IconButton size={32} label="Закрепить" pressed>{icons.pin(16)}</IconButton></span></Line>
+      <Line cap="32 · без рамки, шапка"><span style={{ display: 'inline-flex', gap: 6, alignItems: 'center' }}><Button variant="bare" icon={icons.folder(14)}>Work</Button><IconButton bare size={32} label="Назад">{icons.back(16)}</IconButton><IconButton bare size={32} label="Обновить" pressed>{icons.reload(16)}</IconButton><IconButton bare size={32} label="Расширения">{icons.window(16)}<Count>3</Count></IconButton><IconButton bare size={32} label="Обновить" disabled>{icons.reload(16)}</IconButton></span></Line>
       <Line cap="24 и 20"><IconButton size={24} label="Изменить">{icons.pencil(13)}</IconButton><IconButton size={24} label="Закрыть" danger>{icons.x(13)}</IconButton><IconButton size={20} label="Изменить">{icons.pencil(12)}</IconButton><IconButton size={20} label="Удалить" danger>{icons.trash(12)}</IconButton></Line>
       <Line cap="в строке"><span className="bw-row__title" style={{ display: 'flex', gap: 8, alignItems: 'center' }}>ktalk.exe <IconButton label="Убрать из списка" danger>{icons.x()}</IconButton></span></Line>
     </>
@@ -429,7 +430,7 @@ export interface Story {
 
 export const stories: Story[] = [
   { name: 'Button', title: 'Кнопка', group: 'Действия', height: 320, subtitle: 'Основная, вторичная, текстовая, опасная; с клавишей и значком; малая, тихая красная, ссылка', Demo: ButtonDemo },
-  { name: 'IconButton', title: 'Кнопка-значок', group: 'Действия', height: 230, subtitle: 'Четыре размера, включённая, удаление, выключенная', Demo: IconButtonDemo },
+  { name: 'IconButton', title: 'Кнопка-значок', group: 'Действия', height: 280, subtitle: 'Четыре размера, включённая, удаление, выключенная, без рамки для шапки', Demo: IconButtonDemo },
   { name: 'Field', title: 'Поле ввода', group: 'Формы', height: 440, subtitle: 'Три высоты, моноширинное, ошибка, выключенное, значок и клавиша', Demo: FieldDemo },
   { name: 'Textarea', title: 'Многострочное поле', group: 'Формы', height: 420, subtitle: 'Растёт по содержимому; моноширинное, ошибка, выключенное', Demo: TextareaDemo },
   { name: 'Checkbox', title: 'Флажок и подписи', group: 'Формы', height: 335, subtitle: 'Включён, выключен, частично, недоступен, с подписью; подпись с описанием и строка под формой', Demo: CheckboxDemo },
