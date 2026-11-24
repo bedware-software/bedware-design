@@ -1,6 +1,6 @@
 {
   "name": "@bedware/ui",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "private": true,
   "description": "bedware — общие React-компоненты для Runwa, Vimperium и сайта",
   "type": "module",
