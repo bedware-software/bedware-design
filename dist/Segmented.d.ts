@@ -20,6 +20,8 @@ export interface SegmentedProps<T> extends Omit<HTMLAttributes<HTMLDivElement>, 
     size?: 'md' | 'sm';
     /** false — варианты вне порядка Tab (tabindex=-1): когда клавиатуру ведёт само приложение. */
     tabbable?: boolean;
+    /** Весь выбор выключен: варианты не нажимаются, выбранный — в штриховку. */
+    disabled?: boolean;
 }
 /** Один выбор из нескольких в общей дорожке: radiogroup, выбранный — пластина. */
-export declare function Segmented<T extends string | boolean>({ value, options, onChange, label, wrap, size, tabbable, className, ...rest }: SegmentedProps<T>): import("react").JSX.Element;
+export declare function Segmented<T extends string | boolean>({ value, options, onChange, label, wrap, size, tabbable, disabled, className, ...rest }: SegmentedProps<T>): import("react").JSX.Element;

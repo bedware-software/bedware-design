@@ -14,6 +14,7 @@ export { Textarea } from './Textarea';
 export { ColorField } from './ColorField';
 export { HotkeyButton } from './HotkeyButton';
 export { Notice } from './Notice';
+export { Toast } from './Toast';
 export { SectionTitle } from './Section';
 export { ChoiceCards } from './ChoiceCards';
 export { Nav, NavGroup, NavItem } from './Nav';

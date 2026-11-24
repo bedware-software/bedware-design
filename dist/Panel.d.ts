@@ -14,8 +14,10 @@ export interface PanelRowProps extends Omit<HTMLAttributes<HTMLDivElement>, 'tit
     description?: ReactNode;
     /** Выбранная строка списка: фон и кромка слева. */
     selected?: boolean;
+    /** Всплывающая подпись всей строки (нативный title): само свойство title занято заголовком. */
+    tip?: string;
 }
 /** Строка «заголовок + описание + элемент управления». Без title — произвольное содержимое. */
-export declare function PanelRow({ title, description, selected, className, children, ...rest }: PanelRowProps): import("react").JSX.Element;
+export declare function PanelRow({ title, description, selected, tip, className, children, ...rest }: PanelRowProps): import("react").JSX.Element;
 /** Подвал с кнопками: основные справа. */
 export declare function PanelFooter({ className, ...rest }: HTMLAttributes<HTMLDivElement>): import("react").JSX.Element;

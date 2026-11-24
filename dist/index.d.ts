@@ -14,6 +14,7 @@ export { Textarea, type TextareaProps } from './Textarea';
 export { ColorField, type ColorFieldProps } from './ColorField';
 export { HotkeyButton, type HotkeyButtonProps } from './HotkeyButton';
 export { Notice, type NoticeProps } from './Notice';
+export { Toast, type ToastProps } from './Toast';
 export { SectionTitle, type SectionTitleProps } from './Section';
 export { ChoiceCards, type ChoiceOption, type ChoiceCardsProps } from './ChoiceCards';
 export { Nav, NavGroup, NavItem, type NavItemProps } from './Nav';

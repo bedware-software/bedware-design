@@ -9,8 +9,8 @@ export function PanelHeader({ number, title, description, className, children, .
     return (_jsxs("div", { className: cx('bw-panel__head', className), "data-n": number, ...rest, children: [_jsxs("div", { children: [_jsx("span", { className: "bw-panel__title", children: title }), description && _jsx("span", { className: "bw-panel__desc", children: description })] }), children] }));
 }
 /** Строка «заголовок + описание + элемент управления». Без title — произвольное содержимое. */
-export function PanelRow({ title, description, selected, className, children, ...rest }) {
-    return (_jsxs("div", { className: cx('bw-row', className), "aria-selected": selected || undefined, ...rest, children: [title !== undefined && (_jsxs("div", { children: [_jsx("span", { className: "bw-row__title", children: title }), description && _jsx("span", { className: "bw-row__desc", children: description })] })), children] }));
+export function PanelRow({ title, description, selected, tip, className, children, ...rest }) {
+    return (_jsxs("div", { className: cx('bw-row', className), "aria-selected": selected || undefined, title: tip, ...rest, children: [title !== undefined && (_jsxs("div", { children: [_jsx("span", { className: "bw-row__title", children: title }), description && _jsx("span", { className: "bw-row__desc", children: description })] })), children] }));
 }
 /** Подвал с кнопками: основные справа. */
 export function PanelFooter({ className, ...rest }) {

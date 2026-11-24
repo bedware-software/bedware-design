@@ -1,7 +1,7 @@
 import type { HTMLAttributes, ReactNode } from 'react';
 export interface NoticeProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
     /** error — что-то не удалось; warning — нужно действие пользователя. */
-    tone?: 'error' | 'warning';
+    tone?: 'error' | 'warning' | 'neutral';
     /** Короткий заголовок жирным; подробности — детьми. */
     title?: ReactNode;
     /** Значок 14–15px цветом тона. */
