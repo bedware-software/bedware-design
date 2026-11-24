@@ -37,7 +37,7 @@ export interface KeySequenceOptions {
 }
 
 // Inputs whose keys type text — not a checkbox, a slider or a button.
-const TYPING_INPUT_TYPES = new Set(['', 'text', 'search', 'url', 'tel', 'email', 'password', 'number'])
+const TYPING_INPUT_TYPES = new Set(['', 'text', 'search', 'url', 'tel', 'email', 'password', 'number', 'time', 'date', 'datetime-local', 'month', 'week'])
 
 /** A field keys type into: a text input, a textarea, something editable.
  *  By its tag rather than instanceof, which fails for a popup's elements —
@@ -186,7 +186,8 @@ export function useVimFormMode({ keymap, popup, box, initial = 'command', open =
   onCommand: (command: string) => void
   /** Esc, in COMMAND or INSERT: usually closes the popup — or first steps
    *  back out of what's open in it (Settings). */
-  onEscape: () => void
+  /** rom: the mode Esc was pressed in — 'insert' means a field had the keyboard and has just let go of it. */
+  onEscape: (from: 'insert' | 'command') => void
   /** Sees each COMMAND-mode key first; true when it took the key (the
    *  address editor's block key after c / r / y / p). */
   intercept?: (e: KeyboardEvent) => boolean
@@ -347,7 +348,7 @@ export function useVimFormMode({ keymap, popup, box, initial = 'command', open =
             e.preventDefault()
             e.stopPropagation()
             field?.blur()
-            if (close) onEscapeRef.current()
+            if (close) onEscapeRef.current(field ? 'insert' : 'command')
           }
           return
         }
@@ -392,7 +393,7 @@ export function useVimFormMode({ keymap, popup, box, initial = 'command', open =
       if (e.ctrlKey) return
       e.preventDefault()
       e.stopPropagation()
-      if (isEscapeKey(e)) onEscapeRef.current()
+      if (isEscapeKey(e)) onEscapeRef.current('command')
     }
     // A click may select text too.
     const onMouseDown = (): void => { userSelectedRef.current = true }

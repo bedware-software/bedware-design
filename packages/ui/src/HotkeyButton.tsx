@@ -23,7 +23,7 @@ export interface HotkeyButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonE
  *  и передаёт сюда keys / recording / invalid. Очистка — отдельной IconButton рядом. */
 export function HotkeyButton({ keys = [], recording = false, invalid = false, emptyLabel = 'Set…', setLabel = 'Change', recordingLabel = 'Press keys…', invalidLabel = 'Taken', size, className, ...rest }: HotkeyButtonProps) {
   const has = keys.length > 0
-  if (recording) return <Button size={size} variant="primary" className={cx('bw-hotkey', className)} {...rest}>{recordingLabel}</Button>
+  if (recording) return <Button size={size} variant="primary" data-recording="" className={cx('bw-hotkey', className)} {...rest}>{recordingLabel}</Button>
   if (invalid) return <Button size={size} variant="danger-outline" keys={keys} className={cx('bw-hotkey', className)} {...rest}>{invalidLabel}</Button>
   return <Button size={size} keys={has ? keys : undefined} className={cx('bw-hotkey', className)} {...rest}>{has ? setLabel : emptyLabel}</Button>
 }

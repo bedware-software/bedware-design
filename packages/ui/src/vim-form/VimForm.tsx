@@ -262,7 +262,7 @@ export function VimFormCursorHints({ form, keymap, texts, rowHints = [] }: {
  *  (INSERT). Все клавиши — в таблице по «?», здесь только главные. Форме со своими состояниями
  *  (предупреждение о несохранённом, поиск) проще собрать полосу самой из HintBar, Hint и
  *  VimFormCursorHints. */
-export function VimFormHintBar({ form, keymap, mode, firstLabel, texts, rowHints, children, className }: {
+export function VimFormHintBar({ form, keymap, mode, firstLabel, texts, rowHints, escapeLeavesField, children, className }: {
   form: VimFormController
   keymap: VimKeymap | null
   mode: VimMode | null
@@ -270,6 +270,8 @@ export function VimFormHintBar({ form, keymap, mode, firstLabel, texts, rowHints
   firstLabel?: string
   texts?: Partial<VimFormTexts>
   rowHints?: readonly VimFormRowHint[]
+  /** Как у useVimFormKeys: Esc в поле только выходит из него — «Close Esc» в режиме INSERT не показывается. */
+  escapeLeavesField?: boolean
   /** Свои подсказки приложения — в режиме COMMAND, перед «Close». */
   children?: ReactNode
   className?: string
@@ -281,8 +283,8 @@ export function VimFormHintBar({ form, keymap, mode, firstLabel, texts, rowHints
   if (mode === 'insert') {
     return (
       <HintBar wrap className={className}>
-        <Hint label={t.commandMode} keys={[LEAVE_INSERT_CAP]} />
-        <Hint label={t.close} keys={['Esc']} />
+        <Hint label={t.commandMode} keys={escapeLeavesField ? [LEAVE_INSERT_CAP, 'Esc'] : [LEAVE_INSERT_CAP]} />
+        {!escapeLeavesField && <Hint label={t.close} keys={['Esc']} />}
       </HintBar>
     )
   }

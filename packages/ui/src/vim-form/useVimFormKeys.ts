@@ -30,6 +30,9 @@ export interface VimFormKeysOptions extends KeySequenceOptions {
   onCommand?: (command: string) => boolean | void
   /** Esc, когда закрывать в форме уже нечего (список, таблица клавиш): обычно закрыть окно. */
   onEscape?: () => void
+  /** true — Esc в текстовом поле только выходит из поля (в COMMAND), окно закрывает следующий Esc.
+   *  false (по умолчанию) — Esc из поля сразу идёт дальше, как в Vimperium. */
+  escapeLeavesField?: boolean
   /** true, пока клавиши принадлежат самой форме, а не Vim (идёт запись сочетания клавиш). */
   passThrough?: () => boolean
   /** Журнал приложения для предупреждений контроллера. */
@@ -58,7 +61,7 @@ export interface VimFormKeys {
  */
 export function useVimFormKeys({
   enabled = true, keymap = DEFAULT_VIM_FORM_KEYMAP, win = typeof window === 'undefined' ? null : window,
-  root, scrollRoot, resetKey, open = true, onCommand, onEscape, passThrough, warn, repeatable, countable,
+  root, scrollRoot, resetKey, open = true, onCommand, onEscape, escapeLeavesField = false, passThrough, warn, repeatable, countable,
 }: VimFormKeysOptions): VimFormKeys {
   const base = enabled ? keymap : null
   const form = useVimForm({ enabled: base !== null, root, scrollRoot, resetKey, warn })
@@ -82,7 +85,8 @@ export function useVimFormKeys({
     form.run(command)
   }
 
-  const escape = (): void => {
+  const escape = (from: 'insert' | 'command'): void => {
+    if (escapeLeavesField && from === 'insert') return
     if (form.escapeOverlay()) return
     if (helpOpenRef.current) {
       setHelpOpen(false)
@@ -96,7 +100,8 @@ export function useVimFormKeys({
     popup: win,
     open,
     anyField: true,
-    passThrough,
+    // Модальный диалог пакета в том же документе и запись сочетания клавиш забирают клавиши себе.
+    passThrough: () => passThrough?.() === true || win?.document.querySelector('[aria-modal="true"], [data-recording]') != null,
     onCommand: run,
     onEscape: escape,
     repeatable,

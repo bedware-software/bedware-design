@@ -41,7 +41,7 @@ export type VimFormWarn = (message: string, ...details: unknown[]) => void
 export type VimItemKind = 'toggle' | 'segment' | 'select' | 'range' | 'text' | 'row' | 'button'
 
 const DECLARED_KINDS = new Set<VimItemKind>(['toggle', 'segment', 'select', 'range', 'text', 'row', 'button'])
-const TEXT_INPUT_TYPES = new Set(['', 'text', 'search', 'url', 'tel', 'email', 'password', 'number'])
+const TEXT_INPUT_TYPES = new Set(['', 'text', 'search', 'url', 'tel', 'email', 'password', 'number', 'time', 'date', 'datetime-local', 'month', 'week'])
 // Inputs whose caret can be put at the end (setSelectionRange throws on the others).
 const CARET_INPUT_TYPES = new Set(['', 'text', 'search', 'url', 'tel', 'password'])
 
@@ -123,7 +123,8 @@ function isShown(el: Element): boolean {
 }
 
 function isDisabled(el: Element): boolean {
-  return (el as HTMLButtonElement).disabled === true || el.getAttribute('aria-disabled') === 'true'
+  // :disabled also covers a control under <fieldset disabled> (its own .disabled stays false); inert covers a locked subtree.
+  return el.matches(':disabled') || el.closest('[inert]') !== null || el.getAttribute('aria-disabled') === 'true'
 }
 
 function usable(el: Element): boolean {
@@ -330,7 +331,7 @@ export class VimFormController {
       subtree: true,
       childList: true,
       attributes: true,
-      attributeFilter: ['data-vim-item', 'data-vim-cell', 'data-vim-kind', 'disabled', 'aria-disabled', 'aria-checked', 'hidden', 'class', 'style', 'type'],
+      attributeFilter: ['data-vim-item', 'data-vim-cell', 'data-vim-kind', 'disabled', 'inert', 'aria-disabled', 'aria-checked', 'hidden', 'class', 'style', 'type'],
     })
     const onPointerOrFocus = (e: Event): void => this.cursorToElement(e.target)
     root.addEventListener('mousedown', onPointerOrFocus, true)
