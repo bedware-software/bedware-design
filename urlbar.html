@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="ru" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Адресная строка Vimperium: варианты</title>
+<link rel="stylesheet" href="node_modules/@fontsource/inter/400.css">
+<link rel="stylesheet" href="node_modules/@fontsource/inter/500.css">
+<link rel="stylesheet" href="node_modules/@fontsource/inter/600.css">
+<link rel="stylesheet" href="node_modules/@fontsource/jetbrains-mono/400.css">
+<link rel="stylesheet" href="node_modules/@fontsource/jetbrains-mono/700.css">
+<link rel="stylesheet" href="tokens/tokens.css">
+<link rel="stylesheet" href="components/components.css">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bw-bg); color: var(--bw-text); font: 14px/1.5 var(--bw-font-sans); }
+  main { max-width: 1180px; margin: 0 auto; padding: 28px 16px 150px; }
+  h1 { font: 700 24px/1.2 var(--bw-font-mono); color: var(--bw-text-strong); margin: 0 0 6px; }
+  h2 { font: 700 18px/1.2 var(--bw-font-mono); color: var(--bw-text-strong); margin: 44px 0 6px; }
+  h2 i { font-style: normal; color: var(--bw-link); margin-right: 8px; }
+  p { margin: 0 0 10px; color: var(--bw-text-muted); max-width: 780px; }
+  .top { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; }
+  .opt { border: 1px solid var(--bw-border); border-radius: 8px; margin: 14px 0; }
+  .opt > header { display: flex; flex-wrap: wrap; gap: 10px; align-items: baseline; padding: 10px 14px; background: var(--bw-surface-1); border-bottom: 1px solid var(--bw-border); border-radius: 8px 8px 0 0; cursor: pointer; }
+  .opt > header b { font: 700 14px var(--bw-font-mono); color: var(--bw-text-strong); }
+  .opt > header span { font-size: 13px; color: var(--bw-text-muted); }
+  .opt > header .pick { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; font: 600 12px var(--bw-font-sans); color: var(--bw-text); cursor: pointer; }
+  .opt:has(input:checked) { border-color: var(--bw-plate); box-shadow: 0 0 0 1px var(--bw-plate); }
+  .opt:has(input:checked) > header b { background: var(--bw-plate); color: var(--bw-on-plate); padding: 0 6px; }
+  .opt > div { padding: 14px; display: grid; gap: 10px; }
+  .cap { font: 500 11px var(--bw-font-mono); color: var(--bw-text-muted); text-transform: uppercase; letter-spacing: .06em; margin: 4px 0 -4px; }
+  .note { width: 100%; max-width: 780px; margin-top: 6px; }
+  .answer { position: fixed; left: 0; right: 0; bottom: 0; z-index: 10; background: var(--bw-surface-2); border-top: 1px solid var(--bw-border-strong); }
+  .answer > div { max-width: 1180px; margin: 0 auto; padding: 10px 16px; display: flex; gap: 10px; align-items: center; }
+  .answer .bw-field { flex: 1; min-width: 0; }
+  .answer span { font: 500 11px var(--bw-font-mono); color: var(--bw-text-muted); flex: none; }
+
+  /* макет шапки: кнопки без рамок (выбранный вариант B) */
+  .hdr { display: flex; align-items: center; gap: 6px; height: 46px; padding: 0 8px; background: var(--bw-surface-1); border: 1px solid var(--bw-border); min-width: 0; }
+  .hdr svg { width: 15px; height: 15px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .hdr .sep { width: 1px; height: 20px; background: var(--bw-border); flex: none; }
+  .hdr .bw-iconbtn, .hdr .bw-btn { flex: none; }
+  .hdr .bw-btn svg:last-child { width: 12px; height: 12px; }
+
+  /* адресная строка: рамка (.frame) и заливка (.fld) одной формы; форма, цвета и толщина — переменные варианта */
+  .bar { --cut: 8px; --shape: polygon(0 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%);
+    --frame: var(--bw-border-strong); --fill: var(--bw-field-bg); --line: 1px;
+    --c1: var(--bw-plate); --c2: var(--bw-plate-edge); --c3: var(--bw-plate-pressed);
+    position: relative; isolation: isolate; flex: 5; min-width: 0; height: 32px; }
+  .bar .frame { position: absolute; inset: 0; z-index: -2; background: var(--frame); clip-path: var(--shape); overflow: hidden; transition: background-color var(--bw-duration-fast); }
+  .bar .frame b { display: none; position: absolute; left: 0; top: 0; width: 24%; height: 100%; translate: -100% 0;
+    background: linear-gradient(100deg, transparent 15%, color-mix(in oklch, var(--c3) 35%, white) 50%, transparent 85%); animation: glint 6s ease-in-out infinite; }
+  @keyframes glint { 0% { translate: -100% 0; } 55%, 100% { translate: 420% 0; } }
+  .bar .fill { position: absolute; inset: var(--line); z-index: -1; background: var(--fill); clip-path: var(--shape); }
+  .bar .fld { position: relative; height: 100%; display: flex; align-items: center; gap: 8px; padding: 0 10px 0 6px; color: var(--bw-text-muted); font-size: 13px; }
+  .bar:hover { --frame: var(--bw-border-hover); }
+  .bar .lock { width: 24px; height: 24px; display: grid; place-items: center; color: var(--bw-text-muted); flex: none; }
+  .bar .lock svg { width: 13px; height: 13px; }
+  .bar .div { width: 1px; align-self: stretch; margin: 6px 0; background: var(--bw-border); flex: none; }
+  .bar .url { flex: 1; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: var(--bw-text); }
+  .bar .url s { text-decoration: none; color: var(--bw-text-muted); }
+  .bar .mode { font: 700 10px var(--bw-font-mono); letter-spacing: .06em; padding: 3px 6px; color: var(--bw-text-muted); background: var(--bw-surface-3); flex: none; }
+  .bar.ins .mode { color: var(--bw-on-plate); background: var(--bw-plate); box-shadow: inset 0 -2px 0 var(--bw-plate-edge); }
+  .bar .caret { width: 1.5px; height: 16px; background: var(--bw-plate); animation: blink 1.1s steps(1) infinite; margin-left: -6px; }
+  @keyframes blink { 50% { opacity: 0; } }
+  /* ввод: рамка становится жёлтой кромкой 1.5px с бликом */
+  .bar.ins .frame { inset: -.5px; background: linear-gradient(90deg, var(--c1), var(--c2) 50%, var(--c3)); }
+  .bar.ins .frame b { display: block; }
+
+  /* Сейчас: рамка border-strong, срез справа снизу, замок на плитке */
+  .v0 .bar .lock { background: var(--bw-surface-3); border-radius: 6px; color: var(--bw-text); }
+  .v0 .bar .div { margin: 0; }
+  /* A: та же форма, рамка тоньше по цвету — как разделители шапки */
+  .va .bar { --frame: var(--bw-border); }
+  .va .bar:hover { --frame: var(--bw-border-strong); }
+  /* B: два среза, как у пластины и кнопок; рамка цвета разделителей */
+  .vb .bar, .vc .bar { --shape: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut)); }
+  .vb .bar { --frame: var(--bw-border); }
+  .vb .bar:hover { --frame: var(--bw-border-strong); }
+  .vb .bar .fld, .vc .bar .fld { padding-left: 10px; }
+  /* C: без рамки — утопленная площадка с двумя срезами */
+  .vc .bar { --frame: transparent; --fill: var(--bw-surface-3); --line: 0px; }
+  .vc .bar:hover { --frame: transparent; --fill: var(--bw-surface-4); }
+  .vc .bar.ins { --line: 1px; --fill: var(--bw-field-bg); }
+  .vc .bar .mode { background: var(--bw-surface-1); }
+  .vc .bar.ins .mode { background: var(--bw-plate); }
+  /* D: без рамки и заливки — только черта снизу */
+  .vd .bar .fill { display: none; }
+  .vd .bar .frame { top: auto; height: 1px; clip-path: none; background: var(--bw-border-strong); }
+  .vd .bar:hover .frame { background: var(--bw-border-hover); }
+  .vd .bar.ins .frame { inset: auto 0 0 0; height: 2px; background: linear-gradient(90deg, var(--c1), var(--c2) 50%, var(--c3)); }
+  .vd .bar .fld { padding-left: 0; }
+
+  [data-reduce] .bar b { animation-play-state: paused; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-user" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><path d="M8 7a4 4 0 1 0 8 0a4 4 0 1 0-8 0"/></symbol>
+  <symbol id="i-layout" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-dl" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 21h16"/></symbol>
+  <symbol id="i-left" viewBox="0 0 24 24"><path d="M19 12H5m7 7-7-7 7-7"/></symbol>
+  <symbol id="i-right" viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></symbol>
+  <symbol id="i-reload" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36L21 8"/><path d="M21 3v5h-5"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4 8.5 8.5 0 1 0 20 14.5Z"/></symbol>
+  <symbol id="i-puzzle" viewBox="0 0 24 24"><path d="M10 4a2 2 0 1 1 4 0v2h4v4h2a2 2 0 1 1 0 4h-2v5h-5v-2a2 2 0 1 0-4 0v2H5v-5h2a2 2 0 1 0 0-4H5V6h5Z"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+</svg>
+
+<template id="t-left">
+  <button class="bw-btn bw-btn--bare"><svg><use href="#i-user"/></svg>Personal<svg><use href="#i-down"/></svg></button>
+  <button class="bw-btn bw-btn--bare"><svg><use href="#i-layout"/></svg>Work<svg><use href="#i-down"/></svg></button>
+  <span class="sep"></span>
+  <button class="bw-iconbtn bw-iconbtn--32 bw-iconbtn--bare" aria-label="Downloads"><svg><use href="#i-dl"/></svg><span class="bw-count bw-count--success">2</span></button>
+  <button class="bw-iconbtn bw-iconbtn--32 bw-iconbtn--bare" aria-label="Back"><svg><use href="#i-left"/></svg></button>
+  <button class="bw-iconbtn bw-iconbtn--32 bw-iconbtn--bare" aria-label="Forward"><svg><use href="#i-right"/></svg></button>
+  <button class="bw-iconbtn bw-iconbtn--32 bw-iconbtn--bare" aria-label="Reload"><svg><use href="#i-reload"/></svg></button>
+</template>
+<template id="t-right">
+  <button class="bw-iconbtn bw-iconbtn--32 bw-iconbtn--bare" aria-label="Extensions"><svg><use href="#i-puzzle"/></svg></button>
+  <button class="bw-iconbtn bw-iconbtn--32 bw-iconbtn--bare" aria-label="Menu"><svg><use href="#i-menu"/></svg><span class="bw-count">↓</span></button>
+</template>
+<template id="t-bar">
+  <i class="frame"><b></b></i><i class="fill"></i>
+  <div class="fld">
+    <span class="lock"><svg><use href="#i-lock"/></svg></span>
+    <span class="div"></span>
+    <span class="url"></span>
+    <svg style="width:14px;height:14px"><use href="#i-moon"/></svg>
+    <span class="mode"></span>
+  </div>
+</template>
+
+<main>
+  <div class="top">
+    <h1>Адресная строка Vimperium: форма и рамка</h1>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <div class="bw-seg bw-seg--sm" role="radiogroup" aria-label="Движение" id="motion">
+        <button class="bw-seg__opt" role="radio" aria-checked="true" data-m="on">Блик идёт</button>
+        <button class="bw-seg__opt" role="radio" aria-checked="false" data-m="off">Стоп</button>
+      </div>
+      <div class="bw-seg bw-seg--sm" role="radiogroup" aria-label="Тема страницы" id="theme">
+        <button class="bw-seg__opt" role="radio" aria-checked="true" data-t="dark">Тёмная</button>
+        <button class="bw-seg__opt" role="radio" aria-checked="false" data-t="light">Светлая</button>
+      </div>
+    </div>
+  </div>
+  <p>Кнопки шапки стали без рамок, а адресная строка осталась с яркой рамкой и теперь выбивается. Ниже четыре способа её успокоить, не уходя от формы бренда (срезы, прямые углы). В вариантах A–D замок — просто значок, без своей плитки. В каждом варианте показаны оба режима; в режиме ввода — жёлтая кромка с бликом, как вы выбрали.</p>
+
+  <h2><i>1</i>Вид адресной строки</h2>
+
+  <section class="opt v0" data-v="Сейчас">
+    <header><b>Сейчас</b><span>Рамка светлая (как у полей в формах), срез справа снизу, замок на плитке.</span></header>
+  </section>
+  <section class="opt va" data-v="A">
+    <header><b>A</b><span>Та же форма, но рамка цвета разделителей шапки — тонкая по тону; светлеет под курсором.</span></header>
+  </section>
+  <section class="opt vb" data-v="B">
+    <header><b>B</b><span>Два среза — слева вверху и справа внизу, как у пластин и кнопок; рамка цвета разделителей.</span></header>
+  </section>
+  <section class="opt vc" data-v="C">
+    <header><b>C</b><span>Без рамки: утопленная площадка с двумя срезами, чуть светлее шапки. Рамка появляется только жёлтой кромкой в режиме ввода.</span></header>
+  </section>
+  <section class="opt vd" data-v="D">
+    <header><b>D</b><span>Без рамки и заливки: адрес стоит прямо в шапке, под ним тонкая черта. В режиме ввода черта жёлтая с бликом.</span></header>
+  </section>
+
+  <h2><i>2</i>Замечания</h2>
+  <p>Если хочется смешать (например, «B, но замок на плитке» или «срез крупнее») — напишите, это попадёт в ответ.</p>
+  <textarea class="bw-field note" id="note" rows="3" style="height:auto;padding:8px 10px" placeholder="Необязательно"></textarea>
+</main>
+
+<div class="answer"><div>
+  <span id="left"></span>
+  <input class="bw-field bw-field--sm bw-field--mono" id="out" readonly>
+  <button class="bw-btn bw-btn--primary" id="copy">Скопировать</button>
+</div></div>
+
+<script>
+  const tpl = (id) => document.getElementById(id).content.cloneNode(true);
+  const header = (insert) => {
+    const h = document.createElement('div');
+    h.className = 'hdr';
+    const bar = document.createElement('div');
+    bar.className = 'bar' + (insert ? ' ins' : '');
+    bar.append(tpl('t-bar'));
+    const url = bar.querySelector('.url');
+    url.innerHTML = insert ? 'bedware.software<span class="caret"></span>' : '<s>https://</s>bedware.software<s>/runwa</s>';
+    if (insert) url.style.cssText = 'display:flex;align-items:center;gap:7px';
+    bar.querySelector('.mode').textContent = insert ? 'INSERT' : 'COMMAND';
+    h.append(tpl('t-left'), bar, tpl('t-right'));
+    return h;
+  };
+  const cap = (t) => Object.assign(document.createElement('div'), { className: 'cap', textContent: t });
+  for (const s of document.querySelectorAll('.opt')) {
+    const body = document.createElement('div');
+    body.append(cap('Командный'), header(false), cap('Ввод'), header(true));
+    s.append(body);
+    const l = document.createElement('label');
+    l.className = 'pick';
+    l.innerHTML = `<input type="radio" name="q1" value="${s.dataset.v}">Выбрать`;
+    const head = s.querySelector('header');
+    head.append(l);
+    head.addEventListener('click', (e) => { if (!e.target.closest('label')) { l.firstChild.checked = true; refresh(); } });
+  }
+  const out = document.getElementById('out'), note = document.getElementById('note');
+  function refresh() {
+    const c = document.querySelector('input[name=q1]:checked');
+    const parts = [`вид — ${c ? c.value : 'не выбрано'}`];
+    if (note.value.trim()) parts.push('замечания: ' + note.value.trim().replace(/\s+/g, ' '));
+    out.value = 'Адресная строка Vimperium: ' + parts.join('; ');
+    document.getElementById('left').textContent = c ? 'всё выбрано' : 'осталось выбрать: 1';
+  }
+  document.addEventListener('change', refresh); note.addEventListener('input', refresh); refresh();
+  document.getElementById('copy').onclick = (e) => {
+    const b = e.currentTarget;
+    out.select(); navigator.clipboard?.writeText(out.value);
+    b.textContent = 'Скопировано'; setTimeout(() => { b.textContent = 'Скопировать'; }, 1500);
+  };
+  const seg = (id, apply) => document.getElementById(id).addEventListener('click', (e) => {
+    const b = e.target.closest('button'); if (!b) return;
+    for (const o of b.parentNode.children) o.setAttribute('aria-checked', String(o === b));
+    apply(b.dataset);
+  });
+  seg('theme', (d) => { document.documentElement.dataset.theme = d.t; });
+  seg('motion', (d) => { document.documentElement.toggleAttribute('data-reduce', d.m === 'off'); });
+</script>
+</body>
+</html>
