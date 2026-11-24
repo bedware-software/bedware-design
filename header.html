@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="ru" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Шапка Vimperium: варианты</title>
+<link rel="stylesheet" href="node_modules/@fontsource/inter/400.css">
+<link rel="stylesheet" href="node_modules/@fontsource/inter/500.css">
+<link rel="stylesheet" href="node_modules/@fontsource/inter/600.css">
+<link rel="stylesheet" href="node_modules/@fontsource/jetbrains-mono/400.css">
+<link rel="stylesheet" href="node_modules/@fontsource/jetbrains-mono/700.css">
+<link rel="stylesheet" href="tokens/tokens.css">
+<link rel="stylesheet" href="components/components.css">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bw-bg); color: var(--bw-text); font: 14px/1.5 var(--bw-font-sans); }
+  main { max-width: 1180px; margin: 0 auto; padding: 28px 16px 80px; }
+  h1 { font: 700 24px/1.2 var(--bw-font-mono); color: var(--bw-text-strong); margin: 0 0 6px; }
+  h2 { font: 700 18px/1.2 var(--bw-font-mono); color: var(--bw-text-strong); margin: 44px 0 6px; }
+  h2 i { font-style: normal; color: var(--bw-link); margin-right: 8px; }
+  p { margin: 0 0 10px; color: var(--bw-text-muted); max-width: 780px; }
+  .top { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; }
+  .opt { border: 1px solid var(--bw-border); border-radius: 8px; margin: 14px 0; }
+  .opt > header { display: flex; flex-wrap: wrap; gap: 10px; align-items: baseline; padding: 10px 14px; background: var(--bw-surface-1); border-bottom: 1px solid var(--bw-border); border-radius: 8px 8px 0 0; }
+  .opt > header b { font: 700 14px var(--bw-font-mono); color: var(--bw-text-strong); }
+  .opt > header span { font-size: 13px; color: var(--bw-text-muted); }
+  .opt > div { padding: 14px; display: grid; gap: 10px; }
+  .cap { font: 500 11px var(--bw-font-mono); color: var(--bw-text-muted); text-transform: uppercase; letter-spacing: .06em; margin: 4px 0 -4px; }
+
+  /* макет шапки Vimperium */
+  .hdr { display: flex; align-items: center; gap: 6px; height: 46px; padding: 0 8px; background: var(--bw-surface-1); border: 1px solid var(--bw-border); min-width: 0; }
+  .hdr svg { width: 15px; height: 15px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .hdr .sep { width: 1px; height: 20px; background: var(--bw-border); flex: none; }
+  .hdr .ext { width: 16px; height: 16px; flex: none; }
+  .hdr .bw-iconbtn, .hdr .bw-btn { flex: none; }
+
+  /* кнопки шапки без плиток: общая основа вариантов A, B, C */
+  .q { --cut: 6px; position: relative; isolation: isolate; flex: none; display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 32px; min-width: 32px; padding: 0;
+    border: 0; background: none; color: var(--bw-text-muted); font: 500 13px var(--bw-font-sans); cursor: pointer; transition: color var(--bw-duration-fast); }
+  .q.txt { padding: 0 8px; }
+  .q.txt svg:last-child { width: 12px; height: 12px; }
+  .q::before, .q::after { content: ''; position: absolute; z-index: -1; clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut)); transition: background-color var(--bw-duration-fast), box-shadow var(--bw-duration-fast); }
+  .q::before { inset: 0; } .q::after { inset: 1px; }
+  .q:focus-visible { outline: 2px solid var(--bw-focus); outline-offset: 2px; }
+  .q:hover, .q.hov { color: var(--bw-text); }
+  .q > .bw-count { position: absolute; top: -1px; right: -1px; }
+
+  /* A: под курсором — тёмная пластина; включённая — жёлтая пластина */
+  .va .q:hover::after, .va .q.hov::after { background: var(--bw-surface-3); }
+  .va .q:active::after { background: var(--bw-surface-4); }
+  .va .q[aria-pressed="true"] { color: var(--bw-on-plate); }
+  .va .q[aria-pressed="true"]::before { background: var(--bw-plate-outline); }
+  .va .q[aria-pressed="true"]::after { background: var(--bw-plate); box-shadow: inset 0 -2px 0 var(--bw-plate-edge); }
+
+  /* B: под курсором — жёлтая пластина брони */
+  .vb .q:hover, .vb .q.hov, .vb .q[aria-pressed="true"] { color: var(--bw-on-plate); }
+  .vb .q:hover::before, .vb .q.hov::before, .vb .q[aria-pressed="true"]::before { background: var(--bw-plate-outline); }
+  .vb .q:hover::after, .vb .q.hov::after, .vb .q[aria-pressed="true"]::after { background: var(--bw-plate); box-shadow: inset 0 -2px 0 var(--bw-plate-edge); }
+  .vb .q:active::after { background: var(--bw-plate-pressed); box-shadow: inset 0 2px 0 var(--bw-plate-edge); }
+  .vb .q[aria-pressed="true"]:not(:hover):not(.hov) { color: var(--bw-plate); }
+  .vb .q[aria-pressed="true"]:not(:hover):not(.hov)::before { background: none; }
+  .vb .q[aria-pressed="true"]:not(:hover):not(.hov)::after { background: none; box-shadow: inset 0 -2px 0 var(--bw-plate); }
+
+  /* C: под курсором — только контур со срезами; включённая — жёлтый значок с чертой */
+  .vc .q:hover::before, .vc .q.hov::before { background: var(--bw-border-hover); }
+  .vc .q:hover::after, .vc .q.hov::after { background: var(--bw-surface-1); }
+  .vc .q:active::after { background: var(--bw-surface-3); }
+  .vc .q[aria-pressed="true"] { color: var(--bw-plate); }
+  .vc .q[aria-pressed="true"]::after { box-shadow: inset 0 -2px 0 var(--bw-plate); }
+
+  /* адресная строка */
+  .bar { --c1: var(--bw-plate); --c2: var(--bw-plate-edge); --c3: var(--bw-plate-pressed); position: relative; z-index: 1; flex: 5; min-width: 0; height: 32px; }
+  .bar .fld { position: relative; height: 100%; display: flex; align-items: center; gap: 8px; padding: 0 8px 0 6px; border-radius: 8px; background: var(--bw-field-bg); box-shadow: inset 0 0 0 1px var(--bw-border-strong); color: var(--bw-text-muted); font-size: 13px; }
+  .bar .lock { width: 24px; height: 24px; border-radius: 6px; background: var(--bw-surface-3); display: grid; place-items: center; color: var(--bw-text); flex: none; }
+  .bar .lock svg { width: 13px; height: 13px; }
+  .bar .url { flex: 1; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: var(--bw-text); }
+  .bar .url s { text-decoration: none; color: var(--bw-text-muted); }
+  .bar .mode { font: 700 10px var(--bw-font-mono); letter-spacing: .06em; padding: 3px 6px; color: var(--bw-text-muted); background: var(--bw-surface-3); flex: none; }
+  .bar .caret { width: 1.5px; height: 16px; background: var(--bw-plate); animation: blink 1.1s steps(1) infinite; margin-left: -6px; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .bar .ring, .bar .glow { position: absolute; overflow: hidden; pointer-events: none; display: none; background: linear-gradient(90deg, var(--c1), var(--c2) 50%, var(--c3)); }
+  .bar .ring { inset: -1.5px; border-radius: 9.5px; }
+  .bar .glow { inset: -4px; border-radius: 12px; filter: blur(9px); opacity: .55; }
+  .bar .ring b, .bar .glow b, .bar .sheen { position: absolute; left: 0; top: 0; width: 24%; height: 100%; translate: -100% 0;
+    background: linear-gradient(100deg, transparent 15%, color-mix(in oklch, var(--c3) 35%, white) 50%, transparent 85%); animation: glint 6s ease-in-out infinite; }
+  @keyframes glint { 0% { translate: -100% 0; } 55%, 100% { translate: 420% 0; } }
+  .bar .sheen { display: none; border-radius: 8px; mix-blend-mode: soft-light; background: linear-gradient(100deg, transparent 15%, #fff 50%, transparent 85%); }
+  .bar .clip { position: absolute; inset: 0; border-radius: 8px; overflow: hidden; pointer-events: none; }
+
+  /* сейчас: командный — жёлтая кромка, ввод — персиковая */
+  .now .bar .ring, .now .bar .glow { display: block; }
+  .now .bar.ins { --c1: var(--bw-link); --c2: color-mix(in oklab, var(--bw-link) 70%, var(--bw-text-strong)); --c3: color-mix(in oklab, var(--bw-link) 70%, var(--bw-error)); }
+  .now .bar .fld { box-shadow: none; }
+  .now .bar .mode { color: var(--c1); box-shadow: inset 0 0 0 1.5px var(--c1); }
+
+  /* ввод: общее для новых вариантов */
+  .bar.ins .mode { color: var(--bw-on-plate); background: var(--bw-plate); box-shadow: inset 0 -2px 0 var(--bw-plate-edge); }
+  /* 1: кромка, свечение и блик */
+  .m1 .bar.ins .ring, .m1 .bar.ins .glow { display: block; }
+  .m1 .bar.ins .fld { box-shadow: none; }
+  /* 2: кромка и блик без свечения */
+  .m2 .bar.ins .ring { display: block; }
+  .m2 .bar.ins .fld { box-shadow: none; }
+  /* 3: поле — жёлтая пластина, блик идёт по ней */
+  .m3 .bar.ins .fld { background: var(--bw-plate); box-shadow: inset 0 -3px 0 var(--bw-plate-edge); color: var(--bw-on-plate); }
+  .m3 .bar.ins .url, .m3 .bar.ins .url s { color: var(--bw-on-plate); }
+  .m3 .bar.ins .lock { background: color-mix(in srgb, var(--bw-on-plate) 14%, transparent); color: var(--bw-on-plate); }
+  .m3 .bar.ins .mode { background: var(--bw-on-plate); color: var(--bw-plate); box-shadow: none; }
+  .m3 .bar.ins .caret { background: var(--bw-on-plate); }
+  .m3 .bar.ins .sheen { display: block; }
+
+  .set { display: flex; flex-wrap: wrap; gap: 28px; align-items: center; padding: 14px; }
+  .set > div { display: grid; gap: 6px; }
+
+  /* выбор варианта и итог для копирования */
+  main { padding-bottom: 150px; }
+  .opt[data-q] > header { cursor: pointer; }
+  .opt[data-q] > header .pick { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; font: 600 12px var(--bw-font-sans); color: var(--bw-text); cursor: pointer; }
+  .opt[data-q]:has(input:checked) { border-color: var(--bw-plate); box-shadow: 0 0 0 1px var(--bw-plate); }
+  .opt[data-q]:has(input:checked) > header b { background: var(--bw-plate); color: var(--bw-on-plate); padding: 0 6px; }
+  .note { width: 100%; max-width: 780px; margin-top: 6px; }
+  .answer { position: fixed; left: 0; right: 0; bottom: 0; z-index: 10; background: var(--bw-surface-2); border-top: 1px solid var(--bw-border-strong); }
+  .answer > div { max-width: 1180px; margin: 0 auto; padding: 10px 16px; display: flex; gap: 10px; align-items: center; }
+  .answer .bw-field { flex: 1; min-width: 0; }
+  .answer span { font: 500 11px var(--bw-font-mono); color: var(--bw-text-muted); flex: none; }
+  [data-reduce] .bar b, [data-reduce] .bar .sheen { animation-play-state: paused; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-user" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><path d="M8 7a4 4 0 1 0 8 0a4 4 0 1 0-8 0"/></symbol>
+  <symbol id="i-layout" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-dl" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 21h16"/></symbol>
+  <symbol id="i-left" viewBox="0 0 24 24"><path d="M19 12H5m7 7-7-7 7-7"/></symbol>
+  <symbol id="i-right" viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></symbol>
+  <symbol id="i-reload" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36L21 8"/><path d="M21 3v5h-5"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4 8.5 8.5 0 1 0 20 14.5Z"/></symbol>
+  <symbol id="i-puzzle" viewBox="0 0 24 24"><path d="M10 4a2 2 0 1 1 4 0v2h4v4h2a2 2 0 1 1 0 4h-2v5h-5v-2a2 2 0 1 0-4 0v2H5v-5h2a2 2 0 1 0 0-4H5V6h5Z"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+</svg>
+
+<template id="t-left-now">
+  <button class="bw-btn bw-btn--secondary"><svg><use href="#i-user"/></svg>Personal<svg style="width:12px;height:12px"><use href="#i-down"/></svg></button>
+  <button class="bw-btn bw-btn--secondary"><svg><use href="#i-layout"/></svg>Work<svg style="width:12px;height:12px"><use href="#i-down"/></svg></button>
+  <span class="sep"></span>
+  <button class="bw-iconbtn" style="width:32px;height:32px" aria-label="Downloads"><svg><use href="#i-dl"/></svg><span class="bw-count bw-count--success">2</span></button>
+  <button class="bw-iconbtn" style="width:32px;height:32px" aria-label="Back"><svg><use href="#i-left"/></svg></button>
+  <button class="bw-iconbtn" style="width:32px;height:32px" aria-label="Forward"><svg><use href="#i-right"/></svg></button>
+  <button class="bw-iconbtn" style="width:32px;height:32px" aria-label="Reload"><svg><use href="#i-reload"/></svg></button>
+</template>
+<template id="t-right-now">
+  <button class="bw-iconbtn" style="width:32px;height:32px" aria-label="Extensions"><svg><use href="#i-puzzle"/></svg></button>
+  <button class="bw-iconbtn" style="width:32px;height:32px" aria-label="Extension"><svg class="ext" viewBox="0 0 16 16" style="stroke:none"><path fill="#e5484d" d="M2 0h12l2 2v12l-2 2H2l-2-2V2z"/><path fill="#fff" d="M4 4h8v2H9v6H7V6H4z"/></svg></button>
+  <button class="bw-iconbtn" style="width:32px;height:32px" aria-label="Extension"><svg class="ext" viewBox="0 0 16 16" style="stroke:none"><path fill="#3b82f6" d="M0 0h16v16H0z"/><path fill="#fff" d="M4 11V5l4 3 4-3v6h-2V8.6L8 10 6 8.6V11z"/></svg></button>
+  <button class="bw-iconbtn" style="width:32px;height:32px" aria-label="Menu"><svg><use href="#i-menu"/></svg><span class="bw-count">↓</span></button>
+</template>
+<template id="t-left">
+  <button class="q txt"><svg><use href="#i-user"/></svg>Personal<svg><use href="#i-down"/></svg></button>
+  <button class="q txt"><svg><use href="#i-layout"/></svg>Work<svg><use href="#i-down"/></svg></button>
+  <span class="sep"></span>
+  <button class="q" aria-label="Downloads"><svg><use href="#i-dl"/></svg><span class="bw-count bw-count--success">2</span></button>
+  <button class="q hov" aria-label="Back" title="показана как под курсором"><svg><use href="#i-left"/></svg></button>
+  <button class="q" aria-label="Forward"><svg><use href="#i-right"/></svg></button>
+  <button class="q" aria-pressed="true" aria-label="Reload" title="включена: автообновление"><svg><use href="#i-reload"/></svg></button>
+</template>
+<template id="t-right">
+  <button class="q" aria-label="Extensions"><svg><use href="#i-puzzle"/></svg></button>
+  <button class="q" aria-label="Extension"><svg class="ext" viewBox="0 0 16 16" style="stroke:none"><path fill="#e5484d" d="M2 0h12l2 2v12l-2 2H2l-2-2V2z"/><path fill="#fff" d="M4 4h8v2H9v6H7V6H4z"/></svg></button>
+  <button class="q" aria-label="Extension"><svg class="ext" viewBox="0 0 16 16" style="stroke:none"><path fill="#3b82f6" d="M0 0h16v16H0z"/><path fill="#fff" d="M4 11V5l4 3 4-3v6h-2V8.6L8 10 6 8.6V11z"/></svg></button>
+  <button class="q" aria-label="Menu"><svg><use href="#i-menu"/></svg><span class="bw-count">↓</span></button>
+</template>
+<template id="t-bar">
+  <i class="glow"><b></b></i><i class="ring"><b></b></i>
+  <div class="fld">
+    <span class="lock"><svg><use href="#i-lock"/></svg></span>
+    <span class="url"></span>
+    <svg style="width:14px;height:14px"><use href="#i-moon"/></svg>
+    <span class="mode"></span>
+    <span class="clip"><i class="sheen"></i></span>
+  </div>
+</template>
+
+<main>
+  <div class="top">
+    <h1>Шапка Vimperium: кнопки без плиток и режимы Vim</h1>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <div class="bw-seg bw-seg--sm" role="radiogroup" aria-label="Движение" id="motion">
+        <button class="bw-seg__opt" role="radio" aria-checked="true" data-m="on">Блик идёт</button>
+        <button class="bw-seg__opt" role="radio" aria-checked="false" data-m="off">Стоп</button>
+      </div>
+      <div class="bw-seg bw-seg--sm" role="radiogroup" aria-label="Тема страницы" id="theme">
+        <button class="bw-seg__opt" role="radio" aria-checked="true" data-t="dark">Тёмная</button>
+        <button class="bw-seg__opt" role="radio" aria-checked="false" data-t="light">Светлая</button>
+      </div>
+    </div>
+  </div>
+  <p>Шапка сейчас перегружена: каждая кнопка — пластина с рамкой. Ниже три вида кнопок без рамки и три вида адресной строки в режиме ввода. Выбирать по тёмной теме; светлая будет дорабатываться позже.</p>
+
+  <h2><i>1</i>Кнопки шапки</h2>
+  <p>В каждом варианте кнопка «Назад» нарисована как под курсором, а «Обновить» — как включённая (автообновление). Остальные можно навести мышью. Адресная строка здесь в командном режиме и уже без кромки.</p>
+
+  <section class="opt now">
+    <header><b>Сейчас</b><span>Каждая кнопка — пластина с рамкой; у адресной строки жёлтая кромка в командном режиме.</span></header>
+    <div><div class="hdr" data-left="t-left-now" data-right="t-right-now" data-mode="command"></div></div>
+  </section>
+  <section class="opt va m1" data-q="q1" data-v="A">
+    <header><b>A</b><span>Только значок и текст. Под курсором — тёмная пластина со срезами, включённая кнопка — жёлтая пластина.</span></header>
+    <div><div class="hdr" data-mode="command"></div></div>
+  </section>
+  <section class="opt vb m1" data-q="q1" data-v="B">
+    <header><b>B</b><span>Только значок и текст. Под курсором — жёлтая пластина брони; включённая кнопка без курсора — жёлтый значок с чертой.</span></header>
+    <div><div class="hdr" data-mode="command"></div></div>
+  </section>
+  <section class="opt vc m1" data-q="q1" data-v="C">
+    <header><b>C</b><span>Только значок и текст. Под курсором — тонкий контур со срезами без заливки; включённая — жёлтый значок с чертой.</span></header>
+    <div><div class="hdr" data-mode="command"></div></div>
+  </section>
+
+  <h2><i>2</i>Адресная строка: командный режим и ввод</h2>
+  <p>Командный режим — обычное тёмное поле без кромки и свечения. Ввод — жёлтый, с бликом Glint. Кнопки в этих макетах — вариант A.</p>
+
+  <section class="opt now">
+    <header><b>Сейчас</b><span>Командный — жёлтая кромка, ввод — персиковая: цвета близкие, режимы трудно различить.</span></header>
+    <div>
+      <div class="cap">Командный</div><div class="hdr" data-left="t-left-now" data-right="t-right-now" data-mode="command"></div>
+      <div class="cap">Ввод</div><div class="hdr" data-left="t-left-now" data-right="t-right-now" data-mode="insert"></div>
+    </div>
+  </section>
+  <section class="opt va m1" data-q="q2" data-v="1">
+    <header><b>1</b><span>Ввод: жёлтая кромка со свечением, по ней проходит блик. Метка режима — жёлтая пластина.</span></header>
+    <div>
+      <div class="cap">Командный</div><div class="hdr" data-mode="command"></div>
+      <div class="cap">Ввод</div><div class="hdr" data-mode="insert"></div>
+    </div>
+  </section>
+  <section class="opt va m2" data-q="q2" data-v="2">
+    <header><b>2</b><span>Ввод: жёлтая кромка с бликом, без свечения вокруг — строже.</span></header>
+    <div>
+      <div class="cap">Командный</div><div class="hdr" data-mode="command"></div>
+      <div class="cap">Ввод</div><div class="hdr" data-mode="insert"></div>
+    </div>
+  </section>
+  <section class="opt va m3" data-q="q2" data-v="3">
+    <header><b>3</b><span>Ввод: всё поле становится жёлтой пластиной с чёрным текстом, блик идёт по пластине.</span></header>
+    <div>
+      <div class="cap">Командный</div><div class="hdr" data-mode="command"></div>
+      <div class="cap">Ввод</div><div class="hdr" data-mode="insert"></div>
+    </div>
+  </section>
+
+  <h2><i>3</i>Settings → Appearance → Vim Mode Edge</h2>
+  <p>В настройке остаются два значения. Comet, Comet on rail, Aurora, Living, Ember и варианты «по бокам» из списка убираются; их код остаётся в приложении, но выбрать их нельзя.</p>
+  <section class="opt">
+    <div class="set">
+      <div><span class="cap" style="margin:0">Сейчас</span>
+        <div class="bw-seg bw-seg--sm bw-seg--wrap"><button class="bw-seg__opt" aria-checked="false">Comet</button><button class="bw-seg__opt" aria-checked="false">Comet on rail</button><button class="bw-seg__opt" aria-checked="false">Aurora</button><button class="bw-seg__opt" aria-checked="false">Living</button><button class="bw-seg__opt" aria-checked="true">Glint</button><button class="bw-seg__opt" aria-checked="false">Ember</button><button class="bw-seg__opt" aria-checked="false">Off</button></div></div>
+      <div><span class="cap" style="margin:0">Будет</span>
+        <div class="bw-seg bw-seg--sm"><button class="bw-seg__opt" aria-checked="true">Glint</button><button class="bw-seg__opt" aria-checked="false">Off</button></div></div>
+    </div>
+  </section>
+
+  <h2><i>4</i>Замечания</h2>
+  <p>Если что-то хочется поправить в выбранном — напишите здесь, это попадёт в ответ.</p>
+  <textarea class="bw-field note" id="note" rows="3" style="height:auto;padding:8px 10px" placeholder="Необязательно"></textarea>
+</main>
+
+<div class="answer"><div>
+  <span id="left"></span>
+  <input class="bw-field bw-field--sm bw-field--mono" id="out" readonly>
+  <button class="bw-btn bw-btn--primary" id="copy">Скопировать</button>
+</div></div>
+
+<script>
+  const tpl = (id) => document.getElementById(id).content.cloneNode(true);
+  for (const h of document.querySelectorAll('.hdr')) {
+    const insert = h.dataset.mode === 'insert';
+    h.append(tpl(h.dataset.left || 't-left'));
+    const bar = document.createElement('div');
+    bar.className = 'bar' + (insert ? ' ins' : '');
+    bar.append(tpl('t-bar'));
+    bar.querySelector('.url').innerHTML = insert ? 'bedware.software<span class="caret"></span>' : '<s>https://</s>bedware.software<s>/runwa</s>';
+    if (insert) bar.querySelector('.url').style.cssText = 'display:flex;align-items:center;gap:7px';
+    bar.querySelector('.mode').textContent = insert ? 'INSERT' : 'COMMAND';
+    h.append(bar, tpl(h.dataset.right || 't-right'));
+    // в разделе 2 кнопки в покое: там сравниваются только режимы
+    if (h.previousElementSibling?.classList.contains('cap')) {
+      for (const b of h.querySelectorAll('.q')) { b.classList.remove('hov'); b.removeAttribute('aria-pressed'); }
+    }
+  }
+  // выбор: у каждого варианта переключатель, итог — строка внизу и кнопка «Скопировать»
+  const Q = { q1: 'кнопки шапки', q2: 'адресная строка в режиме ввода' };
+  for (const s of document.querySelectorAll('.opt[data-q]')) {
+    const l = document.createElement('label');
+    l.className = 'pick';
+    l.innerHTML = `<input type="radio" name="${s.dataset.q}" value="${s.dataset.v}">Выбрать`;
+    const head = s.querySelector('header');
+    head.append(l);
+    head.addEventListener('click', (e) => { if (!e.target.closest('label')) { l.firstChild.checked = true; refresh(); } });
+  }
+  const out = document.getElementById('out'), note = document.getElementById('note');
+  function refresh() {
+    let missing = 0;
+    const parts = Object.entries(Q).map(([q, name]) => {
+      const c = document.querySelector(`input[name=${q}]:checked`);
+      if (!c) missing++;
+      return `${name} — ${c ? c.value : 'не выбрано'}`;
+    });
+    parts.push('Vim Mode Edge — оставить Glint и Off');
+    if (note.value.trim()) parts.push('замечания: ' + note.value.trim().replace(/\s+/g, ' '));
+    out.value = 'Шапка Vimperium: ' + parts.join('; ');
+    document.getElementById('left').textContent = missing ? `осталось выбрать: ${missing}` : 'всё выбрано';
+  }
+  document.addEventListener('change', refresh); note.addEventListener('input', refresh); refresh();
+  document.getElementById('copy').onclick = (e) => {
+    out.select(); navigator.clipboard?.writeText(out.value);
+    e.currentTarget.textContent = 'Скопировано'; setTimeout(() => { e.target.textContent = 'Скопировать'; }, 1500);
+  };
+
+  const seg = (id, apply) => document.getElementById(id).addEventListener('click', (e) => {
+    const b = e.target.closest('button'); if (!b) return;
+    for (const o of b.parentNode.children) o.setAttribute('aria-checked', String(o === b));
+    apply(b.dataset);
+  });
+  seg('theme', (d) => { document.documentElement.dataset.theme = d.t; });
+  seg('motion', (d) => { document.documentElement.toggleAttribute('data-reduce', d.m === 'off'); });
+</script>
+</body>
+</html>
