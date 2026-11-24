@@ -2,6 +2,10 @@
    Только на токенах из tokens/tokens.css. Единственный источник стилей: пакет packages/ui
    (React-компоненты @bedware/ui) кладёт этот файл в свой dist/styles.css без изменений. */
 
+/* ── выделение и курсор ── по всему приложению: выделенный текст — пластина (жёлтая с чёрным текстом в тёмной теме, чёрная с жёлтым в светлой), курсор ввода — цвет фокуса */
+::selection { background: var(--plate); color: var(--on-plate); }
+:root { caret-color: var(--focus); }
+
 /* ── кнопка ── 32px; основная и опасная — жёлтая/красная пластина со срезом и кромкой */
 .bw-btn { position: relative; isolation: isolate; height: var(--control-sm); padding: 0 var(--space-3); display: inline-flex; align-items: center; gap: var(--space-1-5);
   border: 1px solid transparent; border-radius: var(--radius-md); background: none; color: var(--text); cursor: pointer; white-space: nowrap; outline: none;
