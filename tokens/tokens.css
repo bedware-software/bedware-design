@@ -6,6 +6,7 @@
   --bw-surface-2: #171513; /* Карточки, меню, диалоги. */
   --bw-surface-3: #22201d; /* Hover строк и текстовых кнопок, вторичные кнопки. */
   --bw-surface-4: #2e2b27; /* Нажатие, выбранная строка. */
+  --bw-selected-bg: var(--bw-surface-4); /* Фон выбранной строки списка, палитры, меню и пункта навигации. В тёмной теме — surface-4; в светлой — светло-жёлтый, как маркером по бумаге, с чёрной кромкой слева (accent). */
   --bw-field-bg: #0b0a09; /* Фон поля ввода. */
   --bw-border: #3a3732; /* Разделители и декоративные рамки. Не для границ элементов управления. */
   --bw-border-strong: #5a564f; /* Рамка поля ввода, вторичной кнопки, панели. */
@@ -52,6 +53,7 @@
   --bw-surface-2: #ffffff;
   --bw-surface-3: #ececea;
   --bw-surface-4: #e0e0dd;
+  --bw-selected-bg: var(--bw-yellow-hover);
   --bw-field-bg: #ffffff;
   --bw-border: #dcdcd8;
   --bw-border-strong: #8c8c86;
@@ -90,6 +92,7 @@
     --bw-surface-2: #ffffff;
     --bw-surface-3: #ececea;
     --bw-surface-4: #e0e0dd;
+    --bw-selected-bg: var(--bw-yellow-hover);
     --bw-field-bg: #ffffff;
     --bw-border: #dcdcd8;
     --bw-border-strong: #8c8c86;
