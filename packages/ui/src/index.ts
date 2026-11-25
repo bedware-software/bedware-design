@@ -1,7 +1,7 @@
 export { Button, IconButton, LinkButton, type ButtonProps, type IconButtonProps, type LinkButtonProps } from './Button'
 export { InputField, Field, Label, HelpText, type InputFieldProps, type FieldProps, type LabelProps, type HelpTextProps } from './InputField'
 export { Panel, PanelHeader, PanelRow, PanelFooter, type PanelHeaderProps, type PanelRowProps } from './Panel'
-export { Tag, Badge, type BadgeProps } from './Tag'
+export { Tag, Badge, type TagProps, type BadgeProps } from './Tag'
 export { Switch, type SwitchProps } from './Switch'
 export { Menu, MenuHeader, MenuItem, MenuSeparator, type MenuItemProps } from './Menu'
 export { Kbd, Hint, HintBar, type KbdProps, type HintBarProps } from './Kbd'

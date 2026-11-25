@@ -287,7 +287,7 @@ function PanelDemo() {
 }
 
 function TagDemo() {
-  return <Line cap="метки"><Tag>new</Tag><Tag>beta</Tag><Tag>v1.4</Tag><span className="bw-row__title">Палитра команд <Tag>new</Tag></span></Line>
+  return <Line cap="метки"><Tag>new</Tag><Tag>beta</Tag><Tag>v1.4</Tag><Tag straight>global</Tag><span className="bw-row__title">Палитра команд <Tag>new</Tag></span></Line>
 }
 
 function BadgeDemo() {
