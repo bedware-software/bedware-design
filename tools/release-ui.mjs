@@ -1,10 +1,11 @@
 // Выпуск пакета @bedware/ui для приложений: собирает пакет и кладёт собранное (package.json + dist/)
-// отдельным коммитом в ветку ui-dist с тегом ui-v<версия>. Рабочую папку и текущую ветку не трогает.
+// отдельным коммитом под тегом ui-v<версия> (своей ветки у собранного нет: в репозитории одна ветка — main).
+// Рабочую папку и текущую ветку не трогает.
 // С --push ещё отправляет их на GitHub и создаёт там выпуск (release) с архивом пакета bedware-ui-<версия>.tgz.
 // Приложения подключают именно архив выпуска:
 //   "@bedware/ui": "https://github.com/bedware-software/bedware-design/releases/download/ui-v<версия>/bedware-ui-<версия>.tgz"
 // (git-зависимость не годится: npm пишет её в package-lock как git+ssh, и сборка на GitHub без ключей её не скачивает).
-// Запуск: npm run ui:release            — собрать, закоммитить в ui-dist, поставить тег (проверка без публикации)
+// Запуск: npm run ui:release            — собрать и поставить тег (проверка без публикации)
 //         npm run ui:release -- --push  — и отправить на GitHub, создать выпуск с архивом
 // Версия берётся из packages/ui/package.json: перед новым выпуском её нужно поднять.
 import { execFileSync } from 'node:child_process';
@@ -44,22 +45,18 @@ try {
   const env = { GIT_INDEX_FILE: join(tmp, 'index'), GIT_DIR: join(root, '.git'), GIT_WORK_TREE: tree };
   git(['add', '-A', '.'], env);
   const treeId = git(['write-tree'], env);
-  // На свежем клоне (другая машина) локальной ветки ui-dist нет: продолжаем ту, что на GitHub, иначе выйдет коммит без предка и пуш будет отклонён.
-  try { git(['fetch', '-q', 'origin', 'ui-dist']); } catch { /* нет сети или ветки: решит проверка ниже */ }
-  const base = ['refs/heads/ui-dist', 'refs/remotes/origin/ui-dist'].find(has);
-  const parent = base ? ['-p', git(['rev-parse', base])] : [];
-  const commit = git(['commit-tree', treeId, ...parent, '-m', `@bedware/ui ${src.version}`]);
-  git(['update-ref', 'refs/heads/ui-dist', commit]);
+  // Коммит без предка и без ветки: его держит только тег (ветка ui-dist убрана решением владельца 2026-11-25).
+  const commit = git(['commit-tree', treeId, '-m', `@bedware/ui ${src.version}`]);
   git(['tag', tag, commit]);
-  console.log(`Выпущено: ветка ui-dist, тег ${tag} (${commit.slice(0, 7)})`);
+  console.log(`Выпущено: тег ${tag} (${commit.slice(0, 7)})`);
 
   if (process.argv.includes('--push')) {
-    execFileSync('git', ['push', 'origin', 'refs/heads/ui-dist', `refs/tags/${tag}`], { cwd: root, stdio: 'inherit' });
+    execFileSync('git', ['push', 'origin', `refs/tags/${tag}`], { cwd: root, stdio: 'inherit' });
     const tgz = execFileSync('npm', ['pack', '--silent'], { cwd: tree, encoding: 'utf8', shell: process.platform === 'win32' /* на Windows npm — это npm.cmd */ }).trim().split('\n').pop();
     execFileSync('gh', ['release', 'create', tag, join(tree, tgz), '--title', `@bedware/ui ${src.version}`, '--notes', 'Собранный пакет для приложений.'], { cwd: root, stdio: 'inherit' });
     console.log(`В приложении: npm install https://github.com/bedware-software/bedware-design/releases/download/${tag}/${tgz}`);
   } else {
-    console.log(`Не опубликовано. Отправить: git push origin ui-dist ${tag} — или в следующий раз запускать с --push.`);
+    console.log(`Не опубликовано. Отправить: git push origin ${tag} — или в следующий раз запускать с --push.`);
   }
 } finally {
   rmSync(tmp, { recursive: true, force: true });

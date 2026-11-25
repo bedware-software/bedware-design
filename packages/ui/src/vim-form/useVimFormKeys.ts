@@ -81,6 +81,8 @@ export function useVimFormKeys({
       setHelpOpen((shown) => !shown)
       return
     }
+    // Пока открыта таблица клавиш, форма под ней не двигается: закрыть — «?» или Esc.
+    if (helpOpenRef.current) return
     if (onCommand?.(command) === true) return
     form.run(command)
   }
