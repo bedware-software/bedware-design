@@ -1,0 +1,599 @@
+/* bedware — эталонные компоненты направления C «Пластины» (чистовой вид по DECISIONS.md).
+   Только на токенах из tokens/tokens.css. Единственный источник стилей: пакет packages/ui
+   (React-компоненты @bedware/ui) кладёт этот файл в свой dist/styles.css без изменений. */
+
+/* ── выделение и курсор ── по всему приложению: выделенный текст — пластина (жёлтая с чёрным текстом в тёмной теме, чёрная с жёлтым в светлой), курсор ввода — цвет фокуса */
+::selection { background: var(--bw-plate); color: var(--bw-on-plate); }
+:root { caret-color: var(--bw-focus); }
+
+/* ── кнопка ── 32px; основная и опасная — жёлтая/красная пластина со срезом и кромкой */
+.bw-btn { position: relative; isolation: isolate; height: var(--bw-control-sm); padding: 0 var(--bw-space-3); display: inline-flex; align-items: center; gap: var(--bw-space-1-5);
+  border: 1px solid transparent; border-radius: var(--bw-radius-md); background: none; color: var(--bw-text); cursor: pointer; white-space: nowrap; outline: none;
+  font: 500 12px/16px var(--bw-font-sans); transition: color var(--bw-duration-fast), border-color var(--bw-duration-fast), transform var(--bw-duration-fast); }
+.bw-btn::before { content: ''; position: absolute; inset: -1px; z-index: -1; border-radius: inherit; transition: background-color var(--bw-duration-fast), box-shadow var(--bw-duration-fast); }
+.bw-btn:focus-visible { outline: 2px solid var(--bw-focus); outline-offset: 3px; }
+
+.bw-btn--primary, .bw-btn--danger { padding: 0 14px; color: var(--bw-on-plate); font-weight: 600; border-radius: var(--bw-radius-plate); }
+.bw-btn--danger { color: var(--bw-on-error); }
+.bw-btn--primary::before, .bw-btn--danger::before { clip-path: polygon(var(--bw-cut) 0, 100% 0, 100% calc(100% - var(--bw-cut)), calc(100% - var(--bw-cut)) 100%, 0 100%, 0 var(--bw-cut)); }
+.bw-btn--primary::before { background: var(--bw-plate); box-shadow: inset 0 -3px 0 var(--bw-plate-edge), inset 0 0 0 1px var(--bw-plate-outline); }
+.bw-btn--danger::before { background: var(--bw-error); box-shadow: inset 0 -3px 0 var(--bw-error-edge); }
+/* наведение: пластина приподнимается, кромка толще */
+.bw-btn--primary:hover, .bw-btn--danger:hover { transform: translateY(-1px); }
+.bw-btn--primary:hover::before { box-shadow: inset 0 -5px 0 var(--bw-plate-edge), inset 0 0 0 1px var(--bw-plate-outline); }
+.bw-btn--danger:hover::before { box-shadow: inset 0 -5px 0 var(--bw-error-edge); }
+.bw-btn--primary:active, .bw-btn--danger:active { transform: translateY(1px); }
+.bw-btn--primary:active::before { background: var(--bw-plate-pressed); box-shadow: inset 0 2px 0 var(--bw-plate-edge), inset 0 0 0 1px var(--bw-plate-outline); }
+.bw-btn--danger:active::before { box-shadow: inset 0 2px 0 var(--bw-error-edge); }
+
+/* вторичная и текстовая: та же форма со срезами, что у пластины, но без кромки. Рамка вторичной — слой ::before, заливка — ::after на 1px внутри */
+.bw-btn--secondary, .bw-btn--ghost { border-radius: var(--bw-radius-plate); }
+.bw-btn--secondary::before, .bw-btn--secondary::after, .bw-btn--ghost::before { clip-path: polygon(var(--bw-cut) 0, 100% 0, 100% calc(100% - var(--bw-cut)), calc(100% - var(--bw-cut)) 100%, 0 100%, 0 var(--bw-cut)); }
+.bw-btn--secondary::before { background: var(--bw-border-strong); }
+.bw-btn--secondary::after { --bw-cut-in: calc(var(--bw-cut) - .59px); clip-path: polygon(var(--bw-cut-in) 0, 100% 0, 100% calc(100% - var(--bw-cut-in)), calc(100% - var(--bw-cut-in)) 100%, 0 100%, 0 var(--bw-cut-in)); }
+.bw-btn--secondary::after { content: ''; position: absolute; inset: 0; z-index: -1; background: var(--bw-surface-3); transition: background-color var(--bw-duration-fast); }
+.bw-btn--secondary:hover::before { background: var(--bw-border-hover); }
+.bw-btn--secondary:hover::after { background: var(--bw-surface-4); }
+.bw-btn--secondary:active::after { background: var(--bw-surface-2); }
+.bw-btn--ghost { color: var(--bw-text-muted); }
+.bw-btn--ghost:hover { color: var(--bw-text); }
+.bw-btn--ghost:hover::before { background: var(--bw-surface-3); }
+.bw-btn--ghost:active::before { background: var(--bw-surface-4); }
+
+/* тихая красная: «Удалить» в строке списка — серая, краснеет при наведении (классы bw-btn--ghost bw-btn--quiet-danger) */
+.bw-btn--quiet-danger:hover { color: var(--bw-error); }
+.bw-btn--quiet-danger:hover::before { background: color-mix(in srgb, var(--bw-error) 15%, transparent); }
+.bw-btn--quiet-danger:active::before { background: color-mix(in srgb, var(--bw-error) 25%, transparent); }
+/* красная рамка: состояние «занято» у записи сочетания клавиш */
+.bw-btn--danger-outline { color: var(--bw-error); border-radius: var(--bw-radius-plate); }
+.bw-btn--danger-outline::before, .bw-btn--danger-outline::after { clip-path: polygon(var(--bw-cut) 0, 100% 0, 100% calc(100% - var(--bw-cut)), calc(100% - var(--bw-cut)) 100%, 0 100%, 0 var(--bw-cut)); }
+.bw-btn--danger-outline::before { background: var(--bw-error); }
+.bw-btn--danger-outline::after { --bw-cut-in: calc(var(--bw-cut) - .59px); clip-path: polygon(var(--bw-cut-in) 0, 100% 0, 100% calc(100% - var(--bw-cut-in)), calc(100% - var(--bw-cut-in)) 100%, 0 100%, 0 var(--bw-cut-in)); }
+.bw-btn--danger-outline::after { content: ''; position: absolute; inset: 0; z-index: -1; background: var(--bw-surface-2); transition: background-color var(--bw-duration-fast); }
+.bw-btn--danger-outline:hover::after { background: color-mix(in srgb, var(--bw-error) 15%, var(--bw-surface-2)); }
+/* без рамки: шапка окна и панели инструментов — только значок и текст; под курсором — пластина, включённая или раскрытая — цвет пластины с чертой */
+.bw-btn--bare { color: var(--bw-text-muted); border-radius: var(--bw-radius-plate); }
+.bw-btn--bare::before { clip-path: polygon(var(--bw-cut) 0, 100% 0, 100% calc(100% - var(--bw-cut)), calc(100% - var(--bw-cut)) 100%, 0 100%, 0 var(--bw-cut)); }
+.bw-btn--bare:is([aria-pressed="true"], [aria-expanded="true"]) { color: var(--bw-accent); }
+.bw-btn--bare:is([aria-pressed="true"], [aria-expanded="true"])::before { box-shadow: inset 0 -2px 0 var(--bw-accent); }
+.bw-btn--bare:hover { color: var(--bw-on-plate); }
+.bw-btn--bare:hover::before { background: var(--bw-plate); box-shadow: inset 0 -2px 0 var(--bw-plate-edge), inset 0 0 0 1px var(--bw-plate-outline); }
+.bw-btn--bare:active::before { background: var(--bw-plate-pressed); box-shadow: inset 0 2px 0 var(--bw-plate-edge), inset 0 0 0 1px var(--bw-plate-outline); }
+/* малая: 24px, в строках списков и плотных панелях */
+.bw-btn--sm { --bw-cut: 6px; height: 24px; padding: 0 var(--bw-space-2); font-size: 11px; }
+.bw-btn--sm.bw-btn--primary, .bw-btn--sm.bw-btn--danger { padding: 0 10px; }
+
+/* выключено: штриховка */
+.bw-btn:disabled { cursor: not-allowed; transform: none; color: var(--bw-text-dim); border-color: transparent; }
+.bw-btn:disabled::before { background: repeating-linear-gradient(135deg, var(--bw-hatch-a) 0 4px, var(--bw-hatch-b) 4px 8px); box-shadow: none; }
+.bw-btn:disabled::after { display: none; }
+.bw-btn--bare:disabled::before { background: none; box-shadow: none; }
+
+.bw-kbd { font: 400 11px/1 var(--bw-font-mono); padding: 3px 5px; border-radius: 4px; border: 1px solid var(--bw-border-strong); background: var(--bw-surface-3); color: var(--bw-text); }
+.bw-btn .bw-kbd, .bw-kbd--on-button { border-color: color-mix(in srgb, currentColor 30%, transparent); background: color-mix(in srgb, currentColor 12%, transparent); color: inherit; }
+/* клавиша на поле ввода: заливка поля совпадает с обычной клавишей, поэтому она светлее */
+.bw-kbd--on-field { background: var(--bw-surface-4); border-color: var(--bw-surface-4); }
+.bw-btn__icon { display: inline-flex; flex: none; }
+
+/* ── кнопка-значок ── квадрат со срезами, рамка и заливка как у вторичной; 28px (32 — панель инструментов, 24 и 20 — внутри строк и меню) */
+.bw-iconbtn { --bw-ib-cut: 6px; --bw-ib-clip: polygon(var(--bw-ib-cut) 0, 100% 0, 100% calc(100% - var(--bw-ib-cut)), calc(100% - var(--bw-ib-cut)) 100%, 0 100%, 0 var(--bw-ib-cut));
+  position: relative; isolation: isolate; flex: none; width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; padding: 0; border: 0; background: none; color: var(--bw-text); cursor: pointer; outline: none;
+  transition: color var(--bw-duration-fast); }
+.bw-iconbtn--32 { width: var(--bw-control-sm); height: var(--bw-control-sm); }
+.bw-iconbtn--24 { width: 24px; height: 24px; }
+.bw-iconbtn--20 { --bw-ib-cut: 4px; width: 20px; height: 20px; }
+.bw-iconbtn::before, .bw-iconbtn::after { content: ''; position: absolute; z-index: -1; clip-path: var(--bw-ib-clip); transition: background-color var(--bw-duration-fast), box-shadow var(--bw-duration-fast); }
+.bw-iconbtn::before { inset: 0; background: var(--bw-border-strong); }
+.bw-iconbtn::after { inset: 1px; background: var(--bw-surface-3); --bw-ib-in: calc(var(--bw-ib-cut) - .59px); clip-path: polygon(var(--bw-ib-in) 0, 100% 0, 100% calc(100% - var(--bw-ib-in)), calc(100% - var(--bw-ib-in)) 100%, 0 100%, 0 var(--bw-ib-in)); } /* срез заливки меньше на 0.59px: рамка и по диагонали 1px, а не 1.41 */
+.bw-iconbtn:focus-visible { outline: 2px solid var(--bw-focus); outline-offset: 2px; }
+.bw-iconbtn:hover::before { background: var(--bw-border-hover); }
+.bw-iconbtn:hover::after { background: var(--bw-surface-4); }
+.bw-iconbtn:active::after { background: var(--bw-surface-2); }
+.bw-iconbtn[aria-pressed="true"] { color: var(--bw-on-plate); }
+.bw-iconbtn[aria-pressed="true"]::before { background: var(--bw-plate-outline); }
+.bw-iconbtn[aria-pressed="true"]::after { background: var(--bw-plate); box-shadow: inset 0 -2px 0 var(--bw-plate-edge); }
+.bw-iconbtn--danger:hover { color: var(--bw-error); }
+.bw-iconbtn--danger:hover::before { background: var(--bw-error); }
+.bw-iconbtn--danger:hover::after { background: color-mix(in srgb, var(--bw-error) 15%, var(--bw-surface-2)); }
+.bw-iconbtn:disabled { cursor: not-allowed; color: var(--bw-text-dim); }
+.bw-iconbtn:disabled::before { background: repeating-linear-gradient(135deg, var(--bw-hatch-a) 0 4px, var(--bw-hatch-b) 4px 8px); box-shadow: none; }
+.bw-iconbtn:disabled::after { display: none; }
+/* без рамки: шапка окна и панели инструментов — только значок; под курсором — пластина, включённая — значок цвета пластины с чертой */
+.bw-iconbtn--bare { color: var(--bw-text-muted); }
+.bw-iconbtn--bare::before, .bw-iconbtn--bare::after { background: none; }
+.bw-iconbtn--bare:hover { color: var(--bw-on-plate); }
+.bw-iconbtn--bare:hover::before { background: var(--bw-plate-outline); }
+.bw-iconbtn--bare:hover::after { background: var(--bw-plate); box-shadow: inset 0 -2px 0 var(--bw-plate-edge); }
+.bw-iconbtn--bare:active::after { background: var(--bw-plate-pressed); box-shadow: inset 0 2px 0 var(--bw-plate-edge); }
+.bw-iconbtn--bare[aria-pressed="true"]:not(:hover) { color: var(--bw-accent); }
+.bw-iconbtn--bare[aria-pressed="true"]:not(:hover)::before { background: none; }
+.bw-iconbtn--bare[aria-pressed="true"]:not(:hover)::after { background: none; box-shadow: inset 0 -2px 0 var(--bw-accent); }
+.bw-iconbtn--bare.bw-iconbtn--danger:hover { color: var(--bw-on-error); }
+.bw-iconbtn--bare.bw-iconbtn--danger:hover::before { background: var(--bw-error); }
+.bw-iconbtn--bare.bw-iconbtn--danger:hover::after { background: var(--bw-error); box-shadow: inset 0 -2px 0 var(--bw-error-edge); }
+.bw-iconbtn--bare:disabled { color: var(--bw-text-dim); }
+.bw-iconbtn--bare:disabled::before { background: none; }
+
+/* ── кнопка-ссылка ── цвет ссылки, пунктир всегда, при наведении сплошная черта */
+.bw-link { padding: 0; border: 0; background: none; font: 500 12px/16px var(--bw-font-sans); color: var(--bw-link); cursor: pointer; outline: none; text-decoration: underline dotted; text-underline-offset: 3px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bw-link:hover { text-decoration-style: solid; }
+.bw-link:focus-visible { outline: 2px solid var(--bw-focus); outline-offset: 3px; }
+.bw-link--mono { font: 400 12px/16px var(--bw-font-mono); }
+.bw-link--icon { display: inline-flex; align-items: center; gap: var(--bw-space-1); text-decoration: none; }
+.bw-link--icon > span:last-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; text-decoration: underline dotted; text-underline-offset: 3px; }
+.bw-link--icon:hover > span:last-child { text-decoration-style: solid; }
+.bw-link:disabled { color: var(--bw-text-dim); text-decoration: none; cursor: not-allowed; }
+
+/* ── поле ── 36px (sm 32, lg 40); срез справа снизу; фокус — жёлтая рамка и нижняя полоса */
+.bw-field { --bw-field-fill: var(--bw-field-bg); --bw-field-frame: var(--bw-border-strong); --bw-field-bar: 0 0 0 0 transparent;
+  --bw-field-cut: polygon(0 0, 100% 0, 100% calc(100% - var(--bw-cut)), calc(100% - var(--bw-cut)) 100%, 0 100%);
+  display: block; width: 100%; height: var(--bw-control-md); padding: 0 var(--bw-space-3); font: 400 14px/20px var(--bw-font-sans); color: var(--bw-text);
+  background: var(--bw-field-fill); border: 1px solid var(--bw-field-frame); border-radius: var(--bw-radius-plate); outline: none; box-shadow: var(--bw-field-bar);
+  clip-path: var(--bw-field-cut);
+  transition: border-color var(--bw-duration-fast), box-shadow var(--bw-duration-base); }
+.bw-field--sm { height: var(--bw-control-sm); font-size: 13px; }
+.bw-field--lg { height: var(--bw-control-lg); }
+.bw-field--mono { font-family: var(--bw-font-mono); font-size: 13px; }
+.bw-field::placeholder { color: var(--bw-text-dim); }
+.bw-field:hover { --bw-field-frame: var(--bw-border-hover); }
+.bw-field:focus, .bw-field--box:focus-within { --bw-field-frame: var(--bw-focus); --bw-field-bar: inset 0 -2px 0 var(--bw-focus); }
+.bw-field[aria-invalid="true"], .bw-field[data-invalid] { --bw-field-frame: var(--bw-error); --bw-field-bar: inset 0 -2px 0 var(--bw-error); }
+.bw-field:disabled, .bw-field[data-disabled] { --bw-field-fill: var(--bw-disabled-bg); --bw-field-frame: var(--bw-border); color: var(--bw-disabled-text); cursor: not-allowed; }
+/* поле-коробка: внутри — сам input и то, что рядом с ним (значок, клавиша, счётчик).
+   Заливку, рамку и срез рисует ::before, сама коробка ничего не обрезает: то, что стоит внутри, может выходить за её край (свет режима Vim) */
+.bw-field--box { display: flex; align-items: center; gap: var(--bw-space-2); min-width: 0; cursor: text;
+  position: relative; isolation: isolate; background: none; border-color: transparent; box-shadow: none; clip-path: none; }
+.bw-field--box::before { content: ""; position: absolute; inset: -1px; z-index: -1; box-sizing: border-box; pointer-events: none;
+  background: var(--bw-field-fill); border: 1px solid var(--bw-field-frame); border-radius: inherit; box-shadow: var(--bw-field-bar); clip-path: var(--bw-field-cut);
+  transition: border-color var(--bw-duration-fast), box-shadow var(--bw-duration-base); }
+.bw-field__input { flex: 1; min-width: 0; height: 100%; padding: 0; border: 0; outline: none; background: none; color: inherit; font: inherit; }
+.bw-field__input::placeholder { color: var(--bw-text-dim); }
+.bw-field__input:disabled { cursor: not-allowed; }
+/* поле-коробка выключено, если выключен его input — в том числе через fieldset:disabled */
+.bw-field--box:has(.bw-field__input:disabled) { --bw-field-fill: var(--bw-disabled-bg); --bw-field-frame: var(--bw-border); color: var(--bw-disabled-text); cursor: not-allowed; }
+.bw-field__side { display: inline-flex; flex: none; align-items: center; gap: var(--bw-space-1); color: var(--bw-text-muted); }
+.bw-label { display: block; font: 500 12px/16px var(--bw-font-sans); color: var(--bw-text); margin-bottom: var(--bw-space-1-5); }
+.bw-error-text { font: 400 12px/16px var(--bw-font-sans); color: var(--bw-error); margin-top: var(--bw-space-1); }
+/* подпись с описанием: описание стоит между подписью и полем */
+.bw-label--with-desc { margin-bottom: 2px; }
+.bw-label-desc { margin: 0 0 var(--bw-space-1-5); font: 400 12px/16px var(--bw-font-sans); color: var(--bw-text-muted); }
+/* строка под формой целиком: подсказка или ошибка */
+.bw-help-text { margin: var(--bw-space-1) 0 0; font: 400 12px/16px var(--bw-font-sans); color: var(--bw-text-muted); }
+.bw-help-text--error { color: var(--bw-error); }
+
+/* многострочное поле: то же поле (bw-field bw-textarea), растёт по содержимому, ручки размера нет */
+.bw-textarea { height: auto; min-height: 72px; padding: var(--bw-space-2) var(--bw-space-3); line-height: 20px; resize: none; overflow: hidden; }
+/* высота задана снаружи: длинный текст прокручивается */
+.bw-textarea--scroll { overflow: auto; }
+/* образец цвета в поле цвета */
+.bw-swatch { position: relative; flex: none; width: 16px; height: 16px; border: 1px solid var(--bw-border-hover); border-radius: 2px; overflow: hidden; cursor: pointer; }
+.bw-swatch input { position: absolute; inset: -4px; width: 24px; height: 24px; padding: 0; border: 0; opacity: 0; cursor: pointer; }
+
+/* ── флажок ── 16px: пластина со срезом и кромкой; рамку и срез рисует ::before, чтобы кольцо фокуса не обрезалось */
+.bw-check { --bw-check-fill: var(--bw-field-bg); --bw-check-frame: var(--bw-border-strong); --bw-check-edge: 0 0 0 0 transparent;
+  position: relative; isolation: isolate; flex: none; width: 16px; height: 16px; display: inline-flex; align-items: center; justify-content: center; padding: 0; border: 0; background: none; color: transparent; cursor: pointer; outline: none; }
+.bw-check::before { content: ''; position: absolute; inset: 0; z-index: -1; box-sizing: border-box; background: var(--bw-check-fill); border: 1px solid var(--bw-check-frame); border-radius: 1px; box-shadow: var(--bw-check-edge);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%); transition: background-color var(--bw-duration-fast), border-color var(--bw-duration-fast); }
+.bw-check svg { width: 12px; height: 12px; }
+.bw-check:hover { --bw-check-frame: var(--bw-border-hover); }
+.bw-check:focus-visible { outline: 2px solid var(--bw-focus); outline-offset: 2px; }
+.bw-check[aria-checked="true"], .bw-check[aria-checked="mixed"] { --bw-check-fill: var(--bw-plate); --bw-check-frame: var(--bw-plate); --bw-check-edge: inset 0 -2px 0 var(--bw-plate-edge); color: var(--bw-on-plate); }
+.bw-check:disabled { --bw-check-fill: repeating-linear-gradient(135deg, var(--bw-hatch-a) 0 4px, var(--bw-hatch-b) 4px 8px); --bw-check-frame: var(--bw-border); --bw-check-edge: 0 0 0 0 transparent; cursor: not-allowed; }
+.bw-check:disabled[aria-checked="true"], .bw-check:disabled[aria-checked="mixed"] { color: var(--bw-text-dim); }
+.bw-check-label { display: inline-flex; align-items: flex-start; gap: var(--bw-space-2); font: 400 13px/16px var(--bw-font-sans); color: var(--bw-text); cursor: pointer; }
+.bw-check-label small { display: block; margin-top: 2px; font: 400 12px/16px var(--bw-font-sans); color: var(--bw-text-muted); }
+
+/* ── уведомление ── ошибка или предупреждение внутри настроек: полоса тона слева */
+.bw-notice { --bw-notice-c: var(--bw-error); position: relative; display: flex; align-items: flex-start; gap: 10px; padding: 10px var(--bw-space-3) 10px var(--bw-space-4); overflow: hidden;
+  font: 400 12px/16px var(--bw-font-sans); color: var(--bw-text); background: var(--bw-surface-3); border: 1px solid var(--bw-border-strong); border-radius: var(--bw-radius-md); }
+.bw-notice::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--bw-notice-c); }
+.bw-notice--warning { --bw-notice-c: var(--bw-warning); }
+.bw-notice--neutral { --bw-notice-c: var(--bw-border-hover); }
+
+/* ── всплывающее уведомление ── плашка поверх рабочего стола или окна; четыре вида (plate по умолчанию), тона success и error; кругов нет */
+.bw-toast { --bw-toast-c: var(--bw-plate); --bw-toast-cut: 8px;
+  --bw-toast-clip2: polygon(var(--bw-toast-cut) 0, 100% 0, 100% calc(100% - var(--bw-toast-cut)), calc(100% - var(--bw-toast-cut)) 100%, 0 100%, 0 var(--bw-toast-cut));
+  --bw-toast-clip1: polygon(0 0, 100% 0, 100% calc(100% - var(--bw-toast-cut)), calc(100% - var(--bw-toast-cut)) 100%, 0 100%);
+  position: relative; isolation: isolate; display: inline-flex; align-items: center; gap: 10px; box-sizing: border-box; min-width: 160px; max-width: 300px; min-height: 48px; padding: 10px 16px;
+  font: 400 14px/20px var(--bw-font-sans); color: var(--bw-text); animation: bw-toast-in 120ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+@keyframes bw-toast-in { from { opacity: 0; transform: translateY(4px); } }
+@media (prefers-reduced-motion: reduce) { .bw-toast { animation: none; } .bw-toast__icon--rec::before, .bw-toast__wait i { animation: none; } }
+.bw-toast--success { --bw-toast-c: var(--bw-success); }
+.bw-toast--error { --bw-toast-c: var(--bw-error); }
+.bw-toast::before, .bw-toast::after { position: absolute; }
+.bw-toast__body { min-width: 0; overflow-wrap: anywhere; }
+.bw-toast__title { display: block; font: 700 10px/14px var(--bw-font-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--bw-text-muted); }
+.bw-toast__icon { position: relative; display: inline-flex; flex: none; align-items: center; justify-content: center; color: var(--bw-text-muted); }
+.bw-toast__icon--rec { width: 22px; height: 22px; color: var(--bw-error); }
+.bw-toast__icon--rec::before { content: ''; position: absolute; inset: 0; background: currentColor; opacity: .25; animation: bw-toast-pulse 1.2s ease-out infinite; }
+@keyframes bw-toast-pulse { from { transform: scale(.6); opacity: .5; } to { transform: scale(1.25); opacity: 0; } }
+.bw-toast__wait { display: inline-flex; flex: none; gap: 3px; color: var(--bw-text-muted); }
+.bw-toast__wait i { width: 5px; height: 5px; background: currentColor; opacity: .25; animation: bw-toast-step 1s steps(1) infinite; }
+.bw-toast__wait i:nth-child(2) { animation-delay: .2s; }
+.bw-toast__wait i:nth-child(3) { animation-delay: .4s; }
+@keyframes bw-toast-step { 0%, 60% { opacity: .25; } 20%, 40% { opacity: 1; } }
+/* plate: пластина с кромкой; текст на ней — on-plate, на красной и зелёной — on-error */
+.bw-toast--plate { padding-bottom: 12px; font-weight: 600; color: var(--bw-on-plate); }
+.bw-toast--plate::before { content: ''; inset: 0; z-index: -1; background: var(--bw-plate); box-shadow: inset 0 -3px 0 var(--bw-plate-edge); clip-path: var(--bw-toast-clip2); }
+.bw-toast--plate.bw-toast--error, .bw-toast--plate.bw-toast--success { color: var(--bw-on-error); }
+.bw-toast--plate.bw-toast--error::before { background: var(--bw-error); box-shadow: inset 0 -3px 0 var(--bw-error-edge); }
+.bw-toast--plate.bw-toast--success::before { background: var(--bw-success); box-shadow: inset 0 -3px 0 var(--bw-success-edge); }
+.bw-toast--plate :is(.bw-toast__title, .bw-toast__icon, .bw-toast__wait) { color: inherit; }
+.bw-toast--plate .bw-toast__title { opacity: .7; }
+/* bar: тёмная панель со срезом справа снизу, слева полоса тона 4px */
+.bw-toast--bar { padding-left: 20px; }
+.bw-toast--bar::before, .bw-toast--tag::before { content: ''; inset: 0; z-index: -2; background: var(--bw-border-strong); }
+.bw-toast--bar::after, .bw-toast--tag::after { content: ''; inset: 1px; z-index: -1; background: var(--bw-surface-2); }
+.bw-toast--bar::before, .bw-toast--bar::after { clip-path: var(--bw-toast-clip1); }
+.bw-toast--bar::after { background: linear-gradient(90deg, var(--bw-toast-c) 0 4px, var(--bw-surface-2) 4px); }
+/* tag: тёмная панель с двумя срезами; заголовок — ярлык-пластина на верхней кромке */
+.bw-toast--tag::before, .bw-toast--tag::after { clip-path: var(--bw-toast-clip2); }
+.bw-toast--tag.bw-toast--titled { padding-top: 16px; }
+.bw-toast--tag .bw-toast__title { position: absolute; left: 14px; top: -7px; padding: 1px 6px; background: var(--bw-toast-c); color: var(--bw-on-plate); box-shadow: inset 0 -2px 0 var(--bw-plate-edge); }
+.bw-toast--tag:is(.bw-toast--error, .bw-toast--success) .bw-toast__title { color: var(--bw-on-error); }
+.bw-toast--tag.bw-toast--error .bw-toast__title { box-shadow: inset 0 -2px 0 var(--bw-error-edge); }
+.bw-toast--tag.bw-toast--success .bw-toast__title { box-shadow: inset 0 -2px 0 var(--bw-success-edge); }
+/* line: тихая тёмная полоса без рамки, снизу черта тона (без тона и заголовка — серая) */
+.bw-toast--line { background: color-mix(in srgb, var(--bw-surface-1) 94%, transparent); box-shadow: inset 0 -2px 0 var(--bw-toast-c); backdrop-filter: blur(12px); }
+.bw-toast--line:not(.bw-toast--titled, .bw-toast--error, .bw-toast--success) { --bw-toast-c: var(--bw-border-strong); }
+.bw-notice__icon { display: inline-flex; flex: none; margin-top: 1px; color: var(--bw-notice-c); }
+.bw-notice__body { flex: 1; min-width: 0; }
+.bw-notice__title { display: block; font-weight: 600; color: var(--bw-text-strong); }
+.bw-notice__side { display: inline-flex; flex: none; align-self: center; gap: var(--bw-space-2); }
+/* вплотную к краям панели: без рамки и скруглений, с чертой сверху */
+.bw-notice--flush { border-width: 1px 0 0; border-radius: 0; }
+.bw-panel > .bw-notice--flush:first-child { border-top-width: 0; }
+
+/* ── заголовок страницы ── первый блок каждой страницы настроек: пластина с номером во всю высоту, название, описание; снизу черта.
+   Уровни заголовков: страница (.bw-pagehead, 16px) → раздел (.bw-section-title, 13px с пластинкой) → подраздел (--sub, 11px) → название настройки (.bw-row__title, 14px обычным шрифтом) */
+.bw-pagehead { display: flex; align-items: center; gap: var(--bw-space-4); min-height: 56px; margin: 0 0 var(--bw-space-6); padding: var(--bw-space-3) 0; border-bottom: 1px solid var(--bw-border-strong); }
+.bw-pagehead::before { content: attr(data-n); flex: none; align-self: stretch; margin: calc(-1 * var(--bw-space-3)) 0; display: flex; align-items: center; padding: 0 20px 0 14px;
+  background: var(--bw-plate); color: var(--bw-on-plate); font: 700 16px var(--bw-font-mono); clip-path: polygon(0 0, 100% 0, calc(100% - 12px) 100%, 0 100%); box-shadow: inset 0 -3px 0 var(--bw-plate-edge); }
+.bw-pagehead__main { flex: 1; min-width: 0; }
+.bw-pagehead__title { margin: 0; font: 700 16px/20px var(--bw-font-mono); text-transform: uppercase; letter-spacing: .04em; color: var(--bw-text-strong); }
+.bw-pagehead__desc { margin: 2px 0 0; font: 400 13px/18px var(--bw-font-sans); color: var(--bw-text-muted); }
+.bw-pagehead__side { display: inline-flex; flex: none; align-items: center; gap: var(--bw-space-2); }
+/* ── заголовок раздела ── над панелью, без номера: моноширинный заглавными с пластинкой; sub — малый заголовок без пластинки */
+.bw-section-title { display: flex; align-items: center; justify-content: space-between; gap: var(--bw-space-4); margin: 0 0 var(--bw-space-3); }
+.bw-section-title--flush { margin-bottom: 0; }
+.bw-section-title__main { flex: 1; min-width: 0; }
+.bw-section-title__side { display: inline-flex; flex: none; align-items: center; gap: var(--bw-space-2); }
+.bw-section-title__text { display: flex; align-items: center; gap: var(--bw-space-2); margin: 0; font: 700 13px/16px var(--bw-font-mono); text-transform: uppercase; letter-spacing: .04em; color: var(--bw-text-strong); }
+.bw-section-title__text::before { content: ''; flex: none; width: 14px; height: 12px; background: var(--bw-plate); box-shadow: inset 0 -3px 0 var(--bw-plate-edge); clip-path: polygon(0 0, 100% 0, calc(100% - 5px) 100%, 0 100%); }
+.bw-section-title__desc { margin: 2px 0 0; font: 400 12px/16px var(--bw-font-sans); color: var(--bw-text-muted); }
+.bw-section-title--sub .bw-section-title__text { font: 500 11px/14px var(--bw-font-mono); letter-spacing: .06em; color: var(--bw-text-muted); }
+.bw-section-title--sub .bw-section-title__text::before { display: none; }
+.bw-section-title--danger .bw-section-title__text { color: var(--bw-error); }
+.bw-section-title--danger .bw-section-title__text::before { background: var(--bw-error); box-shadow: inset 0 -3px 0 var(--bw-error-edge); }
+
+/* ── карточки-выбор ── один вариант из нескольких с описанием; выбранная — пластина-полоса слева */
+.bw-choices { display: flex; flex-wrap: wrap; gap: var(--bw-space-2); }
+.bw-choices--grid { display: grid; }
+.bw-choice { position: relative; flex: 1 1 160px; min-width: 0; padding: 10px var(--bw-space-3); text-align: left; font: 400 12px/16px var(--bw-font-sans); color: var(--bw-text-muted);
+  background: var(--bw-surface-2); border: 1px solid var(--bw-border-strong); border-radius: var(--bw-radius-lg); cursor: pointer; outline: none; transition: border-color var(--bw-duration-fast), background-color var(--bw-duration-fast); }
+.bw-choice__title { display: block; font: 500 13px/18px var(--bw-font-sans); color: var(--bw-text); }
+.bw-choice__preview { display: block; margin-bottom: var(--bw-space-2); }
+.bw-choice:hover { border-color: var(--bw-border-hover); }
+.bw-choice:focus-visible { outline: 2px solid var(--bw-focus); outline-offset: 3px; }
+.bw-choice[aria-checked="true"] { background: var(--bw-surface-3); }
+/* карточка содержимое не обрезает (превью может светиться за край): полоса сама повторяет скругление */
+.bw-choice[aria-checked="true"]::before { content: ''; position: absolute; left: -1px; top: -1px; bottom: -1px; width: 4px; border-radius: var(--bw-radius-lg) 0 0 var(--bw-radius-lg); background: var(--bw-accent); }
+.bw-choice__icon { display: inline-flex; vertical-align: -2px; margin-right: var(--bw-space-1-5); }
+.bw-choice:disabled { cursor: not-allowed; color: var(--bw-text-dim); border-color: var(--bw-border); background: var(--bw-disabled-bg); }
+.bw-choice:disabled .bw-choice__title { color: var(--bw-disabled-text); }
+
+/* ── боковая навигация настроек ── пункт 32px; выбранный — полоса слева, как в меню */
+.bw-nav { display: flex; flex-direction: column; }
+.bw-nav__group { padding: var(--bw-space-2) 10px var(--bw-space-1); font: 500 10px/12px var(--bw-font-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--bw-text-dim); }
+.bw-nav__item { display: flex; align-items: center; gap: var(--bw-space-2); width: 100%; height: var(--bw-control-sm); padding: 0 10px; border: 0; background: none; text-align: left; font: 500 13px/16px var(--bw-font-sans); color: var(--bw-text-muted); cursor: pointer; outline: none;
+  transition: color var(--bw-duration-fast), background-color var(--bw-duration-fast); }
+.bw-nav__icon { display: inline-flex; flex: none; }
+.bw-nav__label { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bw-nav__side { display: inline-flex; flex: none; align-items: center; }
+.bw-nav__item:hover { color: var(--bw-text); background: var(--bw-surface-3); }
+.bw-nav__item:focus-visible { outline: 2px solid var(--bw-focus); outline-offset: -2px; }
+.bw-nav__item[aria-current="page"] { color: var(--bw-text-strong); background: var(--bw-selected-bg); box-shadow: inset 3px 0 0 var(--bw-accent); }
+.bw-nav__item[data-off] .bw-nav__icon, .bw-nav__item[data-off] .bw-nav__label { color: var(--bw-text-dim); }
+
+/* ── подсказка при наведении ── маленькая пластина */
+.bw-tip-anchor { display: inline-flex; }
+.bw-tip { display: inline-flex; align-items: center; gap: var(--bw-space-1-5); max-width: 320px; padding: 4px 10px 6px; font: 600 11px/14px var(--bw-font-sans); background: var(--bw-plate); color: var(--bw-on-plate);
+  clip-path: polygon(5px 0, 100% 0, 100% calc(100% - 5px), calc(100% - 5px) 100%, 0 100%, 0 5px); box-shadow: inset 0 -2px 0 var(--bw-plate-edge); }
+.bw-tip .bw-kbd { background: color-mix(in srgb, currentColor 12%, transparent); border-color: color-mix(in srgb, currentColor 30%, transparent); color: inherit; }
+.bw-tip--float { position: fixed; z-index: 60; pointer-events: none; }
+
+/* ── заголовок группы в списке ── ярлык-пластина над группой результатов */
+.bw-group-title { padding: 6px 0 2px; font: 700 10px/12px var(--bw-font-mono); text-transform: uppercase; letter-spacing: .06em; }
+.bw-group-title > span { display: inline-block; padding: 2px 14px 3px var(--bw-space-4); background: var(--bw-plate); color: var(--bw-on-plate); box-shadow: inset 0 -2px 0 var(--bw-plate-edge); clip-path: polygon(0 0, 100% 0, calc(100% - 6px) 100%, 0 100%); }
+
+/* ── плотная строка списка ── 32px, одна строка: значок 16px, подпись, пояснение справа */
+.bw-listrow { display: flex; align-items: center; gap: var(--bw-space-2); height: var(--bw-control-sm); padding: 0 var(--bw-space-3); font: 400 13px/18px var(--bw-font-sans); color: var(--bw-text); cursor: pointer; }
+.bw-listrow > .bw-rowkey { width: 20px; padding: 0; }
+.bw-listrow__icon { display: inline-flex; flex: none; color: var(--bw-text-muted); }
+.bw-listrow__label { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bw-listrow__note { flex: none; max-width: 40%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 400 11px/14px var(--bw-font-sans); color: var(--bw-text-muted); }
+.bw-listrow__side { display: inline-flex; flex: none; align-items: center; gap: 2px; }
+.bw-listrow:hover { background: var(--bw-surface-3); }
+.bw-listrow[aria-selected="true"] { background: var(--bw-selected-bg); box-shadow: inset 3px 0 0 var(--bw-accent); }
+
+/* ── панель ── карточка 8px; плашка с номером в шапке; строки px 16 py 12 */
+.bw-panel { position: relative; border: 1px solid var(--bw-border-strong); border-radius: var(--bw-radius-lg); background: linear-gradient(var(--bw-surface-2), var(--bw-surface-1)); overflow: hidden; }
+.bw-panel__head { display: flex; align-items: center; gap: var(--bw-space-3); padding: var(--bw-space-3) var(--bw-space-4) var(--bw-space-3) 0; border-bottom: 1px solid var(--bw-border); }
+.bw-panel__head::before { content: attr(data-n); align-self: stretch; margin: calc(-1 * var(--bw-space-3)) 0; display: flex; align-items: center; padding: 0 14px 0 12px;
+  background: var(--bw-plate); color: var(--bw-on-plate); font: 700 13px var(--bw-font-mono); clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 100%, 0 100%); box-shadow: inset 0 -3px 0 var(--bw-plate-edge); }
+.bw-panel__title { display: block; font: 700 13px/16px var(--bw-font-mono); text-transform: uppercase; letter-spacing: .04em; color: var(--bw-text-strong); }
+.bw-panel__desc { font: 400 12px/16px var(--bw-font-sans); color: var(--bw-text-muted); }
+.bw-row { position: relative; display: flex; align-items: center; justify-content: space-between; gap: var(--bw-space-4); padding: var(--bw-space-3) var(--bw-space-4); border-bottom: 1px solid var(--bw-border); }
+.bw-row:last-child { border-bottom: 0; }
+.bw-row__title { display: block; font: 500 14px/20px var(--bw-font-sans); color: var(--bw-text); }
+.bw-row__desc { display: block; font: 400 12px/16px var(--bw-font-sans); color: var(--bw-text-muted); margin-top: 2px; }
+.bw-row[aria-selected="true"] { background: var(--bw-surface-3); }
+.bw-row[aria-selected="true"]::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--bw-accent); }
+.bw-panel__foot { display: flex; justify-content: flex-end; gap: var(--bw-space-2); padding: var(--bw-space-3) var(--bw-space-4); border-top: 1px solid var(--bw-border); }
+
+/* ── метка ── единственное место для наклона, кроме логотипа */
+.bw-tag { display: inline-block; font: 700 10px/12px var(--bw-font-mono); text-transform: uppercase; letter-spacing: .05em; background: var(--bw-plate); color: var(--bw-on-plate); padding: 2px 10px; clip-path: polygon(5px 0, 100% 0, calc(100% - 5px) 100%, 0 100%); transform: rotate(-3deg); }
+/* прямая: та же пластина без наклона — громкая метка в строке (global) */
+.bw-tag--straight { transform: none; }
+
+/* ── переключатель ── некруглый: дорожка и бегунок со срезанными углами, у включённого кромка; 36×20 (xs 28×16, md 44×24), бегунок 200 мс.
+   Дорожку рисует ::before, бегунок — ::after: сам элемент ничего не обрезает, кольцо фокуса цело */
+.bw-switch { --bw-sw-w: 36px; --bw-sw-h: 20px; --bw-sw-k: 16px; --bw-sw-track: var(--bw-switch-off); --bw-sw-edge: 0 0 0 0 transparent; --bw-sw-knob: #fff;
+  position: relative; isolation: isolate; flex: none; width: var(--bw-sw-w); height: var(--bw-sw-h); padding: 0; border: 0; background: none; cursor: pointer; outline: none; }
+.bw-switch::before { content: ''; position: absolute; inset: 0; z-index: -1; background: var(--bw-sw-track); box-shadow: var(--bw-sw-edge); clip-path: polygon(4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%, 0 4px);
+  transition: background-color var(--bw-duration-fast); }
+.bw-switch::after { content: ''; position: absolute; top: 2px; left: 2px; width: var(--bw-sw-k); height: var(--bw-sw-k); background: var(--bw-sw-knob); clip-path: polygon(3px 0, 100% 0, 100% calc(100% - 3px), calc(100% - 3px) 100%, 0 100%, 0 3px);
+  transition: transform var(--bw-duration-base), background-color var(--bw-duration-fast); }
+.bw-switch[aria-checked="true"] { --bw-sw-track: var(--bw-plate); --bw-sw-edge: inset 0 -3px 0 var(--bw-plate-edge); --bw-sw-knob: var(--bw-on-plate); }
+.bw-switch[aria-checked="true"]::after { top: 1px; transform: translateX(calc(var(--bw-sw-w) - var(--bw-sw-k) - 4px)); }
+.bw-switch:focus-visible { outline: 2px solid var(--bw-focus); outline-offset: 3px; }
+.bw-switch--md { --bw-sw-w: 44px; --bw-sw-h: 24px; --bw-sw-k: 20px; }
+/* xs — 28×16: в строках списков и навигации */
+.bw-switch--xs { --bw-sw-w: 28px; --bw-sw-h: 16px; --bw-sw-k: 12px; }
+.bw-switch:disabled { cursor: not-allowed; --bw-sw-track: repeating-linear-gradient(135deg, var(--bw-hatch-a) 0 4px, var(--bw-hatch-b) 4px 8px); --bw-sw-edge: 0 0 0 0 transparent; --bw-sw-knob: var(--bw-text-dim); }
+.bw-switch:disabled::after { top: 2px; }
+
+/* ── ползунок ── некруглый: дорожка 6px со срезанными концами, бегунок — пластина 16px со срезами и кромкой.
+   Видимые части — блоки, поверх лежит прозрачный input type=range: мышь, клавиши и фокус — его. --bw-sl-f — доля 0…1 */
+.bw-slider { --bw-sl-f: 0; --bw-sl-k: 16px; position: relative; display: inline-block; flex: none; width: 200px; height: 20px; vertical-align: middle; }
+.bw-slider input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+.bw-slider input:disabled { cursor: not-allowed; }
+.bw-slider__track, .bw-slider__fill { position: absolute; left: 0; top: 50%; height: 6px; transform: translateY(-50%); pointer-events: none; }
+.bw-slider__track { right: 0; background: var(--bw-switch-off); clip-path: polygon(3px 0, 100% 0, 100% calc(100% - 3px), calc(100% - 3px) 100%, 0 100%, 0 3px); }
+.bw-slider__fill { width: calc((100% - var(--bw-sl-k)) * var(--bw-sl-f) + var(--bw-sl-k) / 2); background: var(--bw-plate); clip-path: polygon(3px 0, 100% 0, 100% 100%, 0 100%, 0 3px); }
+.bw-slider__knob { position: absolute; top: 50%; left: calc((100% - var(--bw-sl-k)) * var(--bw-sl-f)); width: var(--bw-sl-k); height: var(--bw-sl-k); transform: translateY(-50%); pointer-events: none;
+  background: var(--bw-plate); box-shadow: inset 0 -3px 0 var(--bw-plate-edge), inset 0 0 0 1px var(--bw-plate-outline); clip-path: polygon(4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%, 0 4px);
+  transition: transform var(--bw-duration-fast); }
+.bw-slider:hover .bw-slider__knob { transform: translateY(calc(-50% - 1px)); }
+/* риска значения по умолчанию: зубец под дорожкой; --bw-sl-d — его доля 0…1, центр зубца совпадает с центром бегунка в этом значении */
+.bw-slider__mark { position: absolute; top: 50%; left: calc((100% - var(--bw-sl-k)) * var(--bw-sl-d) + var(--bw-sl-k) / 2); width: 8px; height: 5px; margin: 6px 0 0 -4px; pointer-events: none;
+  background: var(--bw-text-muted); clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+.bw-slider:has(input:disabled) .bw-slider__mark { background: var(--bw-text-dim); }
+/* кольцо фокуса — на невидимой рамке вокруг бегунка: сам бегунок обрезан срезами */
+.bw-slider__ring { position: absolute; top: 50%; left: calc((100% - var(--bw-sl-k)) * var(--bw-sl-f)); width: var(--bw-sl-k); height: var(--bw-sl-k); transform: translateY(-50%); pointer-events: none; }
+.bw-slider:has(input:focus-visible) .bw-slider__ring { outline: 2px solid var(--bw-focus); outline-offset: 2px; }
+.bw-slider:has(input:disabled) .bw-slider__track, .bw-slider:has(input:disabled) .bw-slider__fill { background: repeating-linear-gradient(135deg, var(--bw-hatch-a) 0 4px, var(--bw-hatch-b) 4px 8px); }
+.bw-slider:has(input:disabled) .bw-slider__knob { background: var(--bw-text-dim); box-shadow: none; transform: translateY(-50%); }
+
+/* ── полоса прогресса ── 8px: оставшаяся часть в диагональную штриховку, у заполнения скошенный край и кромка */
+.bw-progress { --bw-pg-f: 0; --bw-pg-c: var(--bw-plate); --bw-pg-e: var(--bw-plate-edge); display: block; position: relative; height: 8px; overflow: hidden;
+  background: repeating-linear-gradient(135deg, var(--bw-hatch-a) 0 4px, var(--bw-hatch-b) 4px 8px); }
+.bw-progress__fill { position: absolute; left: 0; top: 0; bottom: 0; width: calc(100% * var(--bw-pg-f)); background: var(--bw-pg-c); box-shadow: inset 0 -2px 0 var(--bw-pg-e);
+  clip-path: polygon(0 0, 100% 0, calc(100% - 6px) 100%, 0 100%); transition: width var(--bw-duration-base); }
+.bw-progress[data-full] .bw-progress__fill { clip-path: none; }
+.bw-progress--error { --bw-pg-c: var(--bw-error); --bw-pg-e: var(--bw-error-edge); }
+/* на паузе: серая заливка без кромки */
+.bw-progress--paused { --bw-pg-c: var(--bw-text-dim); --bw-pg-e: transparent; }
+/* размер неизвестен: скошенный отрезок бежит слева направо */
+.bw-progress--busy .bw-progress__fill { width: 35%; clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%); animation: bw-progress-run 1.4s linear infinite; }
+@keyframes bw-progress-run { from { left: -35%; } to { left: 100%; } }
+@media (prefers-reduced-motion: reduce) { .bw-progress--busy .bw-progress__fill { animation: none; left: 0; width: 100%; clip-path: none; opacity: .5; } }
+
+/* ── меню ── 8px, 12px, заголовок, клавиши; выбранный пункт — жёлтая полоса слева */
+.bw-menu { border: 1px solid var(--bw-border-strong); border-radius: var(--bw-radius-lg); background: var(--bw-surface-2); overflow: hidden; font: 400 12px/16px var(--bw-font-sans); box-shadow: var(--bw-shadow-popover); min-width: 220px; }
+.bw-menu__head { padding: 6px var(--bw-space-3) 4px; font: 500 10px/12px var(--bw-font-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--bw-text-muted); border-bottom: 1px solid var(--bw-border); }
+.bw-menu__item { width: 100%; border: 0; background: none; font: inherit; text-align: left; outline: none; display: flex; justify-content: space-between; align-items: center; gap: var(--bw-space-4); padding: 6px var(--bw-space-3); color: var(--bw-text); cursor: default; }
+.bw-menu__item:hover { background: var(--bw-surface-3); }
+.bw-menu__item[aria-selected="true"], .bw-menu__item[data-active], .bw-menu__item:focus-visible { background: var(--bw-selected-bg); box-shadow: inset 3px 0 0 var(--bw-accent); }
+.bw-menu__label { display: flex; align-items: center; gap: var(--bw-space-2); min-width: 0; }
+.bw-menu__label > span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bw-menu__icon { display: inline-flex; flex: none; color: var(--bw-text-muted); }
+.bw-menu__keys { display: inline-flex; flex: none; align-items: center; gap: 2px; }
+.bw-menu__item--danger, .bw-menu__item--danger .bw-menu__icon { color: var(--bw-error); }
+.bw-menu__item:disabled, .bw-menu__item[aria-disabled="true"] { color: var(--bw-text-dim); cursor: not-allowed; background: none; box-shadow: none; }
+.bw-menu__sep { height: 1px; background: var(--bw-border); }
+/* текущий выбор (не курсор): пластинка у правого края; акцентный пункт «Новая…»: жирный, значок на пластине; действия в строке; шеврон подменю */
+.bw-menu__item--current::after { content: ''; flex: none; width: 8px; height: 8px; background: var(--bw-plate); box-shadow: inset 0 -2px 0 var(--bw-plate-edge); clip-path: polygon(2px 0, 100% 0, 100% calc(100% - 2px), calc(100% - 2px) 100%, 0 100%, 0 2px); }
+.bw-menu__item--accent { color: var(--bw-text-strong); font-weight: 600; }
+.bw-menu__item--accent .bw-menu__icon { padding: 1px; color: var(--bw-on-plate); background: var(--bw-plate); clip-path: polygon(3px 0, 100% 0, 100% calc(100% - 3px), calc(100% - 3px) 100%, 0 100%, 0 3px); }
+.bw-menu__acts { display: inline-flex; flex: none; gap: 2px; margin: -4px -6px -4px 0; }
+.bw-menu__acts--quiet { visibility: hidden; }
+.bw-menu__item:hover .bw-menu__acts--quiet, .bw-menu__item[data-active] .bw-menu__acts--quiet, .bw-menu__item:focus-within .bw-menu__acts--quiet { visibility: visible; }
+.bw-menu__chev { display: inline-flex; flex: none; color: var(--bw-text-muted); }
+
+/* ── сегменты ── один выбор из нескольких: общая дорожка 32px, выбранная ячейка — пластина во всю ячейку со срезами и кромкой */
+/* дорожка той же формы, что пластина: срезы слева вверху и справа внизу — выбранная крайняя ячейка встаёт в угол впритык, без серого треугольника.
+   Рамка — фон дорожки, обрезанный по форме; заливка — ::before на 1px внутри (срез чуть меньше, чтобы рамка и по диагонали была 1px) */
+.bw-seg { position: relative; isolation: isolate; display: flex; width: fit-content; padding: 1px; background: var(--bw-border-strong);
+  clip-path: polygon(var(--bw-cut) 0, 100% 0, 100% calc(100% - var(--bw-cut)), calc(100% - var(--bw-cut)) 100%, 0 100%, 0 var(--bw-cut)); }
+.bw-seg::before { content: ''; position: absolute; inset: 1px; z-index: -1; background: var(--bw-field-bg); --bw-seg-cut: calc(var(--bw-cut) - .59px);
+  clip-path: polygon(var(--bw-seg-cut) 0, 100% 0, 100% calc(100% - var(--bw-seg-cut)), calc(100% - var(--bw-seg-cut)) 100%, 0 100%, 0 var(--bw-seg-cut)); }
+.bw-seg--wrap { flex-wrap: wrap; }
+.bw-seg__opt { position: relative; isolation: isolate; display: inline-flex; align-items: center; gap: var(--bw-space-1-5); height: 30px; padding: 0 var(--bw-space-3); border: 0; border-radius: 0; background: none; outline: none; cursor: pointer; white-space: nowrap;
+  font: 500 12px/16px var(--bw-font-sans); color: var(--bw-text-muted); transition: color var(--bw-duration-fast), background-color var(--bw-duration-fast); }
+.bw-seg__opt:hover { color: var(--bw-text); background: var(--bw-surface-3); }
+.bw-seg__opt:focus-visible { outline: 2px solid var(--bw-focus); outline-offset: -2px; }
+.bw-seg__opt[aria-checked="true"] { color: var(--bw-on-plate); background: none; }
+.bw-seg__opt[aria-checked="true"]::before { content: ''; position: absolute; inset: 0; z-index: -1; background: var(--bw-plate); box-shadow: inset 0 -3px 0 var(--bw-plate-edge), inset 0 0 0 1px var(--bw-plate-outline);
+  clip-path: polygon(var(--bw-cut) 0, 100% 0, 100% calc(100% - var(--bw-cut)), calc(100% - var(--bw-cut)) 100%, 0 100%, 0 var(--bw-cut)); }
+/* sm — дорожка 28px: в шапках страниц и поповерах */
+.bw-seg--sm .bw-seg__opt { height: 26px; padding: 0 10px; }
+/* выключено: варианты не нажимаются, выбранный — в штриховку, как выключенная кнопка */
+.bw-seg__opt:disabled { cursor: not-allowed; color: var(--bw-text-dim); background: none; }
+.bw-seg__opt:disabled[aria-checked="true"] { color: var(--bw-text-dim); }
+.bw-seg__opt:disabled[aria-checked="true"]::before { background: repeating-linear-gradient(135deg, var(--bw-hatch-a) 0 4px, var(--bw-hatch-b) 4px 8px); box-shadow: none; }
+
+/* ── выпадающий список ── кнопка 32px в виде поля; список — как меню, пункты 28px */
+.bw-select { display: inline-flex; align-items: center; justify-content: space-between; gap: var(--bw-space-2); min-width: 0; height: var(--bw-control-sm); padding: 0 10px; text-align: left;
+  font: 400 12px/16px var(--bw-font-sans); color: var(--bw-text); background: var(--bw-field-bg); border: 1px solid var(--bw-border-strong); border-radius: var(--bw-radius-plate); outline: none; cursor: pointer;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--bw-cut)), calc(100% - var(--bw-cut)) 100%, 0 100%);
+  transition: border-color var(--bw-duration-fast), box-shadow var(--bw-duration-base); }
+.bw-select:hover { border-color: var(--bw-border-hover); }
+.bw-select:focus-visible, .bw-select[aria-expanded="true"] { border-color: var(--bw-focus); box-shadow: inset 0 -2px 0 var(--bw-focus); }
+.bw-select:disabled { background: var(--bw-disabled-bg); color: var(--bw-disabled-text); border-color: var(--bw-border); cursor: not-allowed; box-shadow: none; }
+.bw-select__value { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bw-select__chevron { flex: none; color: var(--bw-text-muted); transition: transform var(--bw-duration-fast); }
+.bw-select[aria-expanded="true"] .bw-select__chevron { transform: rotate(180deg); }
+.bw-select__list { position: fixed; z-index: 50; overflow-y: auto; outline: none; min-width: 0; }
+.bw-select__option { display: flex; align-items: center; gap: var(--bw-space-2); height: 28px; padding: 0 var(--bw-space-3) 0 var(--bw-space-2); color: var(--bw-text); cursor: default; user-select: none; white-space: nowrap; }
+.bw-select__option[data-active] { background: var(--bw-selected-bg); box-shadow: inset 3px 0 0 var(--bw-accent); }
+.bw-select__option[aria-disabled="true"] { color: var(--bw-text-dim); }
+.bw-select__check { flex: none; opacity: 0; }
+.bw-select__option[aria-selected="true"] .bw-select__check { opacity: 1; }
+.bw-select__text { overflow: hidden; text-overflow: ellipsis; }
+
+/* ── диалог подтверждения ── 460px, сообщение 14px, кнопки справа, полоса подсказок внизу */
+.bw-overlay { position: fixed; inset: 0; z-index: 50; display: flex; align-items: center; justify-content: center; background: color-mix(in srgb, var(--bw-bg) 70%, transparent); }
+.bw-dialog { display: flex; flex-direction: column; width: 460px; max-width: calc(100% - 32px); overflow: hidden; color: var(--bw-text);
+  background: var(--bw-surface-2); border: 1px solid var(--bw-border-strong); border-radius: var(--bw-radius-lg); box-shadow: var(--bw-shadow-popover); }
+/* диалог в собственном окне ОС (Vimperium): занимает окно целиком, без рамки и тени */
+.bw-dialog--window { width: 100%; max-width: none; height: 100%; border: 0; border-radius: 0; box-shadow: none; }
+.bw-dialog__body { flex: 1; min-height: 0; display: flex; flex-direction: column; padding: 20px; }
+.bw-dialog__title { margin: 0 0 var(--bw-space-2); font: 600 14px/20px var(--bw-font-sans); color: var(--bw-text-strong); }
+.bw-dialog__message { margin: 0 0 var(--bw-space-4); font: 400 14px/20px var(--bw-font-sans); color: var(--bw-text-muted); }
+.bw-dialog__actions { display: flex; justify-content: flex-end; gap: var(--bw-space-2); margin-top: auto; }
+/* диалог с формой: шапка как у панели, с плашкой; тело с полями и кнопками */
+.bw-dialog__head { background: var(--bw-surface-1); }
+.bw-dialog__form { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: var(--bw-space-3); padding: var(--bw-space-4) 20px 20px; }
+.bw-dialog__form > .bw-dialog__actions { padding-top: var(--bw-space-1); }
+.bw-dialog__note { margin-right: auto; align-self: center; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 400 12px/16px var(--bw-font-sans); color: var(--bw-text-muted); }
+.bw-dialog__note--error { color: var(--bw-error); }
+/* запись сочетания клавиш: кнопка с клавишами */
+.bw-hotkey { min-width: 150px; justify-content: space-between; }
+.bw-hotkey.bw-btn--sm { min-width: 96px; }
+
+/* ── полоса подсказок ── 40px, по центру: «подпись + клавиши» */
+.bw-hintbar { display: flex; flex: none; align-items: center; justify-content: center; column-gap: var(--bw-space-3); height: 40px; padding: 0 var(--bw-space-4); overflow: hidden; white-space: nowrap;
+  border-top: 1px solid var(--bw-border); background: var(--bw-surface-1); font: 500 11px/1 var(--bw-font-sans); color: var(--bw-text-muted); }
+.bw-hintbar--wrap { flex-wrap: wrap; row-gap: var(--bw-space-1-5); height: auto; padding: var(--bw-space-2) var(--bw-space-4); overflow: visible; }
+.bw-hint { display: inline-flex; align-items: center; gap: var(--bw-space-1); white-space: nowrap; }
+
+/* ── бейдж ── статус: прямоугольный, 10px заглавными; цвет тона и его же заливка 15% */
+.bw-badge { --bw-badge-c: var(--bw-text-muted); display: inline-flex; align-items: center; padding: 2px 6px; border-radius: 4px; white-space: nowrap;
+  font: 500 10px/12px var(--bw-font-mono); text-transform: uppercase; letter-spacing: .05em; color: var(--bw-badge-c); background: color-mix(in srgb, var(--bw-badge-c) 15%, transparent); }
+.bw-badge--neutral { background: var(--bw-surface-3); }
+/* подложка — от пластины, текст — accent: в светлой теме чёрный на бледно-жёлтом (жёлтым текстом на светлом не пишут) */
+.bw-badge--accent { --bw-badge-c: var(--bw-plate); color: var(--bw-accent); }
+.bw-badge--success { --bw-badge-c: var(--bw-success); }
+.bw-badge--warning { --bw-badge-c: var(--bw-warning); }
+.bw-badge--error { --bw-badge-c: var(--bw-error); }
+/* как написано: идентификаторы (it-search, open_module) — без заглавных и разрядки */
+.bw-badge--plain { text-transform: none; letter-spacing: 0; font-size: 11px; }
+.bw-badge--wrap { white-space: normal; overflow-wrap: anywhere; }
+
+/* ── строки палитры ── клавиша строки (цифра или метка), высокая строка со значком и плотная с клавишей */
+.bw-rowkey { display: inline-flex; flex: none; align-items: center; justify-content: center; height: 18px; min-width: 16px; padding: 0 1px; border-radius: 4px; border: 1px solid var(--bw-border-strong);
+  background: var(--bw-surface-2); color: var(--bw-text); font: 500 10px/1 var(--bw-font-mono); font-variant-numeric: tabular-nums; user-select: none; pointer-events: none; }
+.bw-rowkey--quiet { font-weight: 400; color: var(--bw-text-muted); }
+
+.bw-result { position: relative; display: flex; align-items: center; gap: var(--bw-space-3); padding: var(--bw-space-2) var(--bw-space-4); color: var(--bw-text); cursor: pointer; transition: background-color var(--bw-duration-fast); }
+.bw-result[aria-selected="true"] { background: var(--bw-selected-bg); box-shadow: inset 3px 0 0 var(--bw-accent); }
+.bw-result > .bw-rowkey { position: absolute; left: 0; top: 50%; width: 16px; transform: translateY(-50%); }
+.bw-result[aria-selected="true"] > .bw-rowkey { background: var(--bw-plate); border-color: var(--bw-accent); color: var(--bw-on-plate); }
+.bw-result__icon { position: relative; flex: none; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: var(--bw-radius-md); background: var(--bw-surface-3); color: var(--bw-text-muted); }
+.bw-result[aria-selected="true"] .bw-result__icon { background: var(--bw-surface-2); color: var(--bw-text); }
+.bw-result__icon--image { background: none !important; }
+.bw-result__icon img { width: 32px; height: 32px; object-fit: contain; }
+.bw-result__corner { position: absolute; right: -2px; bottom: -2px; width: 14px; height: 14px; display: flex; align-items: center; justify-content: center; border-radius: 50%; border: 1px solid var(--bw-border-strong); background: var(--bw-surface-2); color: var(--bw-text-muted); }
+.bw-result__body { flex: 1; min-width: 0; }
+.bw-result__line { display: flex; align-items: center; gap: var(--bw-space-2); min-width: 0; }
+.bw-result__title { font: 500 14px/20px var(--bw-font-sans); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bw-result__sub { font: 400 12px/16px var(--bw-font-sans); color: var(--bw-text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bw-result__note { flex: none; max-width: 40%; padding: 2px var(--bw-space-2); border: 1px solid var(--bw-border-strong); border-radius: var(--bw-radius-md); font: 400 11px/13px var(--bw-font-sans); color: var(--bw-text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.bw-command { position: relative; display: flex; align-items: center; gap: var(--bw-space-2); padding: var(--bw-space-1-5) var(--bw-space-4) var(--bw-space-1-5) var(--bw-space-2); font: 400 14px/20px var(--bw-font-sans); color: var(--bw-text); cursor: pointer; }
+.bw-command:hover { background: var(--bw-surface-3); }
+.bw-command[aria-selected="true"] { background: var(--bw-selected-bg); box-shadow: inset 3px 0 0 var(--bw-accent); }
+.bw-command__cap { display: flex; flex: none; align-items: center; align-self: stretch; margin: calc(-1 * var(--bw-space-1-5)) 0; }
+.bw-command__cap .bw-rowkey { width: 20px; padding: 0; }
+.bw-command__cap::after { content: ''; align-self: stretch; width: 1px; margin-left: var(--bw-space-2); background: var(--bw-border); }
+.bw-command__label { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bw-command__keys { display: flex; flex: none; align-items: center; gap: 2px; margin-left: var(--bw-space-4); font-size: 12px; color: var(--bw-text-muted); }
+
+/* ── клавиатурная навигация по форме ── вход @bedware/ui/vim-form. Форма помечена data-vim-form, её элементы — data-vim-item.
+   Курсор — кольцо цвета фокуса 2px вокруг элемента; у строки списка (data-vim-kind="row") — тонкое внутри строки, а яркое — на её кнопке под курсором */
+[data-vim-form] [data-vim-cursor] { outline: 2px solid var(--bw-focus) !important; outline-offset: 2px; }
+[data-vim-form] [data-vim-cursor][data-vim-kind="row"] { outline: 1px solid color-mix(in srgb, var(--bw-focus) 55%, transparent) !important; outline-offset: -1px; }
+[data-vim-form] [data-vim-cell-cursor] { outline: 2px solid var(--bw-focus) !important; outline-offset: 1px; }
+/* поле обрезано срезом, кольцо вокруг него не видно: курсор на поле — рамка цвета фокуса (у самого фокуса к ней добавляется нижняя полоса) */
+[data-vim-form] .bw-field[data-vim-cursor], [data-vim-form] .bw-field__input[data-vim-cursor] { outline: none !important; }
+[data-vim-form] .bw-field[data-vim-cursor], [data-vim-form] .bw-field:has(> .bw-field__input[data-vim-cursor]) { --bw-field-frame: var(--bw-focus); }
+/* у ползунка настоящий input прозрачен: кольцо — вокруг всего ползунка */
+[data-vim-form] .bw-slider:has(> input[data-vim-cursor]) { outline: 2px solid var(--bw-focus); outline-offset: 2px; }
+/* метки: слой поверх окна и слой внутри прокручиваемой области формы (она position: relative); метка — клавиша строки у левого верхнего угла элемента,
+   со сдвигом наружу на 6 и 7px, но не за край слоя. Координаты угла даёт компонент (--bw-vl-x, --bw-vl-y) */
+.bw-vimlabels { position: fixed; inset: 0; z-index: 40; pointer-events: none; }
+.bw-vimlabels--scrolled { position: absolute; inset: auto; left: 0; top: 0; width: 0; height: 0; }
+.bw-rowkey.bw-vimlabel { position: absolute; z-index: 10; width: 20px; padding: 0; left: max(0px, calc(var(--bw-vl-x, 0px) - 6px)); top: max(0px, calc(var(--bw-vl-y, 0px) - 7px)); transition: opacity var(--bw-duration-fast); }
+.bw-vimlabel[data-faded] { opacity: .3; }
+.bw-vimlabel__typed { align-self: stretch; display: inline-flex; align-items: center; margin-left: -1px; padding-left: 1px; background: var(--bw-plate); color: var(--bw-on-plate); }
+/* таблица всех клавиш по «?»: карточка поверх формы (--fixed — поверх окна), одна или две колонки «клавиши — что делают» */
+.bw-keyshelp { position: absolute; inset: 0; z-index: 50; display: flex; align-items: center; justify-content: center; background: color-mix(in srgb, var(--bw-bg) 70%, transparent); }
+.bw-keyshelp--fixed { position: fixed; }
+.bw-keyshelp__card { display: flex; flex-direction: column; width: 440px; max-width: 92%; max-height: 90%; padding: var(--bw-space-4); color: var(--bw-text);
+  background: var(--bw-surface-2); border: 1px solid var(--bw-border-strong); border-radius: var(--bw-radius-lg); box-shadow: var(--bw-shadow-popover); }
+.bw-keyshelp__card--wide { width: 760px; }
+.bw-keyshelp__head { display: flex; flex: none; align-items: center; justify-content: space-between; gap: var(--bw-space-3); margin-bottom: var(--bw-space-3); }
+.bw-keyshelp__title { margin: 0; font: 600 14px/20px var(--bw-font-sans); color: var(--bw-text-strong); }
+.bw-keyshelp__body { min-height: 0; overflow-y: auto; }
+.bw-keyshelp__tables { display: grid; column-gap: var(--bw-space-6); }
+.bw-keyshelp__tables--2 { grid-template-columns: 1fr 1fr; }
+.bw-keyshelp__table { display: grid; grid-template-columns: auto 1fr; align-content: start; column-gap: var(--bw-space-4); row-gap: var(--bw-space-1-5); margin: 0; font: 400 12px/16px var(--bw-font-sans); }
+.bw-keyshelp__row { display: contents; }
+.bw-keyshelp__row dt { white-space: nowrap; font-family: var(--bw-font-mono); color: var(--bw-text); }
+.bw-keyshelp__row dd { margin: 0; color: var(--bw-text-muted); }
+
+/* ══ мелкие формы без кругов ══ */
+/* ── счётчик на кнопке ── число или отметка со срезами; внутри IconButton встаёт на правый верхний угол */
+.bw-count { --bw-count-c: var(--bw-plate); --bw-count-t: var(--bw-on-plate); display: inline-flex; align-items: center; justify-content: center; min-width: 14px; height: 14px; padding: 0 3px; pointer-events: none;
+  font: 700 9px/1 var(--bw-font-mono); font-variant-numeric: tabular-nums; background: var(--bw-count-c); color: var(--bw-count-t); clip-path: polygon(3px 0, 100% 0, 100% calc(100% - 3px), calc(100% - 3px) 100%, 0 100%, 0 3px); }
+.bw-count svg { width: 9px; height: 9px; }
+.bw-count--success { --bw-count-c: var(--bw-success); --bw-count-t: var(--bw-bg); }
+.bw-count--muted { --bw-count-c: var(--bw-text-muted); --bw-count-t: var(--bw-bg); }
+.bw-count--error { --bw-count-c: var(--bw-error); --bw-count-t: var(--bw-on-error); }
+.bw-iconbtn > .bw-count { position: absolute; top: -3px; right: -3px; }
+.bw-iconbtn > .bw-count--bottom { top: auto; bottom: -3px; }
+
+/* ── значок на пластине ── крупный значок слева в диалоге, запросе страницы, на экране ошибки: 36px (sm 32, lg 56) */
+.bw-iconplate { --bw-ip-c: var(--bw-plate); --bw-ip-e: var(--bw-plate-edge); --bw-ip-cut: 8px; flex: none; display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px;
+  background: var(--bw-ip-c); color: var(--bw-on-plate); box-shadow: inset 0 -3px 0 var(--bw-ip-e);
+  clip-path: polygon(var(--bw-ip-cut) 0, 100% 0, 100% calc(100% - var(--bw-ip-cut)), calc(100% - var(--bw-ip-cut)) 100%, 0 100%, 0 var(--bw-ip-cut)); }
+.bw-iconplate--sm { width: var(--bw-control-sm); height: var(--bw-control-sm); }
+.bw-iconplate--lg { --bw-ip-cut: 12px; width: 56px; height: 56px; box-shadow: inset 0 -4px 0 var(--bw-ip-e); }
+.bw-iconplate--error { --bw-ip-c: var(--bw-error); --bw-ip-e: var(--bw-error-edge); color: var(--bw-on-error); }
+.bw-iconplate--neutral { --bw-ip-c: var(--bw-surface-4); --bw-ip-e: var(--bw-border-strong); color: var(--bw-text); }
+
+/* ── образец цвета ── квадрат 18px со срезами; цвет — данные (--bw-cs-c), у выбранного кромка и галочка. Форму рисует ::before: кольцо фокуса не обрезается */
+.bw-colorswatch { position: relative; isolation: isolate; flex: none; width: 18px; height: 18px; padding: 0; border: 0; background: none; display: inline-flex; align-items: center; justify-content: center; color: var(--bw-cs-ink, #1a1a1a); cursor: pointer; outline: none;
+  transition: transform var(--bw-duration-fast); }
+.bw-colorswatch::before { content: ''; position: absolute; inset: 0; z-index: -1; background: var(--bw-cs-c); clip-path: polygon(4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%, 0 4px); }
+.bw-colorswatch svg { width: 11px; height: 11px; }
+.bw-colorswatch:hover { transform: translateY(-1px); }
+.bw-colorswatch:focus-visible, .bw-colorswatch[data-focused] { outline: 2px solid var(--bw-focus); outline-offset: 2px; }
+.bw-colorswatch[aria-pressed="true"]::before { box-shadow: inset 0 -3px 0 rgb(0 0 0 / .35); }
+
+/* ── точка ── маркер списка и индикатор: квадратик 4px (md 6px, цветом пластины) */
+.bw-dot { display: inline-block; flex: none; width: 4px; height: 4px; background: var(--bw-text-muted); }
+.bw-dot--md { width: 6px; height: 6px; }
+.bw-dot--accent { background: var(--bw-plate); }
+.bw-dot--error { background: var(--bw-error); }
+.bw-dot--success { background: var(--bw-success); }
+
+/* ── полоса прокрутки ── класс bw-scrollbars на корне приложения: тонкая планка 4px, под курсором — пластина 8px с кромкой */
+.bw-scrollbars ::-webkit-scrollbar, .bw-scrollbars::-webkit-scrollbar { width: 10px; height: 10px; }
+.bw-scrollbars ::-webkit-scrollbar-track, .bw-scrollbars::-webkit-scrollbar-track, .bw-scrollbars ::-webkit-scrollbar-corner, .bw-scrollbars::-webkit-scrollbar-corner { background: transparent; }
+.bw-scrollbars ::-webkit-scrollbar-thumb, .bw-scrollbars::-webkit-scrollbar-thumb { background: var(--bw-border-strong); background-clip: padding-box; border: 3px solid transparent; border-radius: 0; }
+.bw-scrollbars ::-webkit-scrollbar-thumb:hover, .bw-scrollbars::-webkit-scrollbar-thumb:hover, .bw-scrollbars ::-webkit-scrollbar-thumb:active, .bw-scrollbars::-webkit-scrollbar-thumb:active {
+  background: linear-gradient(var(--bw-plate) calc(100% - 3px), var(--bw-plate-edge) 0); background-clip: padding-box; border-width: 1px; }
+.bw-scrollbars ::-webkit-scrollbar-thumb:horizontal:hover, .bw-scrollbars::-webkit-scrollbar-thumb:horizontal:hover, .bw-scrollbars ::-webkit-scrollbar-thumb:horizontal:active, .bw-scrollbars::-webkit-scrollbar-thumb:horizontal:active {
+  background: linear-gradient(var(--bw-plate) calc(100% - 2px), var(--bw-plate-edge) 0); background-clip: padding-box; }
