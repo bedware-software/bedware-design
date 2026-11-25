@@ -515,7 +515,7 @@
    со сдвигом наружу на 6 и 7px, но не за край слоя. Координаты угла даёт компонент (--bw-vl-x, --bw-vl-y) */
 .bw-vimlabels { position: fixed; inset: 0; z-index: 40; pointer-events: none; }
 .bw-vimlabels--scrolled { position: absolute; inset: auto; left: 0; top: 0; width: 0; height: 0; }
-.bw-rowkey.bw-vimlabel { position: absolute; z-index: 10; left: max(0px, calc(var(--bw-vl-x, 0px) - 6px)); top: max(0px, calc(var(--bw-vl-y, 0px) - 7px)); transition: opacity var(--bw-duration-fast); }
+.bw-rowkey.bw-vimlabel { position: absolute; z-index: 10; width: 20px; padding: 0; left: max(0px, calc(var(--bw-vl-x, 0px) - 6px)); top: max(0px, calc(var(--bw-vl-y, 0px) - 7px)); transition: opacity var(--bw-duration-fast); }
 .bw-vimlabel[data-faded] { opacity: .3; }
 .bw-vimlabel__typed { align-self: stretch; display: inline-flex; align-items: center; margin-left: -1px; padding-left: 1px; background: var(--bw-plate); color: var(--bw-on-plate); }
 /* таблица всех клавиш по «?»: карточка поверх формы (--fixed — поверх окна), одна или две колонки «клавиши — что делают» */
