@@ -28,3 +28,28 @@ export function SectionTitle({ title, description, level = 1, danger, side, flus
     </div>
   )
 }
+
+export interface PageHeaderProps extends Omit<HTMLAttributes<HTMLElement>, 'title'> {
+  /** Номер страницы в плашке, две цифры: «01» — её место в боковой навигации. */
+  number: string
+  /** Название страницы — то же слово, что у пункта навигации. */
+  title: ReactNode
+  /** О чём страница, одно-два предложения. */
+  description?: ReactNode
+  /** Справа: поиск, кнопка, переключатель модуля. */
+  side?: ReactNode
+}
+
+/** Заголовок страницы настроек: первый блок каждой страницы — пластина с номером, название, описание.
+ *  Один на страницу; разделы ниже — SectionTitle, подразделы — SectionTitle level={2}, название настройки — PanelRow title. */
+export function PageHeader({ number, title, description, side, className, ...rest }: PageHeaderProps) {
+  return (
+    <header className={cx('bw-pagehead', className)} data-n={number} {...rest}>
+      <div className="bw-pagehead__main">
+        <h2 className="bw-pagehead__title">{title}</h2>
+        {description && <p className="bw-pagehead__desc">{description}</p>}
+      </div>
+      {side && <div className="bw-pagehead__side">{side}</div>}
+    </header>
+  )
+}

@@ -5,7 +5,7 @@ import { useState } from 'react'
 import type { CSSProperties, ReactNode } from 'react'
 import {
   Badge, Button, Checkbox, Toast, ColorSwatch, Count, Dot, HelpText, IconPlate, Label, ChoiceCards, ColorField, CommandRow, ConfirmDialog, Field, FormDialog, GroupTitle, Hint, HintBar, HotkeyButton, IconButton, InputField, Kbd, LinkButton,
-  ListRow, Menu, MenuHeader, MenuItem, MenuSeparator, Nav, NavGroup, NavItem, Notice, Panel, PanelFooter, PanelHeader, PanelRow, ResultRow, SectionTitle, Segmented, Select, SelectList,
+  ListRow, Menu, MenuHeader, MenuItem, MenuSeparator, Nav, NavGroup, NavItem, Notice, PageHeader, Panel, PanelFooter, PanelHeader, PanelRow, ResultRow, SectionTitle, Segmented, Select, SelectList,
   Progress, Slider, Switch, Tag, Textarea, Tip, Tooltip,
 } from '../src'
 import { VimFormContext, VimFormHintBar, VimFormKeysHelp, VimFormLabels, VimSelect, useVimFormKeys, vimFormKeymap, type VimFormTexts } from '../src/vim-form'
@@ -169,6 +169,7 @@ function NoticeDemo() {
 function SectionDemo() {
   return (
     <div style={{ maxWidth: 440 }}>
+      <PageHeader number="03" title="Оформление" description="Тема, фон светлой темы и вид режима Vim." />
       <SectionTitle title="Переключение окон" description="Какие окна показывать и в каком порядке." />
       <Panel><PanelRow title="Только текущий рабочий стол" description="Окна с других столов скрыты."><Switch checked onChange={() => {}} label="Только текущий рабочий стол" /></PanelRow></Panel>
       <SectionTitle level={2} title="Исключения" side={<Button size="sm" icon={icons.plus(12)}>Добавить</Button>} style={{ marginTop: 20 }} />
