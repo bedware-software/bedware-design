@@ -43,19 +43,19 @@
 }
 
 [data-theme="light"] {
-  --color-background: #f4f1e8;
-  --color-foreground: #1d1b18;
-  --color-card: #faf8f2;
-  --color-card-foreground: #1d1b18;
+  --color-background: #ffffff;
+  --color-foreground: #1a1a18;
+  --color-card: #f5f5f3;
+  --color-card-foreground: #1a1a18;
   --color-popover: #ffffff;
-  --color-popover-foreground: #1d1b18;
-  --color-primary: #000000;
-  --color-primary-foreground: #ffde5d;
-  --color-secondary: #ebe7dc;
-  --color-secondary-foreground: #1d1b18;
-  --color-muted: #e0dbcd;
-  --color-muted-foreground: #5a564f;
-  --color-accent: #ebe7dc;
+  --color-popover-foreground: #1a1a18;
+  --color-primary: #ffde5d;
+  --color-primary-foreground: #000000;
+  --color-secondary: #ececea;
+  --color-secondary-foreground: #1a1a18;
+  --color-muted: #e0e0dd;
+  --color-muted-foreground: #5c5c57;
+  --color-accent: #ececea;
   --color-accent-foreground: #000000;
   --color-destructive: #c8372b;
   --color-destructive-foreground: #ffffff;
@@ -63,36 +63,36 @@
   --color-success-foreground: #ffffff;
   --color-warning: #9c5200;
   --color-warning-foreground: #ffffff;
-  --color-border: #d9d4c6;
-  --color-input: #8a8475;
+  --color-border: #dcdcd8;
+  --color-input: #8c8c86;
   --color-ring: #000000;
-  --color-toolbar: #faf8f2;
+  --color-toolbar: #f5f5f3;
   --color-field: #ffffff;
-  --color-vim-command: #000000;
+  --color-vim-command: #ffde5d;
   --color-vim-command-text: #000000;
   --color-vim-insert: #9c5200;
   --color-vim-insert-text: #9c5200;
   --color-desktop-hint: #ffffff;
   --color-desktop-hint-foreground: #000000;
-  --color-desktop-hint-border: #8a8475;
-  --color-desktop-hint-muted: #5a564f;
+  --color-desktop-hint-border: #8c8c86;
+  --color-desktop-hint-muted: #5c5c57;
 }
 
 @media (prefers-color-scheme: light) {
   [data-theme="system"] {
-    --color-background: #f4f1e8;
-    --color-foreground: #1d1b18;
-    --color-card: #faf8f2;
-    --color-card-foreground: #1d1b18;
+    --color-background: #ffffff;
+    --color-foreground: #1a1a18;
+    --color-card: #f5f5f3;
+    --color-card-foreground: #1a1a18;
     --color-popover: #ffffff;
-    --color-popover-foreground: #1d1b18;
-    --color-primary: #000000;
-    --color-primary-foreground: #ffde5d;
-    --color-secondary: #ebe7dc;
-    --color-secondary-foreground: #1d1b18;
-    --color-muted: #e0dbcd;
-    --color-muted-foreground: #5a564f;
-    --color-accent: #ebe7dc;
+    --color-popover-foreground: #1a1a18;
+    --color-primary: #ffde5d;
+    --color-primary-foreground: #000000;
+    --color-secondary: #ececea;
+    --color-secondary-foreground: #1a1a18;
+    --color-muted: #e0e0dd;
+    --color-muted-foreground: #5c5c57;
+    --color-accent: #ececea;
     --color-accent-foreground: #000000;
     --color-destructive: #c8372b;
     --color-destructive-foreground: #ffffff;
@@ -100,19 +100,19 @@
     --color-success-foreground: #ffffff;
     --color-warning: #9c5200;
     --color-warning-foreground: #ffffff;
-    --color-border: #d9d4c6;
-    --color-input: #8a8475;
+    --color-border: #dcdcd8;
+    --color-input: #8c8c86;
     --color-ring: #000000;
-    --color-toolbar: #faf8f2;
+    --color-toolbar: #f5f5f3;
     --color-field: #ffffff;
-    --color-vim-command: #000000;
+    --color-vim-command: #ffde5d;
     --color-vim-command-text: #000000;
     --color-vim-insert: #9c5200;
     --color-vim-insert-text: #9c5200;
     --color-desktop-hint: #ffffff;
     --color-desktop-hint-foreground: #000000;
-    --color-desktop-hint-border: #8a8475;
-    --color-desktop-hint-muted: #5a564f;
+    --color-desktop-hint-border: #8c8c86;
+    --color-desktop-hint-muted: #5c5c57;
   }
 }
 
@@ -144,4 +144,71 @@
   --color-toolbar: #f4f1e8;
   --color-field: #faf8f2;
   --color-desktop-hint: #faf8f2;
+}
+
+/* Light · Paper: ступень яркости темы light, атрибут data-theme-variant рядом с data-theme. */
+[data-theme-variant="light-paper"] {
+  --color-background: #f4f1e8;
+  --color-foreground: #1d1b18;
+  --color-card: #faf8f2;
+  --color-card-foreground: #1d1b18;
+  --color-popover-foreground: #1d1b18;
+  --color-secondary: #ebe7dc;
+  --color-secondary-foreground: #1d1b18;
+  --color-muted: #e0dbcd;
+  --color-muted-foreground: #5a564f;
+  --color-accent: #ebe7dc;
+  --color-border: #d9d4c6;
+  --color-input: #8a8475;
+  --color-toolbar: #faf8f2;
+  --color-desktop-hint-border: #8a8475;
+  --color-desktop-hint-muted: #5a564f;
+}
+
+/* Light · Steel: ступень яркости темы light, атрибут data-theme-variant рядом с data-theme. */
+[data-theme-variant="light-steel"] {
+  --color-background: #e4e8ed;
+  --color-foreground: #171a1f;
+  --color-card: #edf0f4;
+  --color-card-foreground: #171a1f;
+  --color-popover: #f7f9fb;
+  --color-popover-foreground: #171a1f;
+  --color-secondary: #d9dee5;
+  --color-secondary-foreground: #171a1f;
+  --color-muted: #cbd2db;
+  --color-muted-foreground: #4d5562;
+  --color-accent: #d9dee5;
+  --color-border: #c5ccd6;
+  --color-input: #7b8491;
+  --color-toolbar: #edf0f4;
+  --color-field: #f7f9fb;
+  --color-desktop-hint: #f7f9fb;
+  --color-desktop-hint-border: #7b8491;
+  --color-desktop-hint-muted: #4d5562;
+}
+
+/* Light · Stone: ступень яркости темы light, атрибут data-theme-variant рядом с data-theme. */
+[data-theme-variant="light-stone"] {
+  --color-background: #c4c6c9;
+  --color-foreground: #111111;
+  --color-card: #cfd1d4;
+  --color-card-foreground: #111111;
+  --color-popover: #dadcde;
+  --color-popover-foreground: #111111;
+  --color-secondary: #b8babd;
+  --color-secondary-foreground: #111111;
+  --color-muted: #abadb1;
+  --color-muted-foreground: #3d3f43;
+  --color-accent: #b8babd;
+  --color-success: #1f5c22;
+  --color-warning: #7a3f00;
+  --color-border: #a3a5a9;
+  --color-input: #5f6165;
+  --color-toolbar: #cfd1d4;
+  --color-field: #e4e5e7;
+  --color-vim-insert: #7a3f00;
+  --color-vim-insert-text: #7a3f00;
+  --color-desktop-hint: #dadcde;
+  --color-desktop-hint-border: #5f6165;
+  --color-desktop-hint-muted: #3d3f43;
 }

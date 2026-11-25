@@ -49,7 +49,7 @@
   <b>bedware</b>
   <a href="#components">Компоненты</a>
   <a href="system.html">← Итог: бренд</a>
-  <span class="pick" id="theme-pick"><label><input type="radio" name="th" value="dark" checked>тёмная тема</label><label><input type="radio" name="th" value="light">светлая тема</label><label><input type="radio" name="th" value="dark-soft">тёмная мягкая</label><label><input type="radio" name="th" value="light-soft">светлая мягкая</label></span>
+  <span class="pick" id="theme-pick"><label><input type="radio" name="th" value="dark" checked>тёмная тема</label><label><input type="radio" name="th" value="light">светлая (белая)</label><label><input type="radio" name="th" value="dark-soft">тёмная мягкая</label><label><input type="radio" name="th" value="light-paper">бумага</label><label><input type="radio" name="th" value="light-soft">бумага мягкая</label><label><input type="radio" name="th" value="light-steel">сталь</label><label><input type="radio" name="th" value="light-stone">камень</label></span>
 </nav>
 <main>
 <div class="hero" style="grid-template-columns:1fr"><div>
@@ -65,7 +65,7 @@
   const setTheme = (t) => { themed.dataset.theme = t.split('-')[0]; themed.dataset.themeVariant = t; document.querySelectorAll('#theme-pick input').forEach((i) => (i.checked = i.value === t)); try { localStorage.setItem('bw-ui-theme', t); } catch {} };
   let start = new URLSearchParams(location.search).get('theme');
   try { start ??= localStorage.getItem('bw-ui-theme'); } catch {}
-  if (start === 'light' || start === 'dark') setTheme(start);
+  if (start && document.querySelector('#theme-pick input[value="' + start + '"]')) setTheme(start);
   document.querySelectorAll('#theme-pick input').forEach((i) => (i.onchange = () => setTheme(i.value)));
 </script>
 <script src="packages/ui/demo/build/showcase.js"></script>

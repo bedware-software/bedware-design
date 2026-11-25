@@ -1,7 +1,7 @@
 /* bedware — сгенерировано из tokens/tokens.json командой «npm run tokens». Руками не править. */
 :root, [data-theme="dark"] {
   /* цвета · dark */
-  --bw-bg: #000000; /* Фон окна приложения и сайта. В тёмной теме — чёрный, цвет фона логотипа; в светлой — тёплая «бумага». */
+  --bw-bg: #000000; /* Фон окна приложения и сайта. В тёмной теме — чёрный, цвет фона логотипа; в светлой — белый (бумага, сталь и камень — фоны на выбор). */
   --bw-surface-1: #0e0d0c; /* Панели, боковая колонка, полоса подсказок. */
   --bw-surface-2: #171513; /* Карточки, меню, диалоги. */
   --bw-surface-3: #22201d; /* Hover строк и текстовых кнопок, вторичные кнопки. */
@@ -10,18 +10,19 @@
   --bw-border: #3a3732; /* Разделители и декоративные рамки. Не для границ элементов управления. */
   --bw-border-strong: #5a564f; /* Рамка поля ввода, вторичной кнопки, панели. */
   --bw-border-hover: #77736a; /* Рамка поля и вторичной кнопки при наведении. */
-  --bw-yellow: #ffde5d; /* Жёлтый логотипа. Заливка с чёрным текстом в тёмной теме; текст и кромка на чёрных пластинах в светлой. На светлом фоне как текст, линия или кольцо не используется (контраст 1.1:1). */
+  --bw-yellow: #ffde5d; /* Жёлтый логотипа. Заливка пластин с чёрным текстом в обеих темах. На светлом фоне — только площадью: как текст, тонкая линия или кольцо не используется (контраст с белым 1.3:1). */
   --bw-yellow-hover: #ffe98a; /* Светлый жёлтый для hover жёлтого текста и ссылок. */
   --bw-yellow-pressed: #e5c440; /* Нажатая основная кнопка. */
   --bw-yellow-plate: #b7974e; /* Нижняя кромка жёлтой пластины (3px, при наведении 5px). */
   --bw-yellow-deep: #89641a; /* Жёлтый для светлой темы (на следующем этапе). */
   --bw-peach: #ffbf68; /* Персиковый логотипа («software»). В интерфейсе используется через токены link и warning; напрямую — только в логотипе и на тёмном. */
   --bw-on-yellow: #000000; /* Текст и значки на yellow, peach и error. */
-  --bw-plate: var(--bw-yellow); /* Заливка пластины: основная кнопка, плашка панели, метка, включённый переключатель, кромка выбранной строки. В тёмной теме жёлтая, в светлой чёрная. */
-  --bw-plate-edge: var(--bw-yellow-plate); /* Нижняя кромка пластины. В светлой теме — жёлтая полоса под чёрной пластиной. */
+  --bw-plate: var(--bw-yellow); /* Заливка пластины: основная кнопка, плашка панели, метка, включённый переключатель, кромка выбранной строки. Жёлтая в обеих темах. На светлом — только площадью: тонкой линией и текстом жёлтый не пишут (для этого accent). */
+  --bw-plate-edge: var(--bw-yellow-plate); /* Нижняя кромка пластины. В тёмной теме янтарная; в светлой — жёлтый потемнее: на белом янтарная читается коричневой. */
   --bw-plate-outline: var(--bw-yellow); /* Контур пластины 1px; совпадает с заливкой. */
   --bw-plate-pressed: var(--bw-yellow-pressed); /* Нажатая пластина. */
-  --bw-on-plate: var(--bw-on-yellow); /* Текст и значки на пластине: чёрные на жёлтой (тёмная тема), жёлтые на чёрной (светлая). */
+  --bw-on-plate: var(--bw-on-yellow); /* Текст и значки на пластине: чёрные на жёлтой, в обеих темах. */
+  --bw-accent: var(--bw-yellow); /* Акцент текстом или тонкой линией прямо на фоне: нажатая кнопка без рамки и её подчёркивание. В тёмной теме жёлтый, в светлой чёрный — жёлтый на белом тонкой линией не виден. */
   --bw-on-error: #000000; /* Текст на опасной кнопке: чёрный в тёмной теме, белый в светлой. */
   --bw-text-strong: #ffffff; /* Заголовки и значения на bg и surface-*. */
   --bw-text: #f4f1e8; /* Основной текст на bg и surface-*. */
@@ -33,7 +34,7 @@
   --bw-success-edge: #5c9c4a; /* Нижняя кромка зелёной пластины: уведомление об успехе. Текст на пластине — on-error (чёрный в тёмной теме, белый в светлой). */
   --bw-warning: var(--bw-peach); /* Предупреждение. В светлой теме — тёмно-оранжевый: персиковый на светлом не читается. */
   --bw-link: var(--bw-peach); /* Ссылки и вторые слова в заголовках. В тёмной теме персиковый, в светлой тёмно-оранжевый. */
-  --bw-focus: var(--bw-yellow); /* Кольцо фокуса: 2px, отступ 3px, на :focus-visible. В тёмной теме жёлтое, в светлой чёрное — жёлтое на светлом не видно. */
+  --bw-focus: var(--bw-yellow); /* Кольцо фокуса: 2px, отступ 3px, на :focus-visible. В тёмной теме жёлтое, в светлой чёрное — жёлтое на светлом не видно. Этим же цветом курсор ввода. */
   --bw-hatch-a: #2b2825; /* Штриховка выключенной кнопки, светлая полоса (4px под 135°). */
   --bw-hatch-b: #1a1816; /* Штриховка выключенной кнопки, тёмная полоса. */
   --bw-disabled-bg: #1b1917; /* Фон выключенного поля. */
@@ -46,25 +47,22 @@
 
 [data-theme="light"] {
   /* цвета и тени · light */
-  --bw-bg: #f4f1e8;
-  --bw-surface-1: #faf8f2;
+  --bw-bg: #ffffff;
+  --bw-surface-1: #f5f5f3;
   --bw-surface-2: #ffffff;
-  --bw-surface-3: #ebe7dc;
-  --bw-surface-4: #e0dbcd;
+  --bw-surface-3: #ececea;
+  --bw-surface-4: #e0e0dd;
   --bw-field-bg: #ffffff;
-  --bw-border: #d9d4c6;
-  --bw-border-strong: #8a8475;
-  --bw-border-hover: #5a564f;
-  --bw-plate: #000000;
-  --bw-plate-edge: var(--bw-yellow);
-  --bw-plate-outline: #000000;
-  --bw-plate-pressed: #2e2b27;
-  --bw-on-plate: var(--bw-yellow);
+  --bw-border: #dcdcd8;
+  --bw-border-strong: #8c8c86;
+  --bw-border-hover: #5c5c57;
+  --bw-plate-edge: var(--bw-yellow-pressed);
+  --bw-accent: #000000;
   --bw-on-error: #ffffff;
   --bw-text-strong: #000000;
-  --bw-text: #1d1b18;
-  --bw-text-muted: #5a564f;
-  --bw-text-dim: #6f6a60;
+  --bw-text: #1a1a18;
+  --bw-text-muted: #5c5c57;
+  --bw-text-dim: #6e6e68;
   --bw-error: #c8372b;
   --bw-error-edge: #8f2219;
   --bw-success: #2f7d32;
@@ -72,36 +70,37 @@
   --bw-warning: #9c5200;
   --bw-link: #9c5200;
   --bw-focus: #000000;
-  --bw-hatch-a: #d9d4c6;
-  --bw-hatch-b: #ebe7dc;
-  --bw-disabled-bg: #ebe7dc;
-  --bw-disabled-text: #9a9588;
-  --bw-switch-off: #b8b2a4;
+  --bw-hatch-a: #dcdcd8;
+  --bw-hatch-b: #ececea;
+  --bw-disabled-bg: #ececea;
+  --bw-disabled-text: #9a9a94;
+  --bw-switch-off: #b4b4ae;
   --bw-shadow-popover: 0 10px 30px rgb(0 0 0 / 0.16);
+  --bw-plate: var(--bw-yellow);
+  --bw-plate-outline: var(--bw-yellow);
+  --bw-plate-pressed: var(--bw-yellow-pressed);
+  --bw-on-plate: var(--bw-on-yellow);
 }
 
 @media (prefers-color-scheme: light) {
   [data-theme="system"] {
     /* цвета и тени · light */
-    --bw-bg: #f4f1e8;
-    --bw-surface-1: #faf8f2;
+    --bw-bg: #ffffff;
+    --bw-surface-1: #f5f5f3;
     --bw-surface-2: #ffffff;
-    --bw-surface-3: #ebe7dc;
-    --bw-surface-4: #e0dbcd;
+    --bw-surface-3: #ececea;
+    --bw-surface-4: #e0e0dd;
     --bw-field-bg: #ffffff;
-    --bw-border: #d9d4c6;
-    --bw-border-strong: #8a8475;
-    --bw-border-hover: #5a564f;
-    --bw-plate: #000000;
-    --bw-plate-edge: var(--bw-yellow);
-    --bw-plate-outline: #000000;
-    --bw-plate-pressed: #2e2b27;
-    --bw-on-plate: var(--bw-yellow);
+    --bw-border: #dcdcd8;
+    --bw-border-strong: #8c8c86;
+    --bw-border-hover: #5c5c57;
+    --bw-plate-edge: var(--bw-yellow-pressed);
+    --bw-accent: #000000;
     --bw-on-error: #ffffff;
     --bw-text-strong: #000000;
-    --bw-text: #1d1b18;
-    --bw-text-muted: #5a564f;
-    --bw-text-dim: #6f6a60;
+    --bw-text: #1a1a18;
+    --bw-text-muted: #5c5c57;
+    --bw-text-dim: #6e6e68;
     --bw-error: #c8372b;
     --bw-error-edge: #8f2219;
     --bw-success: #2f7d32;
@@ -109,12 +108,16 @@
     --bw-warning: #9c5200;
     --bw-link: #9c5200;
     --bw-focus: #000000;
-    --bw-hatch-a: #d9d4c6;
-    --bw-hatch-b: #ebe7dc;
-    --bw-disabled-bg: #ebe7dc;
-    --bw-disabled-text: #9a9588;
-    --bw-switch-off: #b8b2a4;
+    --bw-hatch-a: #dcdcd8;
+    --bw-hatch-b: #ececea;
+    --bw-disabled-bg: #ececea;
+    --bw-disabled-text: #9a9a94;
+    --bw-switch-off: #b4b4ae;
     --bw-shadow-popover: 0 10px 30px rgb(0 0 0 / 0.16);
+    --bw-plate: var(--bw-yellow);
+    --bw-plate-outline: var(--bw-yellow);
+    --bw-plate-pressed: var(--bw-yellow-pressed);
+    --bw-on-plate: var(--bw-on-yellow);
   }
 }
 
@@ -155,6 +158,68 @@
   --bw-disabled-bg: #e0dbcd;
   --bw-disabled-text: #8f897c;
   --bw-switch-off: #a8a293;
+}
+
+/* Light · Paper: ступень яркости темы light. Ставится вместе с ней: data-theme="light" data-theme-variant="light-paper";
+   при data-theme="system" приложение само ставит ступень той темы, что сейчас в ОС. */
+[data-theme-variant="light-paper"] {
+  /* цвета · light-paper */
+  --bw-bg: #f4f1e8;
+  --bw-surface-1: #faf8f2;
+  --bw-surface-2: #ffffff;
+  --bw-surface-3: #ebe7dc;
+  --bw-surface-4: #e0dbcd;
+  --bw-field-bg: #ffffff;
+  --bw-border: #d9d4c6;
+  --bw-border-strong: #8a8475;
+  --bw-border-hover: #5a564f;
+  --bw-text: #1d1b18;
+  --bw-text-muted: #5a564f;
+  --bw-text-dim: #6f6a60;
+  --bw-hatch-a: #d9d4c6;
+  --bw-hatch-b: #ebe7dc;
+  --bw-disabled-bg: #ebe7dc;
+  --bw-disabled-text: #9a9588;
+  --bw-switch-off: #b8b2a4;
+}
+
+/* Light · Steel: ступень яркости темы light. Ставится вместе с ней: data-theme="light" data-theme-variant="light-steel";
+   при data-theme="system" приложение само ставит ступень той темы, что сейчас в ОС. */
+[data-theme-variant="light-steel"] {
+  /* цвета · light-steel */
+  --bw-bg: #e4e8ed;
+  --bw-surface-1: #edf0f4;
+  --bw-surface-2: #f7f9fb;
+  --bw-surface-3: #d9dee5;
+  --bw-surface-4: #cbd2db;
+  --bw-field-bg: #f7f9fb;
+  --bw-border: #c5ccd6;
+  --bw-border-strong: #7b8491;
+  --bw-border-hover: #535b67;
+  --bw-text: #171a1f;
+  --bw-text-muted: #4d5562;
+  --bw-text-dim: #5c6471;
+}
+
+/* Light · Stone: ступень яркости темы light. Ставится вместе с ней: data-theme="light" data-theme-variant="light-stone";
+   при data-theme="system" приложение само ставит ступень той темы, что сейчас в ОС. */
+[data-theme-variant="light-stone"] {
+  /* цвета · light-stone */
+  --bw-bg: #c4c6c9;
+  --bw-surface-1: #cfd1d4;
+  --bw-surface-2: #dadcde;
+  --bw-surface-3: #b8babd;
+  --bw-surface-4: #abadb1;
+  --bw-field-bg: #e4e5e7;
+  --bw-border: #a3a5a9;
+  --bw-border-strong: #5f6165;
+  --bw-border-hover: #4a4c50;
+  --bw-text: #111111;
+  --bw-text-muted: #3d3f43;
+  --bw-text-dim: #505256;
+  --bw-success: #1f5c22;
+  --bw-warning: #7a3f00;
+  --bw-link: #7a3f00;
 }
 
 :root {

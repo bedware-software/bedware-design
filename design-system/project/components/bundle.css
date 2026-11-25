@@ -52,8 +52,8 @@
 /* без рамки: шапка окна и панели инструментов — только значок и текст; под курсором — пластина, включённая или раскрытая — цвет пластины с чертой */
 .bw-btn--bare { color: var(--text-muted); border-radius: var(--radius-plate); }
 .bw-btn--bare::before { clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut)); }
-.bw-btn--bare:is([aria-pressed="true"], [aria-expanded="true"]) { color: var(--plate); }
-.bw-btn--bare:is([aria-pressed="true"], [aria-expanded="true"])::before { box-shadow: inset 0 -2px 0 var(--plate); }
+.bw-btn--bare:is([aria-pressed="true"], [aria-expanded="true"]) { color: var(--accent); }
+.bw-btn--bare:is([aria-pressed="true"], [aria-expanded="true"])::before { box-shadow: inset 0 -2px 0 var(--accent); }
 .bw-btn--bare:hover { color: var(--on-plate); }
 .bw-btn--bare:hover::before { background: var(--plate); box-shadow: inset 0 -2px 0 var(--plate-edge), inset 0 0 0 1px var(--plate-outline); }
 .bw-btn--bare:active::before { background: var(--plate-pressed); box-shadow: inset 0 2px 0 var(--plate-edge), inset 0 0 0 1px var(--plate-outline); }
@@ -103,9 +103,9 @@
 .bw-iconbtn--bare:hover::before { background: var(--plate-outline); }
 .bw-iconbtn--bare:hover::after { background: var(--plate); box-shadow: inset 0 -2px 0 var(--plate-edge); }
 .bw-iconbtn--bare:active::after { background: var(--plate-pressed); box-shadow: inset 0 2px 0 var(--plate-edge); }
-.bw-iconbtn--bare[aria-pressed="true"]:not(:hover) { color: var(--plate); }
+.bw-iconbtn--bare[aria-pressed="true"]:not(:hover) { color: var(--accent); }
 .bw-iconbtn--bare[aria-pressed="true"]:not(:hover)::before { background: none; }
-.bw-iconbtn--bare[aria-pressed="true"]:not(:hover)::after { background: none; box-shadow: inset 0 -2px 0 var(--plate); }
+.bw-iconbtn--bare[aria-pressed="true"]:not(:hover)::after { background: none; box-shadow: inset 0 -2px 0 var(--accent); }
 .bw-iconbtn--bare.bw-iconbtn--danger:hover { color: var(--on-error); }
 .bw-iconbtn--bare.bw-iconbtn--danger:hover::before { background: var(--error); }
 .bw-iconbtn--bare.bw-iconbtn--danger:hover::after { background: var(--error); box-shadow: inset 0 -2px 0 var(--error-edge); }
