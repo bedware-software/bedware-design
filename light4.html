@@ -80,6 +80,13 @@
   /* light4: белая тема (F) выбрана; уточняем кромку пластины, черту режима ввода и кольцо фокуса — их ставит скрипт переменными на сцене */
   #f .stage { --bw-plate-edge: var(--edge, var(--bw-yellow-plate)); --bw-focus: var(--focus, var(--bw-yellow)); }
   #f .bar.ins::after { height: var(--line-h, 2px); background: var(--line-bg, linear-gradient(90deg, var(--bw-yellow), var(--bw-yellow-plate) 50%, var(--bw-yellow-pressed))); }
+  /* режим ввода — поле адреса целиком пластина: жёлтая заливка, чёрный текст, кромка пластины снизу; тонкой линии нет */
+  #f .stage.fill-ins .bar.ins { background: var(--bw-yellow); padding: 0 8px; color: #000; }
+  #f .stage.fill-ins .bar.ins .url, #f .stage.fill-ins .bar.ins .url s { color: #000; }
+  #f .stage.fill-ins .bar.ins::after { height: 3px; background: var(--bw-plate-edge); }
+  #f .stage.fill-ins .bar.ins .caret { background: #000; }
+  #f .stage.fill-ins .bar.ins .mode { background: none; box-shadow: none; color: #000; }
+  #f .ring { outline-width: var(--focus-w, 2px); }
   .ask { position: sticky; top: 0; z-index: 5; display: grid; gap: 6px; margin: 14px 0; padding: 10px 14px; background: var(--bw-surface-2); border: 1px solid var(--bw-border-strong); }
   .ask > div { display: flex; flex-wrap: wrap; gap: 4px 16px; align-items: center; }
   .ask b { font: 700 12px var(--bw-font-mono); color: var(--bw-text-strong); min-width: 170px; }
@@ -156,6 +163,7 @@
       <label><input type="radio" name="q1" value="персиковая" data-edge="#ffbf68">Персиковая, из логотипа</label>
       <label><input type="radio" name="q1" value="без кромки" data-edge="#ffde5d">Без кромки</label></div>
     <div><b>2 · Черта режима ввода</b>
+      <label><input type="radio" name="q2" value="поле целиком жёлтое, как пластина" data-fill="1" data-bg="" data-h="2px"><b style="min-width:0">Поле целиком жёлтое</b></label>
       <label><input type="radio" name="q2" value="перелив как в тёмной" data-bg="" data-h="2px">Перелив, как в тёмной</label>
       <label><input type="radio" name="q2" value="чисто жёлтая 2px" data-bg="#ffde5d" data-h="2px">Чисто жёлтая</label>
       <label><input type="radio" name="q2" value="чисто жёлтая 3px" data-bg="#ffde5d" data-h="3px">Чисто жёлтая, толще</label>
@@ -165,6 +173,8 @@
       <label><input type="radio" name="q2" value="тёмно-жёлтая 2px" data-bg="#7d5a12" data-h="2px">Тёмно-жёлтая</label></div>
     <div><b>3 · Кольцо фокуса</b>
       <label><input type="radio" name="q3" value="жёлтое" data-focus="#ffde5d">Жёлтое</label>
+      <label><input type="radio" name="q3" value="жёлтое 3px" data-focus="#ffde5d" data-w="3px">Жёлтое, толще</label>
+      <label><input type="radio" name="q3" value="жёлтое потемнее 3px" data-focus="#e5c440" data-w="3px">Потемнее, толще</label>
       <label><input type="radio" name="q3" value="насыщенное жёлтое #ffc800" data-focus="#ffc800">Насыщенное</label>
       <label><input type="radio" name="q3" value="жёлтое потемнее" data-focus="#e5c440">Жёлтое потемнее</label>
       <label><input type="radio" name="q3" value="тёмно-жёлтое" data-focus="#7d5a12">Тёмно-жёлтое</label>
@@ -239,7 +249,8 @@
     const e = picked('q1'), l = picked('q2'), r = picked('q3');
     if (e) scene.style.setProperty('--edge', e.dataset.edge); 
     if (l) { scene.style.setProperty('--line-h', l.dataset.h); if (l.dataset.bg) scene.style.setProperty('--line-bg', l.dataset.bg); else scene.style.removeProperty('--line-bg'); }
-    if (r) scene.style.setProperty('--focus', r.dataset.focus);
+    if (l) scene.classList.toggle('fill-ins', l.dataset.fill === '1');
+    if (r) { scene.style.setProperty('--focus', r.dataset.focus); scene.style.setProperty('--focus-w', r.dataset.w || '2px'); }
     const parts = [`кромка — ${e ? e.value : 'не выбрано'}`, `черта ввода — ${l ? l.value : 'не выбрано'}`, `фокус — ${r ? r.value : 'не выбрано'}`];
     if (note.value.trim()) parts.push('замечания: ' + note.value.trim().replace(/\s+/g, ' '));
     out.value = 'Белая тема: ' + parts.join('; ');
