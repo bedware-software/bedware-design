@@ -30,6 +30,7 @@
 .bw-btn--secondary, .bw-btn--ghost { border-radius: var(--bw-radius-plate); }
 .bw-btn--secondary::before, .bw-btn--secondary::after, .bw-btn--ghost::before { clip-path: polygon(var(--bw-cut) 0, 100% 0, 100% calc(100% - var(--bw-cut)), calc(100% - var(--bw-cut)) 100%, 0 100%, 0 var(--bw-cut)); }
 .bw-btn--secondary::before { background: var(--bw-border-strong); }
+.bw-btn--secondary::after { --bw-cut-in: calc(var(--bw-cut) - .59px); clip-path: polygon(var(--bw-cut-in) 0, 100% 0, 100% calc(100% - var(--bw-cut-in)), calc(100% - var(--bw-cut-in)) 100%, 0 100%, 0 var(--bw-cut-in)); }
 .bw-btn--secondary::after { content: ''; position: absolute; inset: 0; z-index: -1; background: var(--bw-surface-3); transition: background-color var(--bw-duration-fast); }
 .bw-btn--secondary:hover::before { background: var(--bw-border-hover); }
 .bw-btn--secondary:hover::after { background: var(--bw-surface-4); }
@@ -47,6 +48,7 @@
 .bw-btn--danger-outline { color: var(--bw-error); border-radius: var(--bw-radius-plate); }
 .bw-btn--danger-outline::before, .bw-btn--danger-outline::after { clip-path: polygon(var(--bw-cut) 0, 100% 0, 100% calc(100% - var(--bw-cut)), calc(100% - var(--bw-cut)) 100%, 0 100%, 0 var(--bw-cut)); }
 .bw-btn--danger-outline::before { background: var(--bw-error); }
+.bw-btn--danger-outline::after { --bw-cut-in: calc(var(--bw-cut) - .59px); clip-path: polygon(var(--bw-cut-in) 0, 100% 0, 100% calc(100% - var(--bw-cut-in)), calc(100% - var(--bw-cut-in)) 100%, 0 100%, 0 var(--bw-cut-in)); }
 .bw-btn--danger-outline::after { content: ''; position: absolute; inset: 0; z-index: -1; background: var(--bw-surface-2); transition: background-color var(--bw-duration-fast); }
 .bw-btn--danger-outline:hover::after { background: color-mix(in srgb, var(--bw-error) 15%, var(--bw-surface-2)); }
 /* без рамки: шапка окна и панели инструментов — только значок и текст; под курсором — пластина, включённая или раскрытая — цвет пластины с чертой */
@@ -82,7 +84,7 @@
 .bw-iconbtn--20 { --bw-ib-cut: 4px; width: 20px; height: 20px; }
 .bw-iconbtn::before, .bw-iconbtn::after { content: ''; position: absolute; z-index: -1; clip-path: var(--bw-ib-clip); transition: background-color var(--bw-duration-fast), box-shadow var(--bw-duration-fast); }
 .bw-iconbtn::before { inset: 0; background: var(--bw-border-strong); }
-.bw-iconbtn::after { inset: 1px; background: var(--bw-surface-3); }
+.bw-iconbtn::after { inset: 1px; background: var(--bw-surface-3); --bw-ib-in: calc(var(--bw-ib-cut) - .59px); clip-path: polygon(var(--bw-ib-in) 0, 100% 0, 100% calc(100% - var(--bw-ib-in)), calc(100% - var(--bw-ib-in)) 100%, 0 100%, 0 var(--bw-ib-in)); } /* срез заливки меньше на 0.59px: рамка и по диагонали 1px, а не 1.41 */
 .bw-iconbtn:focus-visible { outline: 2px solid var(--bw-focus); outline-offset: 2px; }
 .bw-iconbtn:hover::before { background: var(--bw-border-hover); }
 .bw-iconbtn:hover::after { background: var(--bw-surface-4); }
@@ -403,7 +405,7 @@
    Рамка — фон дорожки, обрезанный по форме; заливка — ::before на 1px внутри (срез чуть меньше, чтобы рамка и по диагонали была 1px) */
 .bw-seg { position: relative; isolation: isolate; display: flex; width: fit-content; padding: 1px; background: var(--bw-border-strong);
   clip-path: polygon(var(--bw-cut) 0, 100% 0, 100% calc(100% - var(--bw-cut)), calc(100% - var(--bw-cut)) 100%, 0 100%, 0 var(--bw-cut)); }
-.bw-seg::before { content: ''; position: absolute; inset: 1px; z-index: -1; background: var(--bw-field-bg); --bw-seg-cut: calc(var(--bw-cut) - .4px);
+.bw-seg::before { content: ''; position: absolute; inset: 1px; z-index: -1; background: var(--bw-field-bg); --bw-seg-cut: calc(var(--bw-cut) - .59px);
   clip-path: polygon(var(--bw-seg-cut) 0, 100% 0, 100% calc(100% - var(--bw-seg-cut)), calc(100% - var(--bw-seg-cut)) 100%, 0 100%, 0 var(--bw-seg-cut)); }
 .bw-seg--wrap { flex-wrap: wrap; }
 .bw-seg__opt { position: relative; isolation: isolate; display: inline-flex; align-items: center; gap: var(--bw-space-1-5); height: 30px; padding: 0 var(--bw-space-3); border: 0; border-radius: 0; background: none; outline: none; cursor: pointer; white-space: nowrap;

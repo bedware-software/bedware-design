@@ -30,6 +30,7 @@
 .bw-btn--secondary, .bw-btn--ghost { border-radius: var(--radius-plate); }
 .bw-btn--secondary::before, .bw-btn--secondary::after, .bw-btn--ghost::before { clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut)); }
 .bw-btn--secondary::before { background: var(--border-strong); }
+.bw-btn--secondary::after { --cut-in: calc(var(--cut) - .59px); clip-path: polygon(var(--cut-in) 0, 100% 0, 100% calc(100% - var(--cut-in)), calc(100% - var(--cut-in)) 100%, 0 100%, 0 var(--cut-in)); }
 .bw-btn--secondary::after { content: ''; position: absolute; inset: 0; z-index: -1; background: var(--surface-3); transition: background-color 150ms; }
 .bw-btn--secondary:hover::before { background: var(--border-hover); }
 .bw-btn--secondary:hover::after { background: var(--surface-4); }
@@ -47,6 +48,7 @@
 .bw-btn--danger-outline { color: var(--error); border-radius: var(--radius-plate); }
 .bw-btn--danger-outline::before, .bw-btn--danger-outline::after { clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut)); }
 .bw-btn--danger-outline::before { background: var(--error); }
+.bw-btn--danger-outline::after { --cut-in: calc(var(--cut) - .59px); clip-path: polygon(var(--cut-in) 0, 100% 0, 100% calc(100% - var(--cut-in)), calc(100% - var(--cut-in)) 100%, 0 100%, 0 var(--cut-in)); }
 .bw-btn--danger-outline::after { content: ''; position: absolute; inset: 0; z-index: -1; background: var(--surface-2); transition: background-color 150ms; }
 .bw-btn--danger-outline:hover::after { background: color-mix(in srgb, var(--error) 15%, var(--surface-2)); }
 /* без рамки: шапка окна и панели инструментов — только значок и текст; под курсором — пластина, включённая или раскрытая — цвет пластины с чертой */
@@ -82,7 +84,7 @@
 .bw-iconbtn--20 { --ib-cut: 4px; width: 20px; height: 20px; }
 .bw-iconbtn::before, .bw-iconbtn::after { content: ''; position: absolute; z-index: -1; clip-path: var(--ib-clip); transition: background-color 150ms, box-shadow 150ms; }
 .bw-iconbtn::before { inset: 0; background: var(--border-strong); }
-.bw-iconbtn::after { inset: 1px; background: var(--surface-3); }
+.bw-iconbtn::after { inset: 1px; background: var(--surface-3); --ib-in: calc(var(--ib-cut) - .59px); clip-path: polygon(var(--ib-in) 0, 100% 0, 100% calc(100% - var(--ib-in)), calc(100% - var(--ib-in)) 100%, 0 100%, 0 var(--ib-in)); } /* срез заливки меньше на 0.59px: рамка и по диагонали 1px, а не 1.41 */
 .bw-iconbtn:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
 .bw-iconbtn:hover::before { background: var(--border-hover); }
 .bw-iconbtn:hover::after { background: var(--surface-4); }
@@ -403,7 +405,7 @@
    Рамка — фон дорожки, обрезанный по форме; заливка — ::before на 1px внутри (срез чуть меньше, чтобы рамка и по диагонали была 1px) */
 .bw-seg { position: relative; isolation: isolate; display: flex; width: fit-content; padding: 1px; background: var(--border-strong);
   clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut)); }
-.bw-seg::before { content: ''; position: absolute; inset: 1px; z-index: -1; background: var(--field-bg); --seg-cut: calc(var(--cut) - .4px);
+.bw-seg::before { content: ''; position: absolute; inset: 1px; z-index: -1; background: var(--field-bg); --seg-cut: calc(var(--cut) - .59px);
   clip-path: polygon(var(--seg-cut) 0, 100% 0, 100% calc(100% - var(--seg-cut)), calc(100% - var(--seg-cut)) 100%, 0 100%, 0 var(--seg-cut)); }
 .bw-seg--wrap { flex-wrap: wrap; }
 .bw-seg__opt { position: relative; isolation: isolate; display: inline-flex; align-items: center; gap: var(--space-1-5); height: 30px; padding: 0 var(--space-3); border: 0; border-radius: 0; background: none; outline: none; cursor: pointer; white-space: nowrap;
