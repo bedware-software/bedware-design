@@ -399,7 +399,12 @@
 .bw-menu__chev { display: inline-flex; flex: none; color: var(--text-muted); }
 
 /* ── сегменты ── один выбор из нескольких: общая дорожка 32px, выбранная ячейка — пластина во всю ячейку со срезами и кромкой */
-.bw-seg { display: flex; width: fit-content; overflow: hidden; border: 1px solid var(--border-strong); border-radius: var(--radius-plate); background: var(--field-bg); }
+/* дорожка той же формы, что пластина: срезы слева вверху и справа внизу — выбранная крайняя ячейка встаёт в угол впритык, без серого треугольника.
+   Рамка — фон дорожки, обрезанный по форме; заливка — ::before на 1px внутри (срез чуть меньше, чтобы рамка и по диагонали была 1px) */
+.bw-seg { position: relative; isolation: isolate; display: flex; width: fit-content; padding: 1px; background: var(--border-strong);
+  clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut)); }
+.bw-seg::before { content: ''; position: absolute; inset: 1px; z-index: -1; background: var(--field-bg); --seg-cut: calc(var(--cut) - .4px);
+  clip-path: polygon(var(--seg-cut) 0, 100% 0, 100% calc(100% - var(--seg-cut)), calc(100% - var(--seg-cut)) 100%, 0 100%, 0 var(--seg-cut)); }
 .bw-seg--wrap { flex-wrap: wrap; }
 .bw-seg__opt { position: relative; isolation: isolate; display: inline-flex; align-items: center; gap: var(--space-1-5); height: 30px; padding: 0 var(--space-3); border: 0; border-radius: 0; background: none; outline: none; cursor: pointer; white-space: nowrap;
   font: 500 12px/16px var(--font-sans); color: var(--text-muted); transition: color 150ms, background-color 150ms; }
