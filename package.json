@@ -1,0 +1,42 @@
+{
+  "name": "@bedware/ui",
+  "version": "0.4.2",
+  "description": "bedware — общие React-компоненты для Runwa, Vimperium и сайта",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./vim-form": {
+      "types": "./dist/vim-form/index.d.ts",
+      "default": "./dist/vim-form/index.js"
+    },
+    "./vim-keys": {
+      "types": "./dist/vim-form/keys.d.ts",
+      "default": "./dist/vim-form/keys.js"
+    },
+    "./styles.css": "./dist/styles.css",
+    "./tokens.css": "./dist/tokens.css",
+    "./fonts.css": "./dist/fonts.css",
+    "./tailwind-theme.css": "./dist/tailwind-theme.css"
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": [
+    "*.css"
+  ],
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react-dom": {
+      "optional": true
+    }
+  },
+  "repository": "github:bedware-software/bedware-design"
+}
